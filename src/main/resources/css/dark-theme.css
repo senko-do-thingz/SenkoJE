@@ -1,0 +1,27 @@
+/* Định kiểu giao diện chế độ tối mặc định cho ứng dụng SenkoJE */
+.root {
+    -fx-base: #16191e;
+    -fx-background: #121417;
+    -fx-control-inner-background: #1e2228;
+    -fx-text-fill: #e6edf3;
+    -fx-font-family: "System";
+}
+
+/* Vùng chứa chính của cửa sổ khởi động */
+.app-root {
+    -fx-background-color: #121417;
+    -fx-padding: 32;
+}
+
+/* Tiêu đề chính của ứng dụng */
+.app-title {
+    -fx-font-size: 32px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #f0f6fc;
+}
+
+/* Dòng mô tả phụ bên dưới tiêu đề */
+.app-subtitle {
+    -fx-font-size: 15px;
+    -fx-text-fill: #9aa4b2;
+}

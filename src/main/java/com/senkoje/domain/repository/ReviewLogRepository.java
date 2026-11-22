@@ -50,4 +50,24 @@ public interface ReviewLogRepository {
      * @return danh sách nhật ký ôn tập trong khoảng thời gian
      */
     List<ReviewLog> findByReviewedAtBetween(Instant startInclusive, Instant endInclusive);
+
+    /**
+     * Đếm số lượt giới thiệu thẻ mới (trạng thái trước ôn tập là NEW) của một bộ thẻ trong khoảng thời gian.
+     *
+     * @param deckId mã bộ thẻ
+     * @param startInclusive thời điểm bắt đầu (bao gồm)
+     * @param endExclusive thời điểm kết thúc (không bao gồm)
+     * @return số thẻ mới đã học trong khoảng thời gian
+     */
+    int countNewCardsReviewedBetween(long deckId, Instant startInclusive, Instant endExclusive);
+
+    /**
+     * Đếm số lượt ôn tập thẻ dài hạn (trạng thái trước ôn tập là REVIEW) của một bộ thẻ trong khoảng thời gian.
+     *
+     * @param deckId mã bộ thẻ
+     * @param startInclusive thời điểm bắt đầu (bao gồm)
+     * @param endExclusive thời điểm kết thúc (không bao gồm)
+     * @return số lượt ôn tập dài hạn đã thực hiện trong khoảng thời gian
+     */
+    int countReviewsCompletedBetween(long deckId, Instant startInclusive, Instant endExclusive);
 }

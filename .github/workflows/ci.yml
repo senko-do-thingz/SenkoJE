@@ -1,0 +1,49 @@
+name: SenkoJE Continuous Integration
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-test:
+    name: Build and Test (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 25
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "25"
+          cache: maven
+
+      - name: Verify repository rules (No em-dash or en-dash)
+        shell: bash
+        run: |
+          if grep -rnE $'\xe2\x80\x93|\xe2\x80\x94' docs/ README.md CODING_RULES.md src/ 2>/dev/null; then
+            echo "Error: Em-dash or en-dash detected. Replace with standard ASCII hyphen (-)."
+            exit 1
+          fi
+
+      - name: Run Maven build and tests (when pom.xml exists)
+        shell: bash
+        run: |
+          if [ -f "pom.xml" ]; then
+            mvn -B clean verify
+          else
+            echo "No pom.xml found yet. Skipping Maven build step."
+          fi

@@ -6,6 +6,7 @@ import com.senkoje.domain.model.ReviewRating;
 import com.senkoje.domain.repository.ReviewLogRepository;
 import com.senkoje.persistence.sqlite.SqliteConnectionManager;
 import com.senkoje.persistence.sqlite.SqliteTransactionExecutor;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -36,6 +37,21 @@ public class SqliteReviewLogRepository implements ReviewLogRepository {
     @Override
     public ReviewLog append(ReviewLog reviewLog) {
         Objects.requireNonNull(reviewLog, "reviewLog must not be null");
+        return transactionExecutor.executeInTransaction(
+                "append review log",
+                connection -> insert(connection, reviewLog)
+        );
+    }
+
+    /**
+     * Ghi thêm một bản ghi nhật ký ôn tập bất biến trên một kết nối giao dịch SQLite có sẵn.
+     *
+     * @param connection kết nối SQLite đang trong giao dịch
+     * @param reviewLog bản ghi nhật ký cần chèn
+     * @return bản ghi nhật ký đã lưu kèm mã định danh sinh tự động
+     * @throws SQLException nếu câu lệnh SQL thất bại
+     */
+    static ReviewLog insert(Connection connection, ReviewLog reviewLog) throws SQLException {
         String sql = """
                 INSERT INTO review_logs (
                     card_id, session_id, rating, reviewed_at, response_time_ms,
@@ -45,59 +61,57 @@ public class SqliteReviewLogRepository implements ReviewLogRepository {
                 )
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 """;
-        return transactionExecutor.executeInTransaction("append review log", connection -> {
-            try (PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-                ps.setLong(1, reviewLog.cardId());
-                if (reviewLog.sessionId() == null) {
-                    ps.setNull(2, Types.INTEGER);
-                } else {
-                    ps.setLong(2, reviewLog.sessionId());
-                }
-                ps.setInt(3, reviewLog.rating().getValue());
-                ps.setString(4, reviewLog.reviewedAt().toString());
-                if (reviewLog.responseTimeMs() == null) {
-                    ps.setNull(5, Types.INTEGER);
-                } else {
-                    ps.setInt(5, reviewLog.responseTimeMs());
-                }
-                ps.setString(6, reviewLog.previousState().name());
-                ps.setString(7, reviewLog.nextState().name());
-                ps.setDouble(8, reviewLog.previousStability());
-                ps.setDouble(9, reviewLog.nextStability());
-                ps.setDouble(10, reviewLog.previousDifficulty());
-                ps.setDouble(11, reviewLog.nextDifficulty());
-                ps.setDouble(12, reviewLog.elapsedDays());
-                ps.setDouble(13, reviewLog.scheduledDays());
-                ps.setString(14, reviewLog.algorithmVersion());
-                ps.setString(15, reviewLog.parameterVersion());
-                ps.executeUpdate();
-
-                try (ResultSet keys = ps.getGeneratedKeys()) {
-                    if (!keys.next()) {
-                        throw new SQLException("Failed to retrieve generated review_log id");
-                    }
-                    long id = keys.getLong(1);
-                    return new ReviewLog(
-                            id,
-                            reviewLog.cardId(),
-                            reviewLog.sessionId(),
-                            reviewLog.rating(),
-                            reviewLog.reviewedAt(),
-                            reviewLog.responseTimeMs(),
-                            reviewLog.previousState(),
-                            reviewLog.nextState(),
-                            reviewLog.previousStability(),
-                            reviewLog.nextStability(),
-                            reviewLog.previousDifficulty(),
-                            reviewLog.nextDifficulty(),
-                            reviewLog.elapsedDays(),
-                            reviewLog.scheduledDays(),
-                            reviewLog.algorithmVersion(),
-                            reviewLog.parameterVersion()
-                    );
-                }
+        try (PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            ps.setLong(1, reviewLog.cardId());
+            if (reviewLog.sessionId() == null) {
+                ps.setNull(2, Types.INTEGER);
+            } else {
+                ps.setLong(2, reviewLog.sessionId());
             }
-        });
+            ps.setInt(3, reviewLog.rating().getValue());
+            ps.setString(4, reviewLog.reviewedAt().toString());
+            if (reviewLog.responseTimeMs() == null) {
+                ps.setNull(5, Types.INTEGER);
+            } else {
+                ps.setInt(5, reviewLog.responseTimeMs());
+            }
+            ps.setString(6, reviewLog.previousState().name());
+            ps.setString(7, reviewLog.nextState().name());
+            ps.setDouble(8, reviewLog.previousStability());
+            ps.setDouble(9, reviewLog.nextStability());
+            ps.setDouble(10, reviewLog.previousDifficulty());
+            ps.setDouble(11, reviewLog.nextDifficulty());
+            ps.setDouble(12, reviewLog.elapsedDays());
+            ps.setDouble(13, reviewLog.scheduledDays());
+            ps.setString(14, reviewLog.algorithmVersion());
+            ps.setString(15, reviewLog.parameterVersion());
+            ps.executeUpdate();
+
+            try (ResultSet keys = ps.getGeneratedKeys()) {
+                if (!keys.next()) {
+                    throw new SQLException("Failed to retrieve generated review_log id");
+                }
+                long id = keys.getLong(1);
+                return new ReviewLog(
+                        id,
+                        reviewLog.cardId(),
+                        reviewLog.sessionId(),
+                        reviewLog.rating(),
+                        reviewLog.reviewedAt(),
+                        reviewLog.responseTimeMs(),
+                        reviewLog.previousState(),
+                        reviewLog.nextState(),
+                        reviewLog.previousStability(),
+                        reviewLog.nextStability(),
+                        reviewLog.previousDifficulty(),
+                        reviewLog.nextDifficulty(),
+                        reviewLog.elapsedDays(),
+                        reviewLog.scheduledDays(),
+                        reviewLog.algorithmVersion(),
+                        reviewLog.parameterVersion()
+                );
+            }
+        }
     }
 
     @Override
@@ -198,6 +212,46 @@ public class SqliteReviewLogRepository implements ReviewLogRepository {
                 }
             }
             return logs;
+        });
+    }
+
+    @Override
+    public int countNewCardsReviewedBetween(long deckId, Instant startInclusive, Instant endExclusive) {
+        return countByPreviousStateBetween(deckId, CardState.NEW, startInclusive, endExclusive);
+    }
+
+    @Override
+    public int countReviewsCompletedBetween(long deckId, Instant startInclusive, Instant endExclusive) {
+        return countByPreviousStateBetween(deckId, CardState.REVIEW, startInclusive, endExclusive);
+    }
+
+    private int countByPreviousStateBetween(
+            long deckId,
+            CardState previousState,
+            Instant startInclusive,
+            Instant endExclusive
+    ) {
+        Objects.requireNonNull(startInclusive, "startInclusive must not be null");
+        Objects.requireNonNull(endExclusive, "endExclusive must not be null");
+        String sql = """
+                SELECT COUNT(*)
+                FROM review_logs rl
+                INNER JOIN cards c ON c.id = rl.card_id
+                WHERE c.deck_id = ?
+                  AND rl.previous_state = ?
+                  AND rl.reviewed_at >= ?
+                  AND rl.reviewed_at < ?
+                """;
+        return transactionExecutor.executeRead("count review logs by previous state and date range", connection -> {
+            try (PreparedStatement ps = connection.prepareStatement(sql)) {
+                ps.setLong(1, deckId);
+                ps.setString(2, previousState.name());
+                ps.setString(3, startInclusive.toString());
+                ps.setString(4, endExclusive.toString());
+                try (ResultSet rs = ps.executeQuery()) {
+                    return rs.next() ? rs.getInt(1) : 0;
+                }
+            }
         });
     }
 

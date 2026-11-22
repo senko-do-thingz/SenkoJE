@@ -5,6 +5,7 @@ import com.senkoje.domain.model.ReviewState;
 import com.senkoje.domain.repository.ReviewStateRepository;
 import com.senkoje.persistence.sqlite.SqliteConnectionManager;
 import com.senkoje.persistence.sqlite.SqliteTransactionExecutor;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -82,6 +83,37 @@ public class SqliteReviewStateRepository implements ReviewStateRepository {
     }
 
     @Override
+    public List<ReviewState> findNewByDeckId(long deckId, int limit) {
+        if (limit <= 0) {
+            return List.of();
+        }
+        String sql = """
+                SELECT rs.card_id, rs.state, rs.stability, rs.difficulty, rs.step, rs.due_at, rs.last_reviewed_at,
+                       rs.scheduled_days, rs.elapsed_days, rs.repetitions, rs.lapses, rs.updated_at
+                FROM review_states rs
+                INNER JOIN cards c ON c.id = rs.card_id
+                WHERE c.deck_id = ?
+                  AND c.suspended = 0
+                  AND rs.state = 'NEW'
+                ORDER BY c.id ASC
+                LIMIT ?
+                """;
+        return transactionExecutor.executeRead("find new review states by deck id", connection -> {
+            List<ReviewState> results = new ArrayList<>();
+            try (PreparedStatement ps = connection.prepareStatement(sql)) {
+                ps.setLong(1, deckId);
+                ps.setInt(2, limit);
+                try (ResultSet rs = ps.executeQuery()) {
+                    while (rs.next()) {
+                        results.add(mapReviewState(rs));
+                    }
+                }
+            }
+            return results;
+        });
+    }
+
+    @Override
     public List<ReviewState> findByState(CardState state) {
         Objects.requireNonNull(state, "state must not be null");
         String sql = """
@@ -111,6 +143,21 @@ public class SqliteReviewStateRepository implements ReviewStateRepository {
         if (reviewState.cardId() == null) {
             throw new IllegalArgumentException("ReviewState cardId must not be null");
         }
+        return transactionExecutor.executeInTransaction(
+                "save review state",
+                connection -> upsert(connection, reviewState)
+        );
+    }
+
+    /**
+     * Lưu mới hoặc cập nhật trạng thái lập lịch hiện tại trên một kết nối giao dịch SQLite có sẵn.
+     *
+     * @param connection kết nối SQLite đang trong giao dịch
+     * @param reviewState trạng thái ôn tập cần lưu
+     * @return trạng thái ôn tập đã lưu
+     * @throws SQLException nếu câu lệnh SQL thất bại
+     */
+    static ReviewState upsert(Connection connection, ReviewState reviewState) throws SQLException {
         String sql = """
                 INSERT INTO review_states (
                     card_id, state, stability, difficulty, step, due_at, last_reviewed_at,
@@ -130,28 +177,26 @@ public class SqliteReviewStateRepository implements ReviewStateRepository {
                     lapses = excluded.lapses,
                     updated_at = excluded.updated_at
                 """;
-        return transactionExecutor.executeInTransaction("save review state", connection -> {
-            try (PreparedStatement ps = connection.prepareStatement(sql)) {
-                ps.setLong(1, reviewState.cardId());
-                ps.setString(2, reviewState.state().name());
-                ps.setDouble(3, reviewState.stability());
-                ps.setDouble(4, reviewState.difficulty());
-                if (reviewState.step() == null) {
-                    ps.setNull(5, Types.INTEGER);
-                } else {
-                    ps.setInt(5, reviewState.step());
-                }
-                setNullableInstant(ps, 6, reviewState.dueAt());
-                setNullableInstant(ps, 7, reviewState.lastReviewedAt());
-                ps.setDouble(8, reviewState.scheduledDays());
-                ps.setDouble(9, reviewState.elapsedDays());
-                ps.setInt(10, reviewState.repetitions());
-                ps.setInt(11, reviewState.lapses());
-                ps.setString(12, reviewState.updatedAt().toString());
-                ps.executeUpdate();
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setLong(1, reviewState.cardId());
+            ps.setString(2, reviewState.state().name());
+            ps.setDouble(3, reviewState.stability());
+            ps.setDouble(4, reviewState.difficulty());
+            if (reviewState.step() == null) {
+                ps.setNull(5, Types.INTEGER);
+            } else {
+                ps.setInt(5, reviewState.step());
             }
-            return reviewState;
-        });
+            setNullableInstant(ps, 6, reviewState.dueAt());
+            setNullableInstant(ps, 7, reviewState.lastReviewedAt());
+            ps.setDouble(8, reviewState.scheduledDays());
+            ps.setDouble(9, reviewState.elapsedDays());
+            ps.setInt(10, reviewState.repetitions());
+            ps.setInt(11, reviewState.lapses());
+            ps.setString(12, reviewState.updatedAt().toString());
+            ps.executeUpdate();
+        }
+        return reviewState;
     }
 
     private ReviewState mapReviewState(ResultSet rs) throws SQLException {
@@ -176,7 +221,7 @@ public class SqliteReviewStateRepository implements ReviewStateRepository {
         );
     }
 
-    private void setNullableInstant(PreparedStatement ps, int index, Instant value) throws SQLException {
+    private static void setNullableInstant(PreparedStatement ps, int index, Instant value) throws SQLException {
         if (value == null) {
             ps.setNull(index, Types.VARCHAR);
         } else {

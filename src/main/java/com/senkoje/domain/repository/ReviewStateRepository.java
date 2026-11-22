@@ -29,6 +29,15 @@ public interface ReviewStateRepository {
     List<ReviewState> findDueByDeckId(long deckId, Instant asOf);
 
     /**
+     * Lấy danh sách trạng thái của các thẻ mới (NEW) không bị tạm ngưng trong một bộ thẻ theo giới hạn số lượng.
+     *
+     * @param deckId mã bộ thẻ
+     * @param limit số lượng thẻ mới tối đa cần lấy
+     * @return danh sách trạng thái thẻ mới
+     */
+    List<ReviewState> findNewByDeckId(long deckId, int limit);
+
+    /**
      * Lấy danh sách trạng thái ôn tập theo nhóm trạng thái FSRS-6.
      *
      * @param state trạng thái thẻ cần lọc

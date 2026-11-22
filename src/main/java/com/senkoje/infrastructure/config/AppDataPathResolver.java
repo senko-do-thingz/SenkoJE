@@ -15,6 +15,7 @@ public class AppDataPathResolver {
     public static final String APP_DIRECTORY_NAME = "SenkoJE";
     public static final String DATABASE_FILE_NAME = "senkoje.db";
     public static final String LOGS_DIRECTORY_NAME = "logs";
+    public static final String LOG_DIR_SYSTEM_PROPERTY = "senkoje.log.dir";
 
     private final String osName;
     private final String userHome;
@@ -84,6 +85,22 @@ public class AppDataPathResolver {
      */
     public Path resolveLogsDirectory() {
         return resolveAppDataDirectory().resolve(LOGS_DIRECTORY_NAME);
+    }
+
+    /**
+     * Thiết lập thuộc tính hệ thống senkoje.log.dir theo thư mục nhật ký của hệ điều hành nếu chưa được cấu hình.
+     * Phải được gọi trước khi SLF4J và Logback khởi tạo để đồng bộ đường dẫn nhật ký trên Windows, macOS và Linux.
+     *
+     * @return đường dẫn thư mục nhật ký đang có hiệu lực
+     */
+    public Path configureLogDirectorySystemProperty() {
+        String existingLogDir = System.getProperty(LOG_DIR_SYSTEM_PROPERTY);
+        if (existingLogDir != null && !existingLogDir.isBlank()) {
+            return Path.of(existingLogDir);
+        }
+        Path resolvedLogsDirectory = resolveLogsDirectory().normalize();
+        System.setProperty(LOG_DIR_SYSTEM_PROPERTY, resolvedLogsDirectory.toString());
+        return resolvedLogsDirectory;
     }
 
     /**

@@ -1,5 +1,6 @@
 package com.senkoje.app;
 
+import com.senkoje.infrastructure.config.AppDataPathResolver;
 import javafx.application.Application;
 
 /**
@@ -18,6 +19,8 @@ public final class Main {
      * @param args các tham số dòng lệnh truyền vào ứng dụng
      */
     public static void main(String[] args) {
+        // Đồng bộ đường dẫn thư mục nhật ký theo hệ điều hành trước khi Logback khởi tạo
+        new AppDataPathResolver().configureLogDirectorySystemProperty();
         Application.launch(SenkoJeApplication.class, args);
     }
 }

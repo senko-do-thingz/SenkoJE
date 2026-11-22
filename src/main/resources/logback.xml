@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Cấu hình Logback ghi nhật ký cục bộ vào thư mục dữ liệu ứng dụng theo hệ điều hành -->
+<configuration>
+    <!-- Ưu tiên thuộc tính hệ thống senkoje.log.dir, mặc định theo thư mục dữ liệu người dùng của hệ điều hành -->
+    <property name="LOG_DIR" value="${senkoje.log.dir:-${APPDATA:-${user.home}/.local/share}/SenkoJE/logs}"/>
+
+    <!-- Xuất nhật ký ra màn hình dòng lệnh phục vụ quá trình phát triển -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- Ghi nhật ký xoay vòng theo ngày và dung lượng vào thư mục cục bộ của ứng dụng -->
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_DIR}/senkoje.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_DIR}/senkoje-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <maxFileSize>5MB</maxFileSize>
+            <maxHistory>14</maxHistory>
+            <totalSizeCap>50MB</totalSizeCap>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <logger name="com.senkoje" level="INFO"/>
+
+    <root level="WARN">
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="FILE"/>
+    </root>
+</configuration>

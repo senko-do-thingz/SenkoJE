@@ -28,6 +28,7 @@
         <logback.version>1.5.18</logback.version>
         <junit.version>5.12.1</junit.version>
 
+        <maven.clean.plugin.version>3.4.0</maven.clean.plugin.version>
         <maven.compiler.plugin.version>3.14.0</maven.compiler.plugin.version>
         <maven.surefire.plugin.version>3.5.3</maven.surefire.plugin.version>
         <javafx.maven.plugin.version>0.0.8</javafx.maven.plugin.version>
@@ -150,6 +151,31 @@
             <id>jlink</id>
             <build>
                 <plugins>
+                    <!-- Xóa thư mục runtime cũ trước khi chạy jlink để đảm bảo chạy lặp lại không cần mvn clean -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-clean-plugin</artifactId>
+                        <version>${maven.clean.plugin.version}</version>
+                        <executions>
+                            <execution>
+                                <id>clean-existing-jlink-runtime</id>
+                                <phase>prepare-package</phase>
+                                <goals>
+                                    <goal>clean</goal>
+                                </goals>
+                                <configuration>
+                                    <excludeDefaultDirectories>true</excludeDefaultDirectories>
+                                    <filesets>
+                                        <fileset>
+                                            <directory>${project.build.directory}/senkoje-runtime</directory>
+                                            <followSymlinks>false</followSymlinks>
+                                        </fileset>
+                                    </filesets>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+
                     <!-- Sao chép các tệp JAR mô-đun JavaFX theo hệ điều hành hiện tại -->
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>

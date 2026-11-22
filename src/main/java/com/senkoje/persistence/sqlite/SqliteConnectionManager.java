@@ -49,8 +49,12 @@ public class SqliteConnectionManager {
             enableAndVerifyForeignKeys(connection);
             return connection;
         } catch (SQLException exception) {
-            // Đóng kết nối ngay lập tức nếu bước xác minh khóa ngoại thất bại để tránh rò rỉ tài nguyên
-            connection.close();
+            // Đóng kết nối ngay lập tức nếu bước xác minh khóa ngoại thất bại và giữ nguyên ngoại lệ gốc
+            try {
+                connection.close();
+            } catch (SQLException suppressed) {
+                exception.addSuppressed(suppressed);
+            }
             throw exception;
         }
     }

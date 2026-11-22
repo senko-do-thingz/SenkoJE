@@ -1,5 +1,6 @@
 package com.senkoje.app;
 
+import com.senkoje.infrastructure.config.AppDataPathResolver;
 import java.net.URL;
 import javafx.application.Application;
 import javafx.geometry.Pos;
@@ -15,6 +16,11 @@ import org.slf4j.LoggerFactory;
  * Mặc định nạp giao diện chế độ tối (Dark Mode) khi mở cửa sổ chính.
  */
 public class SenkoJeApplication extends Application {
+
+    static {
+        // Thiết lập đường dẫn thư mục nhật ký trước khi khởi tạo Logger để hỗ trợ khởi chạy trực tiếp qua mvn javafx:run
+        new AppDataPathResolver().configureLogDirectorySystemProperty();
+    }
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SenkoJeApplication.class);
 

@@ -8,6 +8,10 @@ on:
     branches:
       - main
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 permissions:
   contents: read
 
@@ -34,16 +38,39 @@ jobs:
       - name: Verify repository rules (No em-dash or en-dash)
         shell: bash
         run: |
-          if grep -rnE $'\xe2\x80\x93|\xe2\x80\x94' docs/ README.md CODING_RULES.md src/ 2>/dev/null; then
+          if grep -rnE $'\xe2\x80\x93|\xe2\x80\x94' docs/ README.md CODING_RULES.md src/ pom.xml 2>/dev/null; then
             echo "Error: Em-dash or en-dash detected. Replace with standard ASCII hyphen (-)."
             exit 1
+          fi
+
+      - name: Verify Domain Layer isolation
+        shell: bash
+        run: |
+          if [ -d "src/main/java/com/senkoje/domain" ]; then
+            if grep -rnE '^\s*import\s+(javafx\.|java\.sql\.|org\.sqlite\.)' src/main/java/com/senkoje/domain; then
+              echo "Error: Forbidden UI or SQL import detected inside com.senkoje.domain."
+              exit 1
+            fi
+          fi
+
+      - name: Ensure Xvfb is available for headless JavaFX tests on Ubuntu
+        if: runner.os == 'Linux'
+        shell: bash
+        run: |
+          if ! command -v xvfb-run >/dev/null 2>&1; then
+            sudo apt-get update
+            sudo apt-get install -y xvfb
           fi
 
       - name: Run Maven build and tests (when pom.xml exists)
         shell: bash
         run: |
           if [ -f "pom.xml" ]; then
-            mvn -B clean verify -Pjlink
+            if [ "${{ runner.os }}" = "Linux" ]; then
+              xvfb-run -a -s "-screen 0 1280x800x24" mvn -B clean verify -Pjlink "-DargLine=-Dprism.order=sw"
+            else
+              mvn -B clean verify -Pjlink
+            fi
           else
             echo "No pom.xml found yet. Skipping Maven build step."
           fi

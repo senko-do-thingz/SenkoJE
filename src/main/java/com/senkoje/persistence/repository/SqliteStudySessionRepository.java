@@ -115,6 +115,31 @@ public class SqliteStudySessionRepository implements StudySessionRepository {
     }
 
     @Override
+    public List<StudySession> findRecent(int limit) {
+        if (limit <= 0) {
+            return List.of();
+        }
+        String sql = """
+                SELECT id, deck_id, started_at, completed_at, cards_reviewed, duration_seconds
+                FROM study_sessions
+                ORDER BY started_at DESC, id DESC
+                LIMIT ?
+                """;
+        return transactionExecutor.executeRead("find recent study sessions", connection -> {
+            List<StudySession> sessions = new ArrayList<>();
+            try (PreparedStatement ps = connection.prepareStatement(sql)) {
+                ps.setInt(1, limit);
+                try (ResultSet rs = ps.executeQuery()) {
+                    while (rs.next()) {
+                        sessions.add(mapStudySession(rs));
+                    }
+                }
+            }
+            return sessions;
+        });
+    }
+
+    @Override
     public StudySession update(StudySession session) {
         Objects.requireNonNull(session, "session must not be null");
         if (session.id() == null) {

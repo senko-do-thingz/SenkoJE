@@ -253,7 +253,13 @@ public class MainShellController {
 
     private LoadedView loadSectionView(NavigationSection section) {
         return switch (section) {
-            case DASHBOARD -> loadPlaceholder("dashboard.title", "dashboard.subtitle");
+            case DASHBOARD -> loadFxml("/fxml/dashboard-view.fxml", new DashboardController(
+                    container.getAnalyticsService(),
+                    localizationManager,
+                    container.getBackgroundTaskExecutor(),
+                    container.getClock().getZone(),
+                    () -> navigateTo(NavigationSection.DECKS)
+            ));
             case DECKS -> loadPlaceholder("decks.title", "decks.subtitle");
             case STUDY -> loadPlaceholder("placeholder.study.title", "placeholder.study.subtitle");
             case READING_SANDBOX -> loadPlaceholder("placeholder.reading.title", "placeholder.reading.subtitle");

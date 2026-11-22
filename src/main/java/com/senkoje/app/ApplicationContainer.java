@@ -1,5 +1,6 @@
 package com.senkoje.app;
 
+import com.senkoje.application.service.AnalyticsService;
 import com.senkoje.application.service.AppSettingsService;
 import com.senkoje.application.service.CardService;
 import com.senkoje.application.service.DeckService;
@@ -61,6 +62,7 @@ public class ApplicationContainer implements AutoCloseable {
     private final CardService cardService;
     private final AppSettingsService appSettingsService;
     private final ReviewService reviewService;
+    private final AnalyticsService analyticsService;
 
     private final LocalizationManager localizationManager;
     private final ThemeManager themeManager;
@@ -127,6 +129,14 @@ public class ApplicationContainer implements AutoCloseable {
                 fsrsScheduler,
                 this.clock
         );
+        this.analyticsService = new AnalyticsService(
+                deckRepository,
+                cardRepository,
+                reviewStateRepository,
+                reviewLogRepository,
+                studySessionRepository,
+                this.clock
+        );
 
         this.localizationManager = new LocalizationManager(appSettingsService);
         this.themeManager = new ThemeManager(appSettingsService);
@@ -159,6 +169,10 @@ public class ApplicationContainer implements AutoCloseable {
 
     public ReviewService getReviewService() {
         return reviewService;
+    }
+
+    public AnalyticsService getAnalyticsService() {
+        return analyticsService;
     }
 
     public DeckRepository getDeckRepository() {

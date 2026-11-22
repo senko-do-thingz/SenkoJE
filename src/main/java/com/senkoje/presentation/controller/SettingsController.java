@@ -1,0 +1,464 @@
+package com.senkoje.presentation.controller;
+
+import com.senkoje.application.dto.TtsPreferences;
+import com.senkoje.application.service.AppSettingsService;
+import com.senkoje.domain.model.DeckSettings;
+import com.senkoje.domain.service.DeckSettingsValidator;
+import com.senkoje.domain.service.DomainValidationException;
+import com.senkoje.presentation.i18n.LocalizationManager;
+import com.senkoje.presentation.navigation.RefreshableView;
+import com.senkoje.presentation.theme.ThemeManager;
+import com.senkoje.presentation.util.BackgroundTaskExecutor;
+import com.senkoje.presentation.util.DialogHelper;
+import java.nio.file.Path;
+import java.util.Locale;
+import java.util.Objects;
+import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.Slider;
+import javafx.scene.control.TextField;
+import javafx.stage.Window;
+import javafx.util.StringConverter;
+
+/**
+ * Bộ điều khiển màn hình Cài đặt quản lý ngôn ngữ giao diện, chế độ tối/sáng,
+ * cấu hình TTS ngoại tuyến, thông số FSRS-6 mặc định, điểm vào sao lưu/khôi phục và thông tin ứng dụng.
+ */
+public class SettingsController implements RefreshableView {
+
+    public static final String KEY_SRS_RETENTION = "srs.default.desired_retention";
+    public static final String KEY_SRS_MAX_INTERVAL = "srs.default.maximum_interval";
+    public static final String KEY_SRS_NEW_CARDS = "srs.default.new_cards_per_day";
+    public static final String KEY_SRS_MAX_REVIEWS = "srs.default.maximum_reviews_per_day";
+    public static final String KEY_SRS_LEARNING_STEPS = "srs.default.learning_steps";
+    public static final String KEY_SRS_RELEARNING_STEPS = "srs.default.relearning_steps";
+    public static final String KEY_SRS_ENABLE_FUZZING = "srs.default.enable_fuzzing";
+
+    private static final DeckSettingsValidator SRS_VALIDATOR = new DeckSettingsValidator();
+
+    private final AppSettingsService appSettingsService;
+    private final LocalizationManager localizationManager;
+    private final ThemeManager themeManager;
+    private final BackgroundTaskExecutor backgroundTaskExecutor;
+    private final Path databasePath;
+
+    private boolean loadingControls = false;
+
+    @FXML
+    private Label titleLabel;
+    @FXML
+    private Label subtitleLabel;
+    @FXML
+    private Label statusMessageLabel;
+
+    @FXML
+    private Label appearanceSectionLabel;
+    @FXML
+    private Label languageFieldLabel;
+    @FXML
+    private ComboBox<String> languageComboBox;
+    @FXML
+    private Label themeFieldLabel;
+    @FXML
+    private ComboBox<String> themeComboBox;
+
+    @FXML
+    private Label ttsSectionLabel;
+    @FXML
+    private CheckBox ttsEnabledCheckBox;
+    @FXML
+    private Label ttsProviderFieldLabel;
+    @FXML
+    private ComboBox<String> ttsProviderComboBox;
+    @FXML
+    private Label speechRateFieldLabel;
+    @FXML
+    private Slider speechRateSlider;
+    @FXML
+    private Label jaVoiceFieldLabel;
+    @FXML
+    private TextField jaVoiceField;
+    @FXML
+    private Label enVoiceFieldLabel;
+    @FXML
+    private TextField enVoiceField;
+    @FXML
+    private Button saveTtsButton;
+
+    @FXML
+    private Label srsSectionLabel;
+    @FXML
+    private Label srsNoteLabel;
+    @FXML
+    private Label retentionFieldLabel;
+    @FXML
+    private TextField retentionField;
+    @FXML
+    private Label maxIntervalFieldLabel;
+    @FXML
+    private TextField maxIntervalField;
+    @FXML
+    private Label newCardsFieldLabel;
+    @FXML
+    private TextField newCardsField;
+    @FXML
+    private Label maxReviewsFieldLabel;
+    @FXML
+    private TextField maxReviewsField;
+    @FXML
+    private Label learningStepsFieldLabel;
+    @FXML
+    private TextField learningStepsField;
+    @FXML
+    private Label relearningStepsFieldLabel;
+    @FXML
+    private TextField relearningStepsField;
+    @FXML
+    private CheckBox fuzzingCheckBox;
+    @FXML
+    private Button saveSrsButton;
+
+    @FXML
+    private Label backupSectionLabel;
+    @FXML
+    private Label databasePathFieldLabel;
+    @FXML
+    private Label databasePathValueLabel;
+    @FXML
+    private Button backupButton;
+    @FXML
+    private Button restoreButton;
+    @FXML
+    private Label backupNoticeLabel;
+
+    @FXML
+    private Label aboutSectionLabel;
+    @FXML
+    private Label aboutNameLabel;
+    @FXML
+    private Label aboutVersionLabel;
+    @FXML
+    private Label aboutAuthorLabel;
+    @FXML
+    private Label aboutLicenseLabel;
+    @FXML
+    private Label aboutLicenseValueLabel;
+    @FXML
+    private Label aboutRuntimeLabel;
+    @FXML
+    private Label aboutRuntimeValueLabel;
+
+    /**
+     * Khởi tạo bộ điều khiển màn hình Cài đặt.
+     *
+     * @param appSettingsService dịch vụ cài đặt ứng dụng
+     * @param localizationManager trình quản lý đa ngôn ngữ
+     * @param themeManager trình quản lý chủ đề
+     * @param backgroundTaskExecutor bộ thực thi tác vụ nền
+     * @param databasePath đường dẫn tệp cơ sở dữ liệu SQLite đang dùng
+     */
+    public SettingsController(
+            AppSettingsService appSettingsService,
+            LocalizationManager localizationManager,
+            ThemeManager themeManager,
+            BackgroundTaskExecutor backgroundTaskExecutor,
+            Path databasePath
+    ) {
+        this.appSettingsService = Objects.requireNonNull(
+                appSettingsService, "appSettingsService must not be null");
+        this.localizationManager = Objects.requireNonNull(
+                localizationManager, "localizationManager must not be null");
+        this.themeManager = Objects.requireNonNull(themeManager, "themeManager must not be null");
+        this.backgroundTaskExecutor = Objects.requireNonNull(
+                backgroundTaskExecutor, "backgroundTaskExecutor must not be null");
+        this.databasePath = Objects.requireNonNull(databasePath, "databasePath must not be null");
+    }
+
+    @FXML
+    private void initialize() {
+        bindLocalizedLabels();
+        configureSelectors();
+        databasePathValueLabel.setText(databasePath.toString());
+        String javaVersion = System.getProperty("java.version", "25");
+        String javafxVersion = System.getProperty("javafx.runtime.version", "25");
+        aboutRuntimeValueLabel.setText("Java " + javaVersion + " / JavaFX " + javafxVersion);
+
+        speechRateSlider.valueProperty().addListener((obs, oldVal, newVal) -> updateSpeechRateLabel());
+        localizationManager.localeProperty().addListener((obs, oldVal, newVal) -> {
+            updateSpeechRateLabel();
+            refreshComboBoxDisplays();
+        });
+        updateSpeechRateLabel();
+    }
+
+    @FXML
+    private void handleSaveTts() {
+        double roundedRate = Math.round(speechRateSlider.getValue() * 10.0) / 10.0;
+        TtsPreferences prefs = new TtsPreferences(
+                ttsEnabledCheckBox.isSelected(),
+                ttsProviderComboBox.getValue(),
+                roundedRate,
+                jaVoiceField.getText(),
+                enVoiceField.getText()
+        );
+        backgroundTaskExecutor.runAsyncVoid(
+                () -> appSettingsService.saveTtsPreferences(prefs),
+                () -> showStatus(localizationManager.get("settings.saved"), false),
+                error -> showStatus(extractErrorMessage(error), true)
+        );
+    }
+
+    @FXML
+    private void handleSaveSrsDefaults() {
+        try {
+            DeckSettings candidate = new DeckSettings(
+                    null,
+                    Double.parseDouble(retentionField.getText().trim()),
+                    Integer.parseInt(maxIntervalField.getText().trim()),
+                    Integer.parseInt(newCardsField.getText().trim()),
+                    Integer.parseInt(maxReviewsField.getText().trim()),
+                    learningStepsField.getText().trim(),
+                    relearningStepsField.getText().trim(),
+                    fuzzingCheckBox.isSelected()
+            );
+            SRS_VALIDATOR.validate(candidate);
+
+            backgroundTaskExecutor.runAsyncVoid(() -> {
+                appSettingsService.setRawSetting(KEY_SRS_RETENTION, Double.toString(candidate.desiredRetention()));
+                appSettingsService.setRawSetting(KEY_SRS_MAX_INTERVAL, Integer.toString(candidate.maximumInterval()));
+                appSettingsService.setRawSetting(KEY_SRS_NEW_CARDS, Integer.toString(candidate.newCardsPerDay()));
+                appSettingsService.setRawSetting(KEY_SRS_MAX_REVIEWS,
+                        Integer.toString(candidate.maximumReviewsPerDay()));
+                appSettingsService.setRawSetting(KEY_SRS_LEARNING_STEPS, candidate.learningSteps());
+                appSettingsService.setRawSetting(KEY_SRS_RELEARNING_STEPS, candidate.relearningSteps());
+                appSettingsService.setRawSetting(KEY_SRS_ENABLE_FUZZING, Boolean.toString(candidate.enableFuzzing()));
+            }, () -> showStatus(localizationManager.get("settings.saved"), false),
+                    error -> showStatus(extractErrorMessage(error), true));
+        } catch (NumberFormatException exception) {
+            showStatus(localizationManager.get("deckSettings.validation.invalidNumber"), true);
+        } catch (DomainValidationException exception) {
+            showStatus(String.join("; ", exception.getErrors()), true);
+        }
+    }
+
+    @FXML
+    private void handleBackupEntryPoint() {
+        DialogHelper.showInfo(
+                getWindow(),
+                localizationManager.get("settings.backup.action.backup"),
+                localizationManager.get("settings.backup.phaseNotice"),
+                themeManager
+        );
+    }
+
+    @FXML
+    private void handleRestoreEntryPoint() {
+        DialogHelper.showInfo(
+                getWindow(),
+                localizationManager.get("settings.backup.action.restore"),
+                localizationManager.get("settings.backup.phaseNotice"),
+                themeManager
+        );
+    }
+
+    @Override
+    public void refresh() {
+        backgroundTaskExecutor.runAsync(() -> new LoadedSettings(
+                appSettingsService.getInterfaceLanguage(),
+                appSettingsService.getTheme(),
+                appSettingsService.getTtsPreferences(),
+                appSettingsService.getRawSetting(KEY_SRS_RETENTION)
+                        .orElse(Double.toString(DeckSettings.DEFAULT_DESIRED_RETENTION)),
+                appSettingsService.getRawSetting(KEY_SRS_MAX_INTERVAL)
+                        .orElse(Integer.toString(DeckSettings.DEFAULT_MAXIMUM_INTERVAL)),
+                appSettingsService.getRawSetting(KEY_SRS_NEW_CARDS)
+                        .orElse(Integer.toString(DeckSettings.DEFAULT_NEW_CARDS_PER_DAY)),
+                appSettingsService.getRawSetting(KEY_SRS_MAX_REVIEWS)
+                        .orElse(Integer.toString(DeckSettings.DEFAULT_MAXIMUM_REVIEWS_PER_DAY)),
+                appSettingsService.getRawSetting(KEY_SRS_LEARNING_STEPS)
+                        .orElse(DeckSettings.DEFAULT_LEARNING_STEPS),
+                appSettingsService.getRawSetting(KEY_SRS_RELEARNING_STEPS)
+                        .orElse(DeckSettings.DEFAULT_RELEARNING_STEPS),
+                Boolean.parseBoolean(appSettingsService.getRawSetting(KEY_SRS_ENABLE_FUZZING)
+                        .orElse(Boolean.toString(DeckSettings.DEFAULT_ENABLE_FUZZING)))
+        ), this::applyLoadedSettings, error -> showStatus(extractErrorMessage(error), true));
+    }
+
+    private void applyLoadedSettings(LoadedSettings loaded) {
+        loadingControls = true;
+        try {
+            languageComboBox.setValue(loaded.language());
+            themeComboBox.setValue(loaded.theme());
+
+            ttsEnabledCheckBox.setSelected(loaded.tts().enabled());
+            ttsProviderComboBox.setValue(loaded.tts().provider());
+            speechRateSlider.setValue(loaded.tts().speechRate());
+            jaVoiceField.setText(loaded.tts().japaneseVoice());
+            enVoiceField.setText(loaded.tts().englishVoice());
+
+            retentionField.setText(loaded.srsRetention());
+            maxIntervalField.setText(loaded.srsMaxInterval());
+            newCardsField.setText(loaded.srsNewCards());
+            maxReviewsField.setText(loaded.srsMaxReviews());
+            learningStepsField.setText(loaded.srsLearningSteps());
+            relearningStepsField.setText(loaded.srsRelearningSteps());
+            fuzzingCheckBox.setSelected(loaded.srsEnableFuzzing());
+            updateSpeechRateLabel();
+        } finally {
+            loadingControls = false;
+        }
+    }
+
+    private void bindLocalizedLabels() {
+        localizationManager.bind(titleLabel, "settings.title");
+        localizationManager.bind(subtitleLabel, "settings.subtitle");
+
+        localizationManager.bind(appearanceSectionLabel, "settings.section.appearance");
+        localizationManager.bind(languageFieldLabel, "settings.field.language");
+        localizationManager.bind(themeFieldLabel, "settings.field.theme");
+
+        localizationManager.bind(ttsSectionLabel, "settings.section.tts");
+        localizationManager.bind(ttsEnabledCheckBox, "settings.field.ttsEnabled");
+        localizationManager.bind(ttsProviderFieldLabel, "settings.field.ttsProvider");
+        localizationManager.bind(jaVoiceFieldLabel, "settings.field.jaVoice");
+        localizationManager.bind(enVoiceFieldLabel, "settings.field.enVoice");
+        localizationManager.bind(saveTtsButton, "common.save");
+
+        localizationManager.bind(srsSectionLabel, "settings.section.srs");
+        localizationManager.bind(srsNoteLabel, "settings.srs.note");
+        localizationManager.bind(retentionFieldLabel, "deckSettings.desiredRetention");
+        localizationManager.bind(maxIntervalFieldLabel, "deckSettings.maximumInterval");
+        localizationManager.bind(newCardsFieldLabel, "deckSettings.newCardsPerDay");
+        localizationManager.bind(maxReviewsFieldLabel, "deckSettings.maximumReviewsPerDay");
+        localizationManager.bind(learningStepsFieldLabel, "deckSettings.learningSteps");
+        localizationManager.bind(relearningStepsFieldLabel, "deckSettings.relearningSteps");
+        localizationManager.bind(fuzzingCheckBox, "deckSettings.enableFuzzing");
+        localizationManager.bind(saveSrsButton, "common.save");
+
+        localizationManager.bind(backupSectionLabel, "settings.section.backup");
+        localizationManager.bind(databasePathFieldLabel, "settings.backup.databasePath");
+        localizationManager.bind(backupButton, "settings.backup.action.backup");
+        localizationManager.bind(restoreButton, "settings.backup.action.restore");
+        localizationManager.bind(backupNoticeLabel, "settings.backup.phaseNotice");
+
+        localizationManager.bind(aboutSectionLabel, "settings.section.about");
+        localizationManager.bind(aboutNameLabel, "settings.about.name");
+        localizationManager.bind(aboutVersionLabel, "settings.about.version");
+        localizationManager.bind(aboutAuthorLabel, "settings.about.author");
+        localizationManager.bind(aboutLicenseLabel, "settings.about.license");
+        localizationManager.bind(aboutLicenseValueLabel, "settings.about.licenseValue");
+        localizationManager.bind(aboutRuntimeLabel, "settings.about.runtime");
+    }
+
+    private void configureSelectors() {
+        languageComboBox.getItems().setAll("vi", "en");
+        languageComboBox.setConverter(new StringConverter<>() {
+            @Override
+            public String toString(String code) {
+                return code == null ? "" : localizationManager.get("lang." + code);
+            }
+
+            @Override
+            public String fromString(String string) {
+                return null;
+            }
+        });
+        languageComboBox.valueProperty().addListener((obs, oldVal, newVal) -> {
+            if (!loadingControls && newVal != null) {
+                localizationManager.setLanguage(newVal);
+                showStatus(localizationManager.get("settings.saved"), false);
+            }
+        });
+
+        themeComboBox.getItems().setAll(AppSettingsService.THEME_DARK, AppSettingsService.THEME_LIGHT);
+        themeComboBox.setConverter(new StringConverter<>() {
+            @Override
+            public String toString(String code) {
+                return code == null ? "" : localizationManager.get("theme." + code);
+            }
+
+            @Override
+            public String fromString(String string) {
+                return null;
+            }
+        });
+        themeComboBox.valueProperty().addListener((obs, oldVal, newVal) -> {
+            if (!loadingControls && newVal != null) {
+                themeManager.setTheme(newVal);
+                showStatus(localizationManager.get("settings.saved"), false);
+            }
+        });
+
+        ttsProviderComboBox.getItems().setAll("system", "bundled", "unsupported");
+        ttsProviderComboBox.setConverter(new StringConverter<>() {
+            @Override
+            public String toString(String provider) {
+                return provider == null ? "" : localizationManager.get("settings.ttsProvider." + provider);
+            }
+
+            @Override
+            public String fromString(String string) {
+                return null;
+            }
+        });
+    }
+
+    private void refreshComboBoxDisplays() {
+        loadingControls = true;
+        try {
+            String lang = languageComboBox.getValue();
+            languageComboBox.setValue(null);
+            languageComboBox.setValue(lang);
+
+            String theme = themeComboBox.getValue();
+            themeComboBox.setValue(null);
+            themeComboBox.setValue(theme);
+
+            String provider = ttsProviderComboBox.getValue();
+            ttsProviderComboBox.setValue(null);
+            ttsProviderComboBox.setValue(provider);
+        } finally {
+            loadingControls = false;
+        }
+    }
+
+    private void updateSpeechRateLabel() {
+        String formattedRate = String.format(Locale.ROOT, "%.1f", speechRateSlider.getValue());
+        speechRateFieldLabel.setText(localizationManager.get("settings.field.speechRate", formattedRate));
+    }
+
+    private void showStatus(String message, boolean error) {
+        statusMessageLabel.setText(message);
+        statusMessageLabel.getStyleClass().removeAll("status-success", "status-error");
+        statusMessageLabel.getStyleClass().add(error ? "status-error" : "status-success");
+        statusMessageLabel.setVisible(true);
+        statusMessageLabel.setManaged(true);
+    }
+
+    private String extractErrorMessage(Throwable error) {
+        return error == null || error.getMessage() == null
+                ? localizationManager.get("common.error")
+                : error.getMessage();
+    }
+
+    private Window getWindow() {
+        return titleLabel != null && titleLabel.getScene() != null ? titleLabel.getScene().getWindow() : null;
+    }
+
+    private record LoadedSettings(
+            String language,
+            String theme,
+            TtsPreferences tts,
+            String srsRetention,
+            String srsMaxInterval,
+            String srsNewCards,
+            String srsMaxReviews,
+            String srsLearningSteps,
+            String srsRelearningSteps,
+            boolean srsEnableFuzzing
+    ) {
+    }
+}

@@ -279,7 +279,13 @@ public class MainShellController {
                     container.getBackgroundTaskExecutor()
             ));
             case IMPORT_EXPORT -> loadPlaceholder("placeholder.importExport.title", "placeholder.importExport.subtitle");
-            case SETTINGS -> loadPlaceholder("settings.title", "settings.subtitle");
+            case SETTINGS -> loadFxml("/fxml/settings-view.fxml", new SettingsController(
+                    container.getAppSettingsService(),
+                    localizationManager,
+                    container.getThemeManager(),
+                    container.getBackgroundTaskExecutor(),
+                    container.getConnectionManager().getDatabasePath()
+            ));
         };
     }
 

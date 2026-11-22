@@ -22,7 +22,9 @@
                     <Label fx:id="brandLabel" styleClass="sidebar-brand"/>
                     <Label fx:id="taglineLabel" styleClass="sidebar-tagline" wrapText="true"/>
                 </VBox>
-                <Button fx:id="toggleSidebarButton" styleClass="sidebar-toggle-button" onAction="#handleToggleSidebar"/>
+                <Button fx:id="toggleSidebarButton" styleClass="sidebar-toggle-button"
+                        minWidth="32" prefWidth="32" minHeight="30" prefHeight="30"
+                        onAction="#handleToggleSidebar"/>
             </HBox>
 
             <Separator/>

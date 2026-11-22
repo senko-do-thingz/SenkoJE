@@ -62,7 +62,11 @@
     -fx-border-color: -senko-border;
     -fx-border-radius: 6;
     -fx-background-radius: 6;
-    -fx-padding: 6 10 6 10;
+    -fx-padding: 4 0 4 0;
+    -fx-min-width: 32;
+    -fx-pref-width: 32;
+    -fx-alignment: CENTER;
+    -fx-font-weight: bold;
     -fx-cursor: hand;
 }
 
@@ -293,12 +297,29 @@
     -fx-background-radius: 8;
 }
 
-.table-view .column-header-background {
+.table-view .column-header-background,
+.table-view .column-header,
+.table-view .filler {
     -fx-background-color: -senko-bg-elevated;
 }
 
-.table-row-cell:selected {
+.table-view .column-header .label,
+.table-view .column-header-background .label {
+    -fx-text-fill: #1f2328;
+    -fx-font-weight: bold;
+}
+
+.table-row-cell:filled:selected,
+.table-row-cell:filled:selected:focused {
     -fx-background-color: -senko-bg-selected;
+}
+
+.table-row-cell:filled:selected .table-cell,
+.table-row-cell:filled:selected:focused .table-cell,
+.table-row-cell:filled:selected .text,
+.table-row-cell:filled:selected:focused .text {
+    -fx-text-fill: #0f172a;
+    -fx-fill: #0f172a;
 }
 
 .scroll-pane {

@@ -4,6 +4,9 @@
     -fx-background: #121417;
     -fx-control-inner-background: #1e2228;
     -fx-text-fill: #e6edf3;
+    -fx-selection-bar: #26364d;
+    -fx-selection-bar-non-focused: #223044;
+    -fx-selection-bar-text: #f0f6fc;
     -fx-font-family: "Inter", "Noto Sans JP", "Segoe UI", "Hiragino Sans", "Yu Gothic UI", "Meiryo", "Noto Sans", sans-serif;
     -fx-font-size: 13px;
 
@@ -62,7 +65,11 @@
     -fx-border-color: -senko-border;
     -fx-border-radius: 6;
     -fx-background-radius: 6;
-    -fx-padding: 6 10 6 10;
+    -fx-padding: 4 0 4 0;
+    -fx-min-width: 32;
+    -fx-pref-width: 32;
+    -fx-alignment: CENTER;
+    -fx-font-weight: bold;
     -fx-cursor: hand;
 }
 
@@ -286,6 +293,10 @@
     -fx-background-radius: 6;
 }
 
+.text-field, .text-area {
+    -fx-prompt-text-fill: #8b949e;
+}
+
 .table-view {
     -fx-background-color: -senko-bg-surface;
     -fx-border-color: -senko-border;
@@ -293,12 +304,45 @@
     -fx-background-radius: 8;
 }
 
-.table-view .column-header-background {
+.table-view .column-header-background,
+.table-view .column-header,
+.table-view .filler {
     -fx-background-color: -senko-bg-elevated;
 }
 
-.table-row-cell:selected {
+.table-view .column-header .label,
+.table-view .column-header-background .label {
+    -fx-text-fill: #f0f6fc;
+    -fx-font-weight: bold;
+}
+
+.table-row-cell {
+    -fx-background-color: -senko-bg-surface;
+    -fx-text-fill: #e6edf3;
+}
+
+.table-row-cell:odd {
+    -fx-background-color: #1b2028;
+}
+
+.table-row-cell .table-cell {
+    -fx-text-fill: #e6edf3;
+}
+
+.table-row-cell:filled:selected,
+.table-row-cell:filled:selected:focused,
+.table-row-cell:filled:selected:hover {
     -fx-background-color: -senko-bg-selected;
+    -fx-background: -senko-bg-selected;
+    -fx-table-cell-border-color: transparent;
+}
+
+.table-row-cell:filled:selected .table-cell,
+.table-row-cell:filled:selected:focused .table-cell,
+.table-row-cell:filled:selected .text,
+.table-row-cell:filled:selected:focused .text {
+    -fx-text-fill: #f0f6fc;
+    -fx-fill: #f0f6fc;
 }
 
 .scroll-pane {

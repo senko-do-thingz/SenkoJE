@@ -34,6 +34,14 @@ public interface StudySessionRepository {
     List<StudySession> findByDeckId(long deckId);
 
     /**
+     * Lấy danh sách các phiên học gần nhất trên toàn bộ hệ thống theo giới hạn số lượng.
+     *
+     * @param limit số phiên học tối đa cần lấy
+     * @return danh sách phiên học theo thứ tự thời gian giảm dần
+     */
+    List<StudySession> findRecent(int limit);
+
+    /**
      * Cập nhật tiến độ hoặc thời điểm hoàn thành của một phiên học đã tồn tại.
      *
      * @param session thông tin phiên học cần cập nhật

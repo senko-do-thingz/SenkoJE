@@ -33,6 +33,13 @@ public interface AppSettingRepository {
     AppSetting save(AppSetting setting);
 
     /**
+     * Lưu nguyên tử nhiều cặp khóa và giá trị cấu hình trong cùng một giao dịch cơ sở dữ liệu.
+     *
+     * @param settings danh sách cấu hình cần lưu
+     */
+    void saveAll(List<AppSetting> settings);
+
+    /**
      * Xóa một khóa cấu hình khỏi cơ sở dữ liệu.
      *
      * @param settingKey khóa cấu hình cần xóa

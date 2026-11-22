@@ -72,6 +72,16 @@ public class SqliteAppSettingRepository implements AppSettingRepository {
     @Override
     public AppSetting save(AppSetting setting) {
         Objects.requireNonNull(setting, "setting must not be null");
+        saveAll(List.of(setting));
+        return setting;
+    }
+
+    @Override
+    public void saveAll(List<AppSetting> settings) {
+        Objects.requireNonNull(settings, "settings must not be null");
+        if (settings.isEmpty()) {
+            return;
+        }
         String sql = """
                 INSERT INTO app_settings (setting_key, setting_value, updated_at)
                 VALUES (?, ?, ?)
@@ -79,14 +89,17 @@ public class SqliteAppSettingRepository implements AppSettingRepository {
                     setting_value = excluded.setting_value,
                     updated_at = excluded.updated_at
                 """;
-        return transactionExecutor.executeInTransaction("save app setting", connection -> {
+        transactionExecutor.executeInTransaction("save app settings", connection -> {
             try (PreparedStatement ps = connection.prepareStatement(sql)) {
-                ps.setString(1, setting.settingKey());
-                ps.setString(2, setting.settingValue());
-                ps.setString(3, setting.updatedAt().toString());
-                ps.executeUpdate();
+                for (AppSetting setting : settings) {
+                    Objects.requireNonNull(setting, "setting element must not be null");
+                    ps.setString(1, setting.settingKey());
+                    ps.setString(2, setting.settingValue());
+                    ps.setString(3, setting.updatedAt().toString());
+                    ps.executeUpdate();
+                }
             }
-            return setting;
+            return null;
         });
     }
 

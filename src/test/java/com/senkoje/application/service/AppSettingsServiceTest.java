@@ -7,6 +7,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.senkoje.application.dto.TtsPreferences;
 import com.senkoje.application.dto.WindowPreferences;
+import com.senkoje.domain.model.AppSetting;
+import com.senkoje.domain.repository.AppSettingRepository;
 import com.senkoje.domain.service.DomainValidationException;
 import com.senkoje.persistence.migration.DatabaseMigrator;
 import com.senkoje.persistence.repository.SqliteAppSettingRepository;
@@ -16,6 +18,10 @@ import java.sql.SQLException;
 import java.time.Clock;
 import java.time.Instant;
 import java.time.ZoneOffset;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.concurrent.atomic.AtomicInteger;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -90,5 +96,53 @@ class AppSettingsServiceTest {
         assertThrows(DomainValidationException.class, () -> settingsService.saveWindowPreferences(
                 new WindowPreferences(320, 240, false)
         ));
+    }
+
+    @Test
+    void shouldPersistTtsAndWindowPreferencesViaSingleSaveAllBatchCall() {
+        AtomicInteger saveAllCalls = new AtomicInteger(0);
+        AtomicInteger singleSaveCalls = new AtomicInteger(0);
+        List<List<AppSetting>> recordedBatches = new ArrayList<>();
+
+        AppSettingRepository recordingRepository = new AppSettingRepository() {
+            @Override
+            public Optional<AppSetting> findByKey(String settingKey) {
+                return Optional.empty();
+            }
+
+            @Override
+            public List<AppSetting> findAll() {
+                return List.of();
+            }
+
+            @Override
+            public AppSetting save(AppSetting setting) {
+                singleSaveCalls.incrementAndGet();
+                return setting;
+            }
+
+            @Override
+            public void saveAll(List<AppSetting> settings) {
+                saveAllCalls.incrementAndGet();
+                recordedBatches.add(List.copyOf(settings));
+            }
+
+            @Override
+            public boolean deleteByKey(String settingKey) {
+                return false;
+            }
+        };
+
+        Clock fixedClock = Clock.fixed(Instant.parse("2026-05-03T12:00:00Z"), ZoneOffset.UTC);
+        AppSettingsService serviceWithSpy = new AppSettingsService(recordingRepository, fixedClock);
+
+        serviceWithSpy.saveTtsPreferences(new TtsPreferences(true, "system", 1.1, "Haruka", "Zira"));
+        serviceWithSpy.saveWindowPreferences(new WindowPreferences(1366, 768, false));
+
+        // Xác minh mỗi thao tác lưu nhóm cấu hình chỉ gọi đúng một lần saveAll nguyên tử
+        assertEquals(0, singleSaveCalls.get());
+        assertEquals(2, saveAllCalls.get());
+        assertEquals(5, recordedBatches.get(0).size());
+        assertEquals(3, recordedBatches.get(1).size());
     }
 }

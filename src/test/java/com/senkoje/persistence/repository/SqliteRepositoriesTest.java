@@ -209,4 +209,86 @@ class SqliteRepositoriesTest {
         ));
         assertFalse(cardRepository.findByDeckId(validDeck.id()).iterator().hasNext());
     }
+
+    @Test
+    void shouldEscapeLikeWildcardsInDeckAndCardSearchQueries() {
+        Instant now = Instant.parse("2026-04-02T00:00:00Z");
+        Deck literalPercentDeck = deckRepository.createWithSettings(
+                new Deck(null, "100% Essential Kanji", TargetLanguage.JA, DefinitionLanguage.VI,
+                        ProficiencyLevel.JLPT_N5, "Score 100%", now, now),
+                DeckSettings.defaults(null)
+        );
+        Deck literalUnderscoreDeck = deckRepository.createWithSettings(
+                new Deck(null, "N5_core_words", TargetLanguage.JA, DefinitionLanguage.VI,
+                        ProficiencyLevel.JLPT_N5, "Underscore deck", now, now),
+                DeckSettings.defaults(null)
+        );
+        deckRepository.createWithSettings(
+                new Deck(null, "N5XcoreXwords", TargetLanguage.JA, DefinitionLanguage.VI,
+                        ProficiencyLevel.JLPT_N5, "Plain deck without wildcards", now, now),
+                DeckSettings.defaults(null)
+        );
+
+        // Tìm kiếm với '%' và '_' chỉ được khớp ký tự nghĩa đen chứ không mở rộng thành ký tự đại diện
+        List<Deck> percentDeckMatches = deckRepository.search("100%", null, null);
+        assertEquals(1, percentDeckMatches.size());
+        assertEquals(literalPercentDeck.id(), percentDeckMatches.getFirst().id());
+
+        List<Deck> underscoreDeckMatches = deckRepository.search("n5_core", null, null);
+        assertEquals(1, underscoreDeckMatches.size());
+        assertEquals(literalUnderscoreDeck.id(), underscoreDeckMatches.getFirst().id());
+
+        Card percentCard = cardRepository.createWithDetails(
+                new Card(null, literalPercentDeck.id(), CardType.PHRASE, "50% off", null, "giảm 50%",
+                        "phrase", ProficiencyLevel.CEFR_A2, null, "Note with \\ backslash", false, now, now),
+                List.of(),
+                List.of(),
+                ReviewState.initialNew(null, now)
+        );
+        Card underscoreCard = cardRepository.createWithDetails(
+                new Card(null, literalPercentDeck.id(), CardType.VOCABULARY, "snake_case", null, "kiểu gạch dưới",
+                        "noun", ProficiencyLevel.CEFR_B1, null, null, false, now, now),
+                List.of(),
+                List.of(),
+                ReviewState.initialNew(null, now)
+        );
+        cardRepository.createWithDetails(
+                new Card(null, literalPercentDeck.id(), CardType.VOCABULARY, "snakeXcase", null, "không gạch dưới",
+                        "noun", ProficiencyLevel.CEFR_B1, null, null, false, now, now),
+                List.of(),
+                List.of(),
+                ReviewState.initialNew(null, now)
+        );
+
+        List<Card> percentCardMatches = cardRepository.search(literalPercentDeck.id(), "50%", null, null);
+        assertEquals(1, percentCardMatches.size());
+        assertEquals(percentCard.id(), percentCardMatches.getFirst().id());
+
+        List<Card> underscoreCardMatches = cardRepository.search(literalPercentDeck.id(), "snake_case", null, null);
+        assertEquals(1, underscoreCardMatches.size());
+        assertEquals(underscoreCard.id(), underscoreCardMatches.getFirst().id());
+
+        List<Card> backslashCardMatches = cardRepository.search(literalPercentDeck.id(), "\\", null, null);
+        assertEquals(1, backslashCardMatches.size());
+        assertEquals(percentCard.id(), backslashCardMatches.getFirst().id());
+    }
+
+    @Test
+    void shouldSaveMultipleAppSettingsAtomicallyAndRollbackOnFailure() {
+        Instant now = Instant.parse("2026-04-03T00:00:00Z");
+        appSettingRepository.saveAll(List.of(
+                new AppSetting("window.width", "1280", now),
+                new AppSetting("window.height", "720", now)
+        ));
+        assertEquals("1280", appSettingRepository.findByKey("window.width").orElseThrow().settingValue());
+        assertEquals("720", appSettingRepository.findByKey("window.height").orElseThrow().settingValue());
+
+        // Bản ghi thứ hai vi phạm ràng buộc NOT NULL phải hoàn tác cả bản ghi đầu tiên trong cùng giao dịch
+        assertThrows(PersistenceException.class, () -> appSettingRepository.saveAll(List.of(
+                new AppSetting("window.width", "1600", now.plusSeconds(10)),
+                new AppSetting("window.height", null, now.plusSeconds(10))
+        )));
+        assertEquals("1280", appSettingRepository.findByKey("window.width").orElseThrow().settingValue());
+        assertEquals("720", appSettingRepository.findByKey("window.height").orElseThrow().settingValue());
+    }
 }

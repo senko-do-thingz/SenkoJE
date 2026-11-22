@@ -57,6 +57,7 @@ ehthumbs.db
 Desktop.ini
 $RECYCLE.BIN/
 
-# Local-only project rules and reports
+# Local-only project rules, tasks and reports
 CODING_RULES.md
 reports/
+tasks/

@@ -170,13 +170,16 @@ public class AppSettingsService {
         }
 
         Instant now = clock.instant();
-        appSettingRepository.save(new AppSetting(KEY_TTS_ENABLED, Boolean.toString(preferences.enabled()), now));
-        appSettingRepository.save(new AppSetting(KEY_TTS_PROVIDER, preferences.provider().trim(), now));
-        appSettingRepository.save(new AppSetting(KEY_TTS_SPEECH_RATE, Double.toString(preferences.speechRate()), now));
-        appSettingRepository.save(new AppSetting(KEY_TTS_JA_VOICE,
-                preferences.japaneseVoice() == null ? "" : preferences.japaneseVoice().trim(), now));
-        appSettingRepository.save(new AppSetting(KEY_TTS_EN_VOICE,
-                preferences.englishVoice() == null ? "" : preferences.englishVoice().trim(), now));
+        // Lưu toàn bộ khóa TTS trong một giao dịch nguyên tử để tránh trạng thái cấu hình dở dang
+        appSettingRepository.saveAll(List.of(
+                new AppSetting(KEY_TTS_ENABLED, Boolean.toString(preferences.enabled()), now),
+                new AppSetting(KEY_TTS_PROVIDER, preferences.provider().trim(), now),
+                new AppSetting(KEY_TTS_SPEECH_RATE, Double.toString(preferences.speechRate()), now),
+                new AppSetting(KEY_TTS_JA_VOICE,
+                        preferences.japaneseVoice() == null ? "" : preferences.japaneseVoice().trim(), now),
+                new AppSetting(KEY_TTS_EN_VOICE,
+                        preferences.englishVoice() == null ? "" : preferences.englishVoice().trim(), now)
+        ));
     }
 
     /**
@@ -205,9 +208,12 @@ public class AppSettingsService {
                     "Window dimensions must be at least " + MIN_WINDOW_WIDTH + "x" + MIN_WINDOW_HEIGHT));
         }
         Instant now = clock.instant();
-        appSettingRepository.save(new AppSetting(KEY_WINDOW_WIDTH, Integer.toString(preferences.width()), now));
-        appSettingRepository.save(new AppSetting(KEY_WINDOW_HEIGHT, Integer.toString(preferences.height()), now));
-        appSettingRepository.save(new AppSetting(KEY_WINDOW_MAXIMIZED, Boolean.toString(preferences.maximized()), now));
+        // Lưu đồng thời kích thước và trạng thái cửa sổ trong một giao dịch nguyên tử
+        appSettingRepository.saveAll(List.of(
+                new AppSetting(KEY_WINDOW_WIDTH, Integer.toString(preferences.width()), now),
+                new AppSetting(KEY_WINDOW_HEIGHT, Integer.toString(preferences.height()), now),
+                new AppSetting(KEY_WINDOW_MAXIMIZED, Boolean.toString(preferences.maximized()), now)
+        ));
     }
 
     /**

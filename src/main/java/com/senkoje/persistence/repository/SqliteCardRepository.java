@@ -136,10 +136,10 @@ public class SqliteCardRepository implements CardRepository {
         }
         if (query != null && !query.isBlank()) {
             sql.append("""
-                     AND (LOWER(term) LIKE ? OR LOWER(COALESCE(reading, '')) LIKE ?
-                          OR LOWER(meaning) LIKE ? OR LOWER(COALESCE(notes, '')) LIKE ?)
+                     AND (LOWER(term) LIKE ? ESCAPE '\\' OR LOWER(COALESCE(reading, '')) LIKE ? ESCAPE '\\'
+                          OR LOWER(meaning) LIKE ? ESCAPE '\\' OR LOWER(COALESCE(notes, '')) LIKE ? ESCAPE '\\')
                     """);
-            String pattern = "%" + query.trim().toLowerCase(Locale.ROOT) + "%";
+            String pattern = "%" + escapeLikePattern(query.trim().toLowerCase(Locale.ROOT)) + "%";
             params.add(pattern);
             params.add(pattern);
             params.add(pattern);
@@ -470,6 +470,14 @@ public class SqliteCardRepository implements CardRepository {
                 Instant.parse(rs.getString("created_at")),
                 Instant.parse(rs.getString("updated_at"))
         );
+    }
+
+    private String escapeLikePattern(String rawQuery) {
+        // Thoát các ký tự đại diện LIKE của SQLite để khớp chính xác ký tự nghĩa đen
+        return rawQuery
+                .replace("\\", "\\\\")
+                .replace("%", "\\%")
+                .replace("_", "\\_");
     }
 
     private void setNullableString(PreparedStatement ps, int index, String value) throws SQLException {

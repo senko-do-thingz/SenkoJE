@@ -119,8 +119,8 @@ public class SqliteDeckRepository implements DeckRepository {
         List<Object> params = new ArrayList<>();
 
         if (query != null && !query.isBlank()) {
-            sql.append(" AND (LOWER(title) LIKE ? OR LOWER(COALESCE(description, '')) LIKE ?)");
-            String pattern = "%" + query.trim().toLowerCase(Locale.ROOT) + "%";
+            sql.append(" AND (LOWER(title) LIKE ? ESCAPE '\\' OR LOWER(COALESCE(description, '')) LIKE ? ESCAPE '\\')");
+            String pattern = "%" + escapeLikePattern(query.trim().toLowerCase(Locale.ROOT)) + "%";
             params.add(pattern);
             params.add(pattern);
         }
@@ -477,6 +477,14 @@ public class SqliteDeckRepository implements DeckRepository {
                 rs.getString("relearning_steps"),
                 rs.getInt("enable_fuzzing") == 1
         );
+    }
+
+    private String escapeLikePattern(String rawQuery) {
+        // Thoát các ký tự đại diện LIKE của SQLite để khớp chính xác ký tự nghĩa đen
+        return rawQuery
+                .replace("\\", "\\\\")
+                .replace("%", "\\%")
+                .replace("_", "\\_");
     }
 
     private void setNullableString(PreparedStatement ps, int index, String value) throws SQLException {

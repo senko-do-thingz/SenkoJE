@@ -271,7 +271,13 @@ public class MainShellController {
             ));
             case STUDY -> loadPlaceholder("placeholder.study.title", "placeholder.study.subtitle");
             case READING_SANDBOX -> loadPlaceholder("placeholder.reading.title", "placeholder.reading.subtitle");
-            case CARD_BROWSER -> loadPlaceholder("cards.title", "cards.subtitle");
+            case CARD_BROWSER -> loadFxml("/fxml/card-browser-view.fxml", new CardBrowserController(
+                    container.getDeckService(),
+                    container.getCardService(),
+                    localizationManager,
+                    container.getThemeManager(),
+                    container.getBackgroundTaskExecutor()
+            ));
             case IMPORT_EXPORT -> loadPlaceholder("placeholder.importExport.title", "placeholder.importExport.subtitle");
             case SETTINGS -> loadPlaceholder("settings.title", "settings.subtitle");
         };

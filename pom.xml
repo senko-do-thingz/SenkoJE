@@ -31,6 +31,8 @@
         <maven.compiler.plugin.version>3.14.0</maven.compiler.plugin.version>
         <maven.surefire.plugin.version>3.5.3</maven.surefire.plugin.version>
         <javafx.maven.plugin.version>0.0.8</javafx.maven.plugin.version>
+        <maven.dependency.plugin.version>3.8.1</maven.dependency.plugin.version>
+        <exec.maven.plugin.version>3.5.0</exec.maven.plugin.version>
     </properties>
 
     <dependencies>
@@ -134,8 +136,73 @@
                 <version>${javafx.maven.plugin.version}</version>
                 <configuration>
                     <mainClass>com.senkoje.app.SenkoJeApplication</mainClass>
+                    <options>
+                        <option>--enable-native-access=javafx.graphics</option>
+                    </options>
                 </configuration>
             </plugin>
         </plugins>
     </build>
+
+    <profiles>
+        <!-- Hồ sơ tạo runtime rút gọn bằng jlink gồm các mô-đun Java 25 và JavaFX 25 cần thiết -->
+        <profile>
+            <id>jlink</id>
+            <build>
+                <plugins>
+                    <!-- Sao chép các tệp JAR mô-đun JavaFX theo hệ điều hành hiện tại -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-dependency-plugin</artifactId>
+                        <version>${maven.dependency.plugin.version}</version>
+                        <executions>
+                            <execution>
+                                <id>copy-javafx-modules</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>copy-dependencies</goal>
+                                </goals>
+                                <configuration>
+                                    <includeGroupIds>org.openjfx</includeGroupIds>
+                                    <includeClassifiers>win,linux,linux-aarch64,mac,mac-aarch64</includeClassifiers>
+                                    <outputDirectory>${project.build.directory}/javafx-mods</outputDirectory>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                    <!-- Tạo ảnh runtime rút gọn bằng công cụ jlink của JDK 25 -->
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <version>${exec.maven.plugin.version}</version>
+                        <executions>
+                            <execution>
+                                <id>build-jlink-runtime</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+                                <configuration>
+                                    <executable>${java.home}/bin/jlink</executable>
+                                    <arguments>
+                                        <argument>--module-path</argument>
+                                        <argument>${java.home}/jmods${path.separator}${project.build.directory}/javafx-mods</argument>
+                                        <argument>--add-modules</argument>
+                                        <argument>java.base,java.desktop,java.logging,java.naming,java.sql,java.xml,jdk.unsupported,javafx.controls,javafx.fxml,javafx.media</argument>
+                                        <argument>--strip-debug</argument>
+                                        <argument>--no-header-files</argument>
+                                        <argument>--no-man-pages</argument>
+                                        <argument>--compress=zip-6</argument>
+                                        <argument>--output</argument>
+                                        <argument>${project.build.directory}/senkoje-runtime</argument>
+                                    </arguments>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>

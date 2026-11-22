@@ -43,7 +43,20 @@ jobs:
         shell: bash
         run: |
           if [ -f "pom.xml" ]; then
-            mvn -B clean verify
+            mvn -B clean verify -Pjlink
           else
             echo "No pom.xml found yet. Skipping Maven build step."
+          fi
+
+      - name: Verify jlink trimmed runtime modules
+        shell: bash
+        run: |
+          if [ -d "target/senkoje-runtime/bin" ]; then
+            target/senkoje-runtime/bin/java --list-modules | grep -q "javafx.controls"
+            target/senkoje-runtime/bin/java --list-modules | grep -q "javafx.fxml"
+            target/senkoje-runtime/bin/java --list-modules | grep -q "javafx.media"
+            target/senkoje-runtime/bin/java --list-modules | grep -q "java.sql"
+          else
+            echo "Error: jlink trimmed runtime was not generated."
+            exit 1
           fi

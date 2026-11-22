@@ -260,7 +260,15 @@ public class MainShellController {
                     container.getClock().getZone(),
                     () -> navigateTo(NavigationSection.DECKS)
             ));
-            case DECKS -> loadPlaceholder("decks.title", "decks.subtitle");
+            case DECKS -> loadFxml("/fxml/deck-library-view.fxml", new DeckLibraryController(
+                    container.getDeckService(),
+                    container.getCardService(),
+                    container.getReviewStateRepository(),
+                    localizationManager,
+                    container.getThemeManager(),
+                    container.getBackgroundTaskExecutor(),
+                    container.getClock()
+            ));
             case STUDY -> loadPlaceholder("placeholder.study.title", "placeholder.study.subtitle");
             case READING_SANDBOX -> loadPlaceholder("placeholder.reading.title", "placeholder.reading.subtitle");
             case CARD_BROWSER -> loadPlaceholder("cards.title", "cards.subtitle");

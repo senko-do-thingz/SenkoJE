@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox xmlns="http://javafx.com/javafx/25"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.senkoje.presentation.controller.DeckLibraryController"
+      styleClass="screen-container"
+      spacing="16">
+
+    <HBox alignment="CENTER_LEFT" spacing="12">
+        <VBox spacing="4" HBox.hgrow="ALWAYS">
+            <Label fx:id="titleLabel" styleClass="screen-title"/>
+            <Label fx:id="subtitleLabel" styleClass="screen-subtitle"/>
+        </VBox>
+        <Button fx:id="refreshButton" styleClass="secondary-button" onAction="#handleRefresh"/>
+        <Button fx:id="newDeckButton" styleClass="primary-button" onAction="#handleCreateDeck"/>
+    </HBox>
+
+    <HBox styleClass="card-panel" spacing="12" alignment="CENTER_LEFT">
+        <TextField fx:id="searchField" HBox.hgrow="ALWAYS"/>
+        <Label fx:id="languageFilterLabel" styleClass="muted-label"/>
+        <ComboBox fx:id="languageFilterBox" prefWidth="150"/>
+        <Label fx:id="levelFilterLabel" styleClass="muted-label"/>
+        <ComboBox fx:id="levelFilterBox" prefWidth="150"/>
+    </HBox>
+
+    <VBox fx:id="emptyStateBox" styleClass="empty-state" visible="false" managed="false">
+        <Label fx:id="emptyTitleLabel" styleClass="section-title"/>
+        <Label fx:id="emptyDescriptionLabel" styleClass="muted-label" wrapText="true" textAlignment="CENTER"/>
+        <Button fx:id="emptyCreateButton" styleClass="primary-button" onAction="#handleCreateDeck"/>
+    </VBox>
+
+    <ScrollPane fx:id="deckScrollPane" fitToWidth="true" VBox.vgrow="ALWAYS">
+        <VBox fx:id="deckListContainer" spacing="12"/>
+    </ScrollPane>
+</VBox>

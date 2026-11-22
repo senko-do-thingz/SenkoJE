@@ -141,6 +141,40 @@ public class DeckService {
     }
 
     /**
+     * Cập nhật đầy đủ thông tin của một bộ thẻ hiện có sau khi kiểm tra tính hợp lệ.
+     *
+     * @param deckId mã bộ thẻ
+     * @param title tên bộ thẻ mới
+     * @param targetLanguage ngôn ngữ đích mới
+     * @param definitionLanguage ngôn ngữ giải nghĩa mới
+     * @param level trình độ ngôn ngữ mới
+     * @param description mô tả ngắn mới (có thể null)
+     * @return bộ thẻ sau khi cập nhật
+     */
+    public Deck updateDeck(
+            long deckId,
+            String title,
+            TargetLanguage targetLanguage,
+            DefinitionLanguage definitionLanguage,
+            ProficiencyLevel level,
+            String description
+    ) {
+        Deck existing = requireDeck(deckId);
+        Deck updated = new Deck(
+                existing.id(),
+                title == null ? null : title.trim(),
+                targetLanguage,
+                definitionLanguage,
+                level,
+                description,
+                existing.createdAt(),
+                clock.instant()
+        );
+        deckValidator.validate(updated);
+        return deckRepository.update(updated);
+    }
+
+    /**
      * Xóa bộ thẻ theo mã định danh.
      *
      * @param deckId mã bộ thẻ cần xóa

@@ -26,6 +26,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.Separator;
 import javafx.scene.control.TableColumn;
@@ -146,6 +147,7 @@ public class CardBrowserController implements RefreshableView {
         configureTable();
 
         localizationManager.localeProperty().addListener((obs, oldVal, newVal) -> {
+            refreshFilterDisplays();
             updateSelectionState();
             cardsTable.refresh();
             Card selected = cardsTable.getSelectionModel().getSelectedItem();
@@ -328,8 +330,13 @@ public class CardBrowserController implements RefreshableView {
             updateSelectionState();
             if (cards.isEmpty()) {
                 clearPreview();
-            } else if (cardsTable.getSelectionModel().getSelectedItem() == null) {
-                cardsTable.getSelectionModel().selectFirst();
+            } else {
+                // Luôn đảm bảo chọn thẻ đầu tiên nếu chưa có thẻ nào được chọn và nạp khung xem trước
+                if (cardsTable.getSelectionModel().getSelectedItem() == null) {
+                    cardsTable.getSelectionModel().selectFirst();
+                }
+                Card selected = cardsTable.getSelectionModel().getSelectedItem();
+                loadCardPreview(selected != null ? selected : cards.getFirst());
             }
         }, this::showError);
     }
@@ -365,13 +372,11 @@ public class CardBrowserController implements RefreshableView {
     }
 
     private void configureFilters() {
+        // Định dạng bản địa hóa cho toàn bộ hộp chọn bộ lọc bộ thẻ, loại thẻ, trình độ và trạng thái
         deckFilterBox.setConverter(new StringConverter<>() {
             @Override
             public String toString(DeckFilterOption option) {
-                if (option == null || option.deckId() == null) {
-                    return localizationManager.get("cards.filter.deck") + ": " + localizationManager.get("common.all");
-                }
-                return option.label();
+                return formatDeckFilter(option);
             }
 
             @Override
@@ -379,17 +384,70 @@ public class CardBrowserController implements RefreshableView {
                 return null;
             }
         });
+        deckFilterBox.setCellFactory(listView -> new ListCell<>() {
+            @Override
+            protected void updateItem(DeckFilterOption item, boolean empty) {
+                super.updateItem(item, empty);
+                setText(empty || item == null ? null : formatDeckFilter(item));
+            }
+        });
+        deckFilterBox.setButtonCell(new ListCell<>() {
+            @Override
+            protected void updateItem(DeckFilterOption item, boolean empty) {
+                super.updateItem(item, empty);
+                setText(empty || item == null ? null : formatDeckFilter(item));
+            }
+        });
 
+        typeFilterBox.setConverter(new StringConverter<>() {
+            @Override
+            public String toString(String code) {
+                return formatTypeFilter(code);
+            }
+
+            @Override
+            public String fromString(String string) {
+                return null;
+            }
+        });
+        typeFilterBox.setCellFactory(listView -> createLocalizedFilterCell(this::formatTypeFilter));
+        typeFilterBox.setButtonCell(createLocalizedFilterCell(this::formatTypeFilter));
         typeFilterBox.getItems().setAll(
                 FILTER_ALL, CardType.VOCABULARY.name(), CardType.PHRASE.name(), CardType.GRAMMAR.name()
         );
         typeFilterBox.setValue(FILTER_ALL);
 
+        levelFilterBox.setConverter(new StringConverter<>() {
+            @Override
+            public String toString(String code) {
+                return formatLevelFilter(code);
+            }
+
+            @Override
+            public String fromString(String string) {
+                return null;
+            }
+        });
+        levelFilterBox.setCellFactory(listView -> createLocalizedFilterCell(this::formatLevelFilter));
+        levelFilterBox.setButtonCell(createLocalizedFilterCell(this::formatLevelFilter));
         levelFilterBox.getItems().setAll(
                 FILTER_ALL, "N5", "N4", "N3", "N2", "N1", "A1", "A2", "B1", "B2", "C1", "C2", FILTER_CUSTOM
         );
         levelFilterBox.setValue(FILTER_ALL);
 
+        statusFilterBox.setConverter(new StringConverter<>() {
+            @Override
+            public String toString(String code) {
+                return formatStatusFilter(code);
+            }
+
+            @Override
+            public String fromString(String string) {
+                return null;
+            }
+        });
+        statusFilterBox.setCellFactory(listView -> createLocalizedFilterCell(this::formatStatusFilter));
+        statusFilterBox.setButtonCell(createLocalizedFilterCell(this::formatStatusFilter));
         statusFilterBox.getItems().setAll(FILTER_ALL, FILTER_ACTIVE, FILTER_SUSPENDED);
         statusFilterBox.setValue(FILTER_ALL);
 
@@ -399,9 +457,91 @@ public class CardBrowserController implements RefreshableView {
                 loadCards();
             }
         });
-        typeFilterBox.valueProperty().addListener((obs, oldVal, newVal) -> loadCards());
-        levelFilterBox.valueProperty().addListener((obs, oldVal, newVal) -> loadCards());
-        statusFilterBox.valueProperty().addListener((obs, oldVal, newVal) -> loadCards());
+        typeFilterBox.valueProperty().addListener((obs, oldVal, newVal) -> {
+            if (!updatingDeckFilter) {
+                loadCards();
+            }
+        });
+        levelFilterBox.valueProperty().addListener((obs, oldVal, newVal) -> {
+            if (!updatingDeckFilter) {
+                loadCards();
+            }
+        });
+        statusFilterBox.valueProperty().addListener((obs, oldVal, newVal) -> {
+            if (!updatingDeckFilter) {
+                loadCards();
+            }
+        });
+    }
+
+    private void refreshFilterDisplays() {
+        updatingDeckFilter = true;
+        try {
+            DeckFilterOption deckOption = deckFilterBox.getValue();
+            deckFilterBox.setValue(null);
+            deckFilterBox.setValue(deckOption);
+
+            String typeVal = typeFilterBox.getValue();
+            typeFilterBox.setValue(null);
+            typeFilterBox.setValue(typeVal);
+
+            String levelVal = levelFilterBox.getValue();
+            levelFilterBox.setValue(null);
+            levelFilterBox.setValue(levelVal);
+
+            String statusVal = statusFilterBox.getValue();
+            statusFilterBox.setValue(null);
+            statusFilterBox.setValue(statusVal);
+        } finally {
+            updatingDeckFilter = false;
+        }
+    }
+
+    private String formatDeckFilter(DeckFilterOption option) {
+        if (option == null || option.deckId() == null) {
+            return localizationManager.get("cards.filter.deck") + ": " + localizationManager.get("common.all");
+        }
+        return option.label();
+    }
+
+    private String formatTypeFilter(String code) {
+        if (code == null || FILTER_ALL.equals(code)) {
+            return localizationManager.get("cards.filter.type") + ": " + localizationManager.get("common.all");
+        }
+        return localizationManager.get("cardType." + code);
+    }
+
+    private String formatLevelFilter(String code) {
+        if (code == null || FILTER_ALL.equals(code)) {
+            return localizationManager.get("cards.filter.level") + ": " + localizationManager.get("common.all");
+        }
+        if (FILTER_CUSTOM.equals(code)) {
+            return localizationManager.get("level.CUSTOM");
+        }
+        return code;
+    }
+
+    private String formatStatusFilter(String code) {
+        if (code == null || FILTER_ALL.equals(code)) {
+            return localizationManager.get("cards.filter.status") + ": " + localizationManager.get("common.all");
+        }
+        if (FILTER_ACTIVE.equals(code)) {
+            return localizationManager.get("common.active");
+        }
+        if (FILTER_SUSPENDED.equals(code)) {
+            return localizationManager.get("common.suspended");
+        }
+        return code;
+    }
+
+    private ListCell<String> createLocalizedFilterCell(java.util.function.Function<String, String> formatter) {
+        return new ListCell<>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                setText(empty || item == null ? null : formatter.apply(item));
+            }
+        };
     }
 
     private void populateDeckFilter(List<Deck> decks) {
@@ -443,15 +583,14 @@ public class CardBrowserController implements RefreshableView {
                 localizationManager.get(cell.getValue().suspended() ? "common.suspended" : "common.active")));
 
         cardsTable.getSelectionModel().getSelectedItems().addListener(
-                (ListChangeListener<Card>) change -> {
-                    updateSelectionState();
-                    Card focused = cardsTable.getSelectionModel().getSelectedItem();
-                    if (focused == null) {
-                        clearPreview();
-                    } else {
-                        loadCardPreview(focused);
-                    }
-                });
+                (ListChangeListener<Card>) change -> updateSelectionState());
+        cardsTable.getSelectionModel().selectedItemProperty().addListener((obs, oldCard, newCard) -> {
+            if (newCard == null) {
+                clearPreview();
+            } else {
+                loadCardPreview(newCard);
+            }
+        });
     }
 
     private void updateSelectionState() {

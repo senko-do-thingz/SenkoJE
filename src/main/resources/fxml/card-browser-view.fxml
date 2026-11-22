@@ -29,10 +29,10 @@
 
     <HBox styleClass="card-panel" spacing="10" alignment="CENTER_LEFT">
         <TextField fx:id="searchField" HBox.hgrow="ALWAYS"/>
-        <ComboBox fx:id="deckFilterBox" prefWidth="170"/>
-        <ComboBox fx:id="typeFilterBox" prefWidth="140"/>
-        <ComboBox fx:id="levelFilterBox" prefWidth="110"/>
-        <ComboBox fx:id="statusFilterBox" prefWidth="130"/>
+        <ComboBox fx:id="deckFilterBox" prefWidth="175"/>
+        <ComboBox fx:id="typeFilterBox" prefWidth="160"/>
+        <ComboBox fx:id="levelFilterBox" prefWidth="145"/>
+        <ComboBox fx:id="statusFilterBox" prefWidth="165"/>
     </HBox>
 
     <HBox spacing="8" alignment="CENTER_LEFT">

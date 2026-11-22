@@ -22,6 +22,7 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
@@ -29,6 +30,7 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.stage.Window;
+import javafx.util.StringConverter;
 
 /**
  * Bộ điều khiển màn hình Thư viện bộ thẻ hỗ trợ tìm kiếm, lọc theo ngôn ngữ đích và trình độ,
@@ -48,6 +50,7 @@ public class DeckLibraryController implements RefreshableView {
     private final Clock clock;
 
     private List<DeckRowItem> latestRows = List.of();
+    private boolean updatingFilterDisplays = false;
 
     @FXML
     private Label titleLabel;
@@ -119,7 +122,10 @@ public class DeckLibraryController implements RefreshableView {
     private void initialize() {
         bindLocalizedLabels();
         configureFilters();
-        localizationManager.localeProperty().addListener((obs, oldVal, newVal) -> renderDecks(latestRows));
+        localizationManager.localeProperty().addListener((obs, oldVal, newVal) -> {
+            refreshFilterComboBoxDisplays();
+            renderDecks(latestRows);
+        });
     }
 
     @FXML
@@ -193,17 +199,96 @@ public class DeckLibraryController implements RefreshableView {
     }
 
     private void configureFilters() {
+        // Định dạng bản địa hóa cho bộ lọc ngôn ngữ đích và trình độ
+        StringConverter<String> languageConverter = new StringConverter<>() {
+            @Override
+            public String toString(String code) {
+                return formatLanguageFilter(code);
+            }
+
+            @Override
+            public String fromString(String string) {
+                return null;
+            }
+        };
+        languageFilterBox.setConverter(languageConverter);
+        languageFilterBox.setCellFactory(listView -> createLocalizedFilterCell(this::formatLanguageFilter));
+        languageFilterBox.setButtonCell(createLocalizedFilterCell(this::formatLanguageFilter));
         languageFilterBox.getItems().setAll(FILTER_ALL, TargetLanguage.JA.name(), TargetLanguage.EN.name());
         languageFilterBox.setValue(FILTER_ALL);
 
+        StringConverter<String> levelConverter = new StringConverter<>() {
+            @Override
+            public String toString(String code) {
+                return formatLevelFilter(code);
+            }
+
+            @Override
+            public String fromString(String string) {
+                return null;
+            }
+        };
+        levelFilterBox.setConverter(levelConverter);
+        levelFilterBox.setCellFactory(listView -> createLocalizedFilterCell(this::formatLevelFilter));
+        levelFilterBox.setButtonCell(createLocalizedFilterCell(this::formatLevelFilter));
         levelFilterBox.getItems().setAll(
                 FILTER_ALL, "N5", "N4", "N3", "N2", "N1", "A1", "A2", "B1", "B2", "C1", "C2", FILTER_CUSTOM
         );
         levelFilterBox.setValue(FILTER_ALL);
 
         searchField.textProperty().addListener((obs, oldVal, newVal) -> refresh());
-        languageFilterBox.valueProperty().addListener((obs, oldVal, newVal) -> refresh());
-        levelFilterBox.valueProperty().addListener((obs, oldVal, newVal) -> refresh());
+        languageFilterBox.valueProperty().addListener((obs, oldVal, newVal) -> {
+            if (!updatingFilterDisplays) {
+                refresh();
+            }
+        });
+        levelFilterBox.valueProperty().addListener((obs, oldVal, newVal) -> {
+            if (!updatingFilterDisplays) {
+                refresh();
+            }
+        });
+    }
+
+    private void refreshFilterComboBoxDisplays() {
+        updatingFilterDisplays = true;
+        try {
+            String lang = languageFilterBox.getValue();
+            languageFilterBox.setValue(null);
+            languageFilterBox.setValue(lang);
+
+            String level = levelFilterBox.getValue();
+            levelFilterBox.setValue(null);
+            levelFilterBox.setValue(level);
+        } finally {
+            updatingFilterDisplays = false;
+        }
+    }
+
+    private String formatLanguageFilter(String code) {
+        if (code == null || FILTER_ALL.equals(code)) {
+            return localizationManager.get("common.all");
+        }
+        return localizationManager.get("targetLang." + code);
+    }
+
+    private String formatLevelFilter(String code) {
+        if (code == null || FILTER_ALL.equals(code)) {
+            return localizationManager.get("common.all");
+        }
+        if (FILTER_CUSTOM.equals(code)) {
+            return localizationManager.get("level.CUSTOM");
+        }
+        return code;
+    }
+
+    private ListCell<String> createLocalizedFilterCell(java.util.function.Function<String, String> formatter) {
+        return new ListCell<>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                setText(empty || item == null ? null : formatter.apply(item));
+            }
+        };
     }
 
     private void renderDecks(List<DeckRowItem> rows) {

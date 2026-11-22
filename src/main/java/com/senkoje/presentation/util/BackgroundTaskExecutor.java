@@ -4,6 +4,7 @@ import java.util.Objects;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 import javafx.concurrent.Task;
@@ -105,5 +106,11 @@ public class BackgroundTaskExecutor implements AutoCloseable {
     @Override
     public void close() {
         executorService.shutdownNow();
+        try {
+            // Chờ ngắn để các tác vụ SQLite đang dở kịp đóng kết nối sạch sẽ trước khi thoát
+            executorService.awaitTermination(2, TimeUnit.SECONDS);
+        } catch (InterruptedException exception) {
+            Thread.currentThread().interrupt();
+        }
     }
 }

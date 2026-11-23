@@ -19,6 +19,7 @@ import com.senkoje.domain.service.CardValidator;
 import com.senkoje.domain.service.DeckSettingsValidator;
 import com.senkoje.domain.service.DeckValidator;
 import com.senkoje.infrastructure.config.AppDataPathResolver;
+import com.senkoje.infrastructure.nlp.FuriganaSegmentBuilder;
 import com.senkoje.infrastructure.nlp.JapaneseTokenizerService;
 import com.senkoje.infrastructure.tts.BundledOfflineTtsProvider;
 import com.senkoje.infrastructure.tts.SystemTtsProvider;
@@ -76,6 +77,7 @@ public class ApplicationContainer implements AutoCloseable {
     private final BackgroundTaskExecutor backgroundTaskExecutor;
     private final TtsManager ttsManager;
     private final JapaneseTokenizerService japaneseTokenizerService;
+    private final FuriganaSegmentBuilder furiganaSegmentBuilder;
 
     /**
      * Khởi tạo bộ chứa ứng dụng mặc định dùng đường dẫn dữ liệu chuẩn theo hệ điều hành và múi giờ Việt Nam.
@@ -165,6 +167,7 @@ public class ApplicationContainer implements AutoCloseable {
         );
         // Khởi tạo dịch vụ Kuromoji ở chế độ tải lười, không nạp từ điển ngay lúc khởi động ứng dụng
         this.japaneseTokenizerService = new JapaneseTokenizerService();
+        this.furiganaSegmentBuilder = new FuriganaSegmentBuilder();
     }
 
     public Clock getClock() {
@@ -241,6 +244,10 @@ public class ApplicationContainer implements AutoCloseable {
 
     public JapaneseTokenizerService getJapaneseTokenizerService() {
         return japaneseTokenizerService;
+    }
+
+    public FuriganaSegmentBuilder getFuriganaSegmentBuilder() {
+        return furiganaSegmentBuilder;
     }
 
     @Override

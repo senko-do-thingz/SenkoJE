@@ -5,6 +5,7 @@ import com.senkoje.application.service.AppSettingsService;
 import com.senkoje.application.service.CardService;
 import com.senkoje.application.service.DeckService;
 import com.senkoje.application.service.ReviewService;
+import com.senkoje.application.service.StudySessionService;
 import com.senkoje.domain.fsrs.FsrsParameters;
 import com.senkoje.domain.fsrs.FsrsScheduler;
 import com.senkoje.domain.repository.AppSettingRepository;
@@ -62,6 +63,7 @@ public class ApplicationContainer implements AutoCloseable {
     private final CardService cardService;
     private final AppSettingsService appSettingsService;
     private final ReviewService reviewService;
+    private final StudySessionService studySessionService;
     private final AnalyticsService analyticsService;
 
     private final LocalizationManager localizationManager;
@@ -129,6 +131,13 @@ public class ApplicationContainer implements AutoCloseable {
                 fsrsScheduler,
                 this.clock
         );
+        this.studySessionService = new StudySessionService(
+                reviewService,
+                cardService,
+                deckService,
+                studySessionRepository,
+                this.clock
+        );
         this.analyticsService = new AnalyticsService(
                 deckRepository,
                 cardRepository,
@@ -169,6 +178,10 @@ public class ApplicationContainer implements AutoCloseable {
 
     public ReviewService getReviewService() {
         return reviewService;
+    }
+
+    public StudySessionService getStudySessionService() {
+        return studySessionService;
     }
 
     public AnalyticsService getAnalyticsService() {

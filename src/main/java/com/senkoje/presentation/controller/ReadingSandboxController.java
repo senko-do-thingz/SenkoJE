@@ -62,7 +62,9 @@ public class ReadingSandboxController implements RefreshableView {
 
     private final FuriganaView furiganaView = new FuriganaView();
     private final AtomicLong analysisSequence = new AtomicLong(0);
+    private final AtomicLong ttsPlaybackGeneration = new AtomicLong(0);
 
+    private boolean updatingLanguageSelector = false;
     private String lastAnalyzedText = "";
     private List<FuriganaSegment> currentJapaneseSegments = List.of();
     private int selectedJapaneseIndex = -1;
@@ -71,6 +73,12 @@ public class ReadingSandboxController implements RefreshableView {
     private EnglishReadingDocument currentEnglishDocument;
     private EnglishToken selectedEnglishToken;
     private Label selectedEnglishTokenNode;
+
+    private String activeStatusKey;
+    private Object[] activeStatusArgs = new Object[0];
+    private boolean activeStatusError;
+    private String persistentStatusKey;
+    private Object[] persistentStatusArgs = new Object[0];
 
     @FXML
     private VBox rootPane;
@@ -280,7 +288,7 @@ public class ReadingSandboxController implements RefreshableView {
     public void handleAnalyze() {
         String text = inputTextArea.getText();
         if (text == null || text.isBlank()) {
-            showStatus(localizationManager.get("reading.status.emptyInput"), false);
+            showLocalizedStatus("reading.status.emptyInput", false);
             return;
         }
 
@@ -310,7 +318,7 @@ public class ReadingSandboxController implements RefreshableView {
                             return;
                         }
                         setLoadingState(false, "");
-                        showStatus(localizationManager.get("reading.status.analysisFailed"), true);
+                        showLocalizedStatus("reading.status.analysisFailed", true);
                     }
             );
         } else {
@@ -328,7 +336,7 @@ public class ReadingSandboxController implements RefreshableView {
                             return;
                         }
                         setLoadingState(false, "");
-                        showStatus(localizationManager.get("reading.status.analysisFailed"), true);
+                        showLocalizedStatus("reading.status.analysisFailed", true);
                     }
             );
         }
@@ -340,8 +348,10 @@ public class ReadingSandboxController implements RefreshableView {
     @FXML
     public void handleClear() {
         analysisSequence.incrementAndGet();
+        ttsPlaybackGeneration.incrementAndGet();
         inputTextArea.clear();
         clearAnalysisOutput();
+        clearPersistentStatus();
         hideStatus();
     }
 
@@ -386,7 +396,7 @@ public class ReadingSandboxController implements RefreshableView {
         String displayReading = updated.effectiveReading() == null
                 ? localizationManager.get("common.none")
                 : updated.effectiveReading();
-        showStatus(localizationManager.get("reading.status.readingUpdated", updated.surface(), displayReading), false);
+        showPersistentLocalizedStatus("reading.status.readingUpdated", updated.surface(), displayReading);
     }
 
     /**
@@ -402,7 +412,7 @@ public class ReadingSandboxController implements RefreshableView {
         currentJapaneseSegments = furiganaView.getSegments();
         selectedJapaneseSegment = restored;
         populateJapaneseInspector(restored);
-        showStatus(localizationManager.get("reading.status.readingReset", restored.surface()), false);
+        showPersistentLocalizedStatus("reading.status.readingReset", restored.surface());
     }
 
     /**
@@ -419,7 +429,7 @@ public class ReadingSandboxController implements RefreshableView {
         backgroundTaskExecutor.runAsync(
                 deckService::listAllDecks,
                 decks -> openAddToDeckDialog(decks, prefill),
-                error -> showStatus(error.getMessage(), true)
+                error -> showRawStatus(error.getMessage(), true)
         );
     }
 
@@ -561,9 +571,8 @@ public class ReadingSandboxController implements RefreshableView {
                     );
                     return deckService.getDeck(form.deckId()).map(Deck::title).orElse("#" + form.deckId());
                 },
-                deckTitle -> showStatus(
-                        localizationManager.get("reading.status.cardSaved", form.term(), deckTitle), false),
-                error -> showStatus(error.getMessage(), true)
+                deckTitle -> showPersistentLocalizedStatus("reading.status.cardSaved", form.term(), deckTitle),
+                error -> showRawStatus(error.getMessage(), true)
         );
     }
 
@@ -585,7 +594,7 @@ public class ReadingSandboxController implements RefreshableView {
         outputStatsLabel.setManaged(true);
 
         resetInspectorToEmpty();
-        showStatus(localizationManager.get("reading.status.readyJa", wordCount), false);
+        showPersistentLocalizedStatus("reading.status.readyJa", wordCount);
     }
 
     private void displayEnglishResult(String sourceText, EnglishReadingDocument document) {
@@ -602,8 +611,9 @@ public class ReadingSandboxController implements RefreshableView {
             VBox sentenceCard = new VBox(6);
             sentenceCard.getStyleClass().add("reading-en-sentence");
 
-            Label sentenceHeader = new Label(localizationManager.get(
-                    "reading.inspector.sentenceLabel", sentence.index() + 1));
+            Label sentenceHeader = new Label();
+            // Ràng buộc động tiêu đề từng câu tiếng Anh để tự cập nhật ngay khi đổi ngôn ngữ giao diện
+            localizationManager.bind(sentenceHeader, "reading.inspector.sentenceLabel", sentence.index() + 1);
             sentenceHeader.getStyleClass().add("reading-en-sentence-header");
 
             FlowPane tokenFlow = new FlowPane();
@@ -639,8 +649,7 @@ public class ReadingSandboxController implements RefreshableView {
         outputStatsLabel.setManaged(true);
 
         resetInspectorToEmpty();
-        showStatus(localizationManager.get(
-                "reading.status.readyEn", document.sentences().size(), wordCount), false);
+        showPersistentLocalizedStatus("reading.status.readyEn", document.sentences().size(), wordCount);
     }
 
     private void onJapaneseSegmentSelected(int index, FuriganaSegment segment) {
@@ -739,23 +748,46 @@ public class ReadingSandboxController implements RefreshableView {
 
     private void speakOffline(String text, TargetLanguage language) {
         if (text == null || text.isBlank()) {
-            showStatus(localizationManager.get("tts.status.emptyText"), false);
+            showLocalizedStatus("tts.status.emptyText", false);
             return;
         }
-        showStatus(localizationManager.get("study.audio.playing"), false);
+        long generation = ttsPlaybackGeneration.incrementAndGet();
+        showLocalizedStatus("study.audio.playing", false);
         backgroundTaskExecutor.runAsync(
                 () -> ttsManager.speak(text, language),
-                this::handleTtsResult,
-                error -> showStatus(localizationManager.get("tts.status.failed"), true)
+                result -> handleTtsResult(generation, result),
+                error -> {
+                    if (generation == ttsPlaybackGeneration.get()) {
+                        showLocalizedStatus("tts.status.failed", true);
+                    }
+                }
         );
     }
 
-    private void handleTtsResult(TtsPlaybackResult result) {
-        if (result == null) {
+    /**
+     * Xử lý kết quả phát âm TTS theo thế hệ yêu cầu hiện tại, bỏ qua các phản hồi trễ hoặc đã bị hủy.
+     *
+     * @param generation chỉ số thế hệ yêu cầu phát âm
+     * @param result kết quả phát âm trả về từ TtsManager
+     */
+    public void handleTtsResult(long generation, TtsPlaybackResult result) {
+        if (generation != ttsPlaybackGeneration.get() || result == null) {
             return;
         }
-        String message = localizationManager.get(result.statusCode());
-        showStatus(message, !result.succeeded());
+        if (result.cancelled() || result.succeeded()) {
+            restorePersistentStatusOrHide();
+            return;
+        }
+        showLocalizedStatus(result.statusCode(), true);
+    }
+
+    /**
+     * Trả về chỉ số thế hệ phát âm TTS hiện tại (phục vụ kiểm thử hủy và phản hồi trễ).
+     *
+     * @return giá trị bộ đếm thế hệ TTS hiện tại
+     */
+    public long getCurrentTtsPlaybackGeneration() {
+        return ttsPlaybackGeneration.get();
     }
 
     private void configureLanguageSelector() {
@@ -776,8 +808,14 @@ public class ReadingSandboxController implements RefreshableView {
             }
         });
         languageComboBox.valueProperty().addListener((obs, oldLang, newLang) -> {
+            // Bỏ qua sự kiện nội bộ khi chỉ làm mới nhãn bản địa hóa cho ComboBox
+            if (updatingLanguageSelector || newLang == null || newLang == oldLang) {
+                return;
+            }
+            ttsPlaybackGeneration.incrementAndGet();
             updateLanguageDependentControls();
             clearAnalysisOutput();
+            clearPersistentStatus();
             hideStatus();
         });
     }
@@ -817,12 +855,31 @@ public class ReadingSandboxController implements RefreshableView {
     }
 
     private void refreshLocalizedState() {
-        // Cập nhật lại chuỗi hiển thị trong ComboBox ngôn ngữ và các nhãn động theo ngôn ngữ giao diện mới
+        // Cập nhật lại chuỗi hiển thị trong ComboBox ngôn ngữ mà không làm xóa kết quả phân tích đang xem
         TargetLanguage current = getSelectedLanguage();
-        languageComboBox.getItems().setAll(TargetLanguage.JA, TargetLanguage.EN);
-        languageComboBox.setValue(current);
+        updatingLanguageSelector = true;
+        try {
+            languageComboBox.getItems().setAll(TargetLanguage.JA, TargetLanguage.EN);
+            languageComboBox.setValue(current);
+        } finally {
+            updatingLanguageSelector = false;
+        }
         updateLanguageDependentControls();
-        customReadingField.setPromptText(localizationManager.get("reading.inspector.editReadingPrompt"));
+
+        // Cập nhật lại huy hiệu thống kê từ/câu đang hiển thị theo ngôn ngữ giao diện mới
+        if (!currentJapaneseSegments.isEmpty()) {
+            long wordCount = currentJapaneseSegments.stream().filter(FuriganaSegment::isInspectable).count();
+            outputStatsLabel.setText(localizationManager.get("reading.output.statsJa", wordCount));
+        } else if (currentEnglishDocument != null) {
+            long wordCount = currentEnglishDocument.tokens().stream().filter(EnglishToken::word).count();
+            outputStatsLabel.setText(localizationManager.get(
+                    "reading.output.statsEn", currentEnglishDocument.sentences().size(), wordCount));
+        }
+
+        // Cập nhật lại dải trạng thái nếu đang hiển thị khóa bản địa hóa
+        if (activeStatusKey != null) {
+            renderStatus(localizationManager.get(activeStatusKey, activeStatusArgs), activeStatusError);
+        }
 
         if (selectedJapaneseSegment != null) {
             populateJapaneseInspector(selectedJapaneseSegment);
@@ -880,8 +937,41 @@ public class ReadingSandboxController implements RefreshableView {
         analyzeButton.setDisable(loading);
     }
 
-    private void showStatus(String message, boolean error) {
-        statusLabel.setText(message);
+    private void showPersistentLocalizedStatus(String key, Object... args) {
+        persistentStatusKey = key;
+        persistentStatusArgs = args == null ? new Object[0] : args;
+        showLocalizedStatus(key, false, persistentStatusArgs);
+    }
+
+    private void showLocalizedStatus(String key, boolean error, Object... args) {
+        activeStatusKey = key;
+        activeStatusArgs = args == null ? new Object[0] : args;
+        activeStatusError = error;
+        renderStatus(localizationManager.get(key, activeStatusArgs), error);
+    }
+
+    private void showRawStatus(String message, boolean error) {
+        activeStatusKey = null;
+        activeStatusArgs = new Object[0];
+        activeStatusError = error;
+        renderStatus(message, error);
+    }
+
+    private void restorePersistentStatusOrHide() {
+        if (persistentStatusKey != null) {
+            showLocalizedStatus(persistentStatusKey, false, persistentStatusArgs);
+        } else {
+            hideStatus();
+        }
+    }
+
+    private void clearPersistentStatus() {
+        persistentStatusKey = null;
+        persistentStatusArgs = new Object[0];
+    }
+
+    private void renderStatus(String message, boolean error) {
+        statusLabel.setText(message == null ? "" : message);
         statusLabel.getStyleClass().removeAll("status-error", "status-success", "muted-label");
         statusLabel.getStyleClass().add(error ? "status-error" : "status-success");
         statusLabel.setVisible(true);
@@ -889,6 +979,9 @@ public class ReadingSandboxController implements RefreshableView {
     }
 
     private void hideStatus() {
+        activeStatusKey = null;
+        activeStatusArgs = new Object[0];
+        activeStatusError = false;
         statusLabel.setText("");
         statusLabel.setVisible(false);
         statusLabel.setManaged(false);

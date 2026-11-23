@@ -12,6 +12,7 @@ import com.senkoje.domain.model.DefinitionLanguage;
 import com.senkoje.domain.model.ProficiencyLevel;
 import com.senkoje.domain.model.TargetLanguage;
 import com.senkoje.infrastructure.config.AppDataPathResolver;
+import com.senkoje.infrastructure.tts.TtsPlaybackResult;
 import com.senkoje.presentation.controller.CardEditorDialog;
 import com.senkoje.presentation.controller.ReadingSandboxController;
 import java.nio.file.Path;
@@ -138,6 +139,14 @@ class ReadingSandboxUiTest {
                 Label previewLabel = (Label) root.lookup("#furiganaPreviewValueLabel");
                 assertEquals("市場[いちば]", previewLabel.getText());
 
+                // Xác minh chuyển đổi vi -> en trong chế độ tiếng Nhật giữ nguyên token đang chọn và bản địa hóa lại nhãn động
+                container.getLocalizationManager().setLanguage("en");
+                assertEquals("市場", inspectorSurface.getText(),
+                        "Selected Japanese token must be preserved across UI language switches");
+                assertTrue(((Label) root.lookup("#outputStatsLabel")).getText().contains("words"));
+                assertTrue(((Label) root.lookup("#statusLabel")).getText().contains("Updated Furigana reading"));
+                container.getLocalizationManager().setLanguage("vi");
+
                 // 4. Kiểm tra dữ liệu điền sẵn cho hộp thoại Thêm vào bộ thẻ
                 CardEditorDialog.CardPrefillData jaPrefill = controller.buildAddToDeckPrefill();
                 assertNotNull(jaPrefill);
@@ -192,11 +201,44 @@ class ReadingSandboxUiTest {
             }), 10000);
 
             runOnFxThread(() -> {
+                ReadingSandboxController controller = controllerRef.get();
                 Parent root = rootRef.get();
-                // 6. Xác minh chuyển đổi trực tiếp vi -> en và Dark -> Light
+
+                // 6. Xác minh chuyển đổi trực tiếp vi -> en giữ nguyên kết quả phân tích tiếng Anh và cập nhật đủ nhãn động
+                Label statusLabel = (Label) root.lookup("#statusLabel");
+                Label statsLabel = (Label) root.lookup("#outputStatsLabel");
+                assertTrue(statusLabel.getText().contains("tiếng Anh"));
+                assertTrue(statsLabel.getText().contains("câu"));
+
                 container.getLocalizationManager().setLanguage("en");
                 Label titleLabel = (Label) root.lookup("#titleLabel");
                 assertEquals("Reading Sandbox", titleLabel.getText());
+                assertTrue(statsLabel.isVisible(), "Analyzed stats badge must stay visible after UI language switch");
+                assertTrue(statsLabel.getText().contains("sentences"), "Stats badge must switch to English");
+                assertTrue(statusLabel.getText().contains("Analyzed English text offline"),
+                        "Status banner must switch to English without leaving Vietnamese text");
+                assertTrue(root.lookupAll(".reading-en-sentence-header").stream()
+                        .filter(Label.class::isInstance)
+                        .map(Label.class::cast)
+                        .allMatch(header -> header.getText().startsWith("Sentence ")),
+                        "English sentence headings must re-localize to 'Sentence N'");
+
+                // 7. Xác minh kết quả TTS bị hủy (cancelled = true) hoặc trễ thế hệ không hiển thị lỗi đỏ
+                long currentGen = controller.getCurrentTtsPlaybackGeneration();
+                TtsPlaybackResult cancelledResult = new TtsPlaybackResult(
+                        false, "system", "tts.status.cancelled", "Interrupted by newer request", true);
+                controller.handleTtsResult(currentGen, cancelledResult);
+                assertFalse(statusLabel.getStyleClass().contains("status-error"),
+                        "Cancelled TTS result must not show an error status banner");
+                assertTrue(statusLabel.getText().contains("Analyzed English text offline"),
+                        "Cancelled TTS result should restore the previous analysis status");
+
+                // Phản hồi lỗi trễ của thế hệ cũ phải bị bỏ qua hoàn toàn
+                TtsPlaybackResult staleFailure = new TtsPlaybackResult(
+                        false, "system", "tts.status.failed", "Stale failure", false);
+                controller.handleTtsResult(currentGen - 1, staleFailure);
+                assertFalse(statusLabel.getStyleClass().contains("status-error"),
+                        "Stale TTS callback from an older generation must be ignored");
 
                 container.getThemeManager().setTheme("light");
                 assertFalse(container.getThemeManager().isDarkTheme());

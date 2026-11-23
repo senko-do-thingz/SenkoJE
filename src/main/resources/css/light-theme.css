@@ -147,7 +147,7 @@
     -fx-border-color: -senko-border;
     -fx-border-radius: 10;
     -fx-background-radius: 10;
-    -fx-padding: 14 12 14 12;
+    -fx-padding: 12 10 12 10;
     -fx-min-width: 120;
 }
 
@@ -158,7 +158,7 @@
 }
 
 .metric-label {
-    -fx-font-size: 12px;
+    -fx-font-size: 11.5px;
     -fx-text-fill: -senko-text-secondary;
 }
 

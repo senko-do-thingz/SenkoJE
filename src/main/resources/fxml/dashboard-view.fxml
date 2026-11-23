@@ -32,7 +32,7 @@
         </VBox>
 
         <!-- Hàng 6 thẻ chỉ số KPI chia đều 6 cột bằng nhau -->
-        <GridPane fx:id="kpiGrid" hgap="12" vgap="12">
+        <GridPane fx:id="kpiGrid" hgap="10" vgap="12">
             <columnConstraints>
                 <ColumnConstraints percentWidth="16.6667" hgrow="ALWAYS"/>
                 <ColumnConstraints percentWidth="16.6667" hgrow="ALWAYS"/>

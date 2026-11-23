@@ -306,15 +306,18 @@ public class SystemTtsProvider implements TtsService {
 
     private TtsPlaybackResult toPlaybackResult(ProcessExecutionResult result) {
         if (result.isSuccess()) {
-            return new TtsPlaybackResult(true, PROVIDER_ID, "tts.status.played", "");
+            return new TtsPlaybackResult(true, PROVIDER_ID, "tts.status.played", "", false);
+        }
+        if (result.cancelled()) {
+            return new TtsPlaybackResult(false, PROVIDER_ID, "tts.status.cancelled", "", true);
         }
         if (result.timedOut()) {
-            return new TtsPlaybackResult(false, PROVIDER_ID, "tts.status.timeout", result.stderr());
+            return new TtsPlaybackResult(false, PROVIDER_ID, "tts.status.timeout", result.stderr(), false);
         }
         if (result.launchFailed()) {
-            return new TtsPlaybackResult(false, PROVIDER_ID, "tts.status.systemUnavailable", result.stderr());
+            return new TtsPlaybackResult(false, PROVIDER_ID, "tts.status.systemUnavailable", result.stderr(), false);
         }
-        return new TtsPlaybackResult(false, PROVIDER_ID, "tts.status.failed", result.stderr());
+        return new TtsPlaybackResult(false, PROVIDER_ID, "tts.status.failed", result.stderr(), false);
     }
 
     private static OsFamily detectOsFamily(String osName) {

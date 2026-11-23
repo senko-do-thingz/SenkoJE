@@ -134,12 +134,13 @@ class StudySessionServiceTest {
         clock.advance(Duration.ofSeconds(2));
         // Đánh giá EASY cho thẻ 1 để tốt nghiệp ngay sang REVIEW (không đưa lại vào hàng đợi phiên)
         SubmittedReviewOutcome firstOutcome = studySessionService.submitCurrentCardReview(
-                sessionId, card1.id(), ReviewRating.EASY);
+                sessionId, card1.id(), resumed.presentationSeq(), ReviewRating.EASY);
         assertEquals(CardState.REVIEW, firstOutcome.schedulingResult().nextState().state());
         assertEquals(6000, firstOutcome.schedulingResult().reviewLog().responseTimeMs());
         assertEquals(1, firstOutcome.sessionSnapshot().completedReviews());
         assertEquals(1, firstOutcome.sessionSnapshot().remainingCards());
         assertEquals(card2.id(), firstOutcome.sessionSnapshot().currentCard().card().id());
+        assertEquals(2L, firstOutcome.sessionSnapshot().presentationSeq());
 
         // Kiểm tra bảng study_sessions trong SQLite đã được cập nhật ngay lập tức sau thẻ 1
         StudySession persistedAfterFirst = studySessionRepository.findById(sessionId).orElseThrow();
@@ -147,14 +148,16 @@ class StudySessionServiceTest {
         assertEquals(6, persistedAfterFirst.durationSeconds());
         assertNull(persistedAfterFirst.completedAt());
 
-        // Thẻ 2 được đánh giá EASY sau 3 giây -> phiên học tự động hoàn tất
+        // Thẻ 2 được đánh giá EASY sau 3 giây -> phiên học tự động hoàn tất và giải phóng khỏi bộ nhớ
         clock.advance(Duration.ofSeconds(3));
         SubmittedReviewOutcome secondOutcome = studySessionService.submitCurrentCardReview(
-                sessionId, card2.id(), ReviewRating.EASY);
+                sessionId, card2.id(), firstOutcome.sessionSnapshot().presentationSeq(), ReviewRating.EASY);
         assertTrue(secondOutcome.sessionSnapshot().isCompleted());
         assertNull(secondOutcome.sessionSnapshot().currentCard());
+        assertEquals(0L, secondOutcome.sessionSnapshot().presentationSeq());
         assertEquals(2, secondOutcome.sessionSnapshot().completedReviews());
         assertEquals(9, secondOutcome.sessionSnapshot().activeDurationSeconds());
+        assertThrows(IllegalArgumentException.class, () -> studySessionService.getSessionSnapshot(sessionId));
 
         StudySession persistedCompleted = studySessionRepository.findById(sessionId).orElseThrow();
         assertEquals(2, persistedCompleted.cardsReviewed());
@@ -177,23 +180,25 @@ class StudySessionServiceTest {
         long sessionId = started.session().id();
 
         clock.advance(Duration.ofSeconds(5));
-        studySessionService.submitCurrentCardReview(sessionId, card1.id(), ReviewRating.EASY);
+        studySessionService.submitCurrentCardReview(sessionId, card1.id(), started.presentationSeq(), ReviewRating.EASY);
 
         // Gửi lại đúng card1.id thêm một lần nữa phải bị từ chối và không tạo nhật ký trùng lặp
         assertThrows(
                 IllegalStateException.class,
-                () -> studySessionService.submitCurrentCardReview(sessionId, card1.id(), ReviewRating.EASY)
+                () -> studySessionService.submitCurrentCardReview(
+                        sessionId, card1.id(), started.presentationSeq(), ReviewRating.EASY)
         );
         List<ReviewLog> logsForCard1 = reviewLogRepository.findByCardId(card1.id());
         assertEquals(1, logsForCard1.size());
         assertEquals(sessionId, logsForCard1.getFirst().sessionId());
 
-        // Thoát giữa phiên (Esc) phải bảo toàn lượt ôn đã hoàn thành và chốt thời điểm kết thúc
+        // Thoát giữa phiên (Esc) phải bảo toàn lượt ôn đã hoàn thành, chốt thời điểm kết thúc và xóa khỏi activeSessions
         clock.advance(Duration.ofSeconds(2));
         StudySessionSnapshot finished = studySessionService.finishSession(sessionId);
         assertEquals(StudySessionStatus.COMPLETED, finished.status());
         assertEquals(1, finished.completedReviews());
         assertEquals(7, finished.activeDurationSeconds());
+        assertThrows(IllegalArgumentException.class, () -> studySessionService.getSessionSnapshot(sessionId));
 
         StudySession persisted = studySessionRepository.findById(sessionId).orElseThrow();
         assertEquals(1, persisted.cardsReviewed());
@@ -215,14 +220,23 @@ class StudySessionServiceTest {
         StudySessionSnapshot started = studySessionService.startSession(deck.id());
         long sessionId = started.session().id();
 
-        // Đánh giá AGAIN đẩy thẻ sang bước học 1 phút -> được đưa lại vào hàng đợi của phiên hiện tại
+        // Đánh giá AGAIN đẩy thẻ sang bước học 1 phút -> được đưa lại vào hàng đợi với presentationSeq mới
         clock.advance(Duration.ofSeconds(3));
+        long firstSeq = started.presentationSeq();
         SubmittedReviewOutcome againOutcome = studySessionService.submitCurrentCardReview(
-                sessionId, card.id(), ReviewRating.AGAIN);
+                sessionId, card.id(), firstSeq, ReviewRating.AGAIN);
         assertEquals(CardState.LEARNING, againOutcome.schedulingResult().nextState().state());
         assertEquals(StudySessionStatus.ACTIVE, againOutcome.sessionSnapshot().status());
         assertEquals(1, againOutcome.sessionSnapshot().remainingCards());
         assertEquals(card.id(), againOutcome.sessionSnapshot().currentCard().card().id());
+        assertEquals(firstSeq + 1, againOutcome.sessionSnapshot().presentationSeq());
+
+        // Gửi lại mã tuần tự cũ cho cùng thẻ LEARNING vừa đưa lại vào đầu hàng đợi phải bị từ chối
+        assertThrows(
+                IllegalStateException.class,
+                () -> studySessionService.submitCurrentCardReview(sessionId, card.id(), firstSeq, ReviewRating.AGAIN)
+        );
+        assertEquals(1, reviewLogRepository.findByCardId(card.id()).size());
     }
 
     @Test

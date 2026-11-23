@@ -75,6 +75,8 @@ public class StudyWorkspaceController implements RefreshableView {
     private StudySessionSnapshot currentSnapshot;
     private boolean answerRevealed = false;
     private boolean submittingReview = false;
+    private boolean exitPendingAfterSubmit = false;
+    private long ttsPlaybackGeneration = 0L;
     private boolean dictationMode = false;
     private TypingEvaluationResult lastDictationResult;
     private TypingEvaluationOptions cachedTypingOptions = TypingEvaluationOptions.defaults();
@@ -446,8 +448,8 @@ public class StudyWorkspaceController implements RefreshableView {
         renderDictationFeedback(lastDictationResult);
         answerRevealed = true;
         updateRevealStateUi();
-        // Chuyển tiêu điểm ra khỏi ô nhập để người dùng có thể bấm 1-4 đánh giá ngay sau khi xem kết quả
-        goodButton.requestFocus();
+        // Chuyển tiêu điểm về vùng thẻ trung tính (không phải nút đánh giá) để Space không vô tình bấm đánh giá
+        flashcardContainer.requestFocus();
     }
 
     @FXML
@@ -495,25 +497,33 @@ public class StudyWorkspaceController implements RefreshableView {
         String textToSpeak = item.card().term();
         TargetLanguage language = item.deck().targetLanguage();
 
+        long generation = ++ttsPlaybackGeneration;
         replayAudioButton.setDisable(true);
         showAudioStatus(localizationManager.get("study.audio.playing"), false);
         backgroundTaskExecutor.runAsync(
                 () -> ttsManager.speak(textToSpeak, language),
-                this::handleTtsPlaybackResult,
+                result -> handleTtsPlaybackResult(generation, result),
                 error -> {
+                    if (generation != ttsPlaybackGeneration) {
+                        return;
+                    }
                     replayAudioButton.setDisable(false);
                     showAudioStatus(localizationManager.get("tts.status.failed"), true);
                 }
         );
     }
 
-    private void handleTtsPlaybackResult(TtsPlaybackResult result) {
+    private void handleTtsPlaybackResult(long generation, TtsPlaybackResult result) {
+        // Bỏ qua kết quả cũ từ thẻ trước đó hoặc kết quả đã bị hủy chủ động khi chuyển thẻ
+        if (generation != ttsPlaybackGeneration) {
+            return;
+        }
         replayAudioButton.setDisable(false);
         if (result == null) {
             showAudioStatus(localizationManager.get("tts.status.failed"), true);
             return;
         }
-        if (result.succeeded()) {
+        if (result.cancelled() || result.succeeded()) {
             hideAudioStatus();
         } else {
             // Hiển thị rõ trạng thái bản địa hóa khi TTS ngoại tuyến không khả dụng thay vì im lặng
@@ -611,7 +621,12 @@ public class StudyWorkspaceController implements RefreshableView {
 
         if (event.getCode() == KeyCode.ESCAPE) {
             event.consume();
-            handleExitSession();
+            if (submittingReview) {
+                // Hoãn thoát phiên cho đến khi lượt đánh giá đang gửi hoàn tất để không làm mất đánh giá
+                exitPendingAfterSubmit = true;
+            } else {
+                handleExitSession();
+            }
             return;
         }
         if (typingInInput || currentSnapshot == null || currentSnapshot.isCompleted()) {
@@ -623,8 +638,9 @@ public class StudyWorkspaceController implements RefreshableView {
 
         switch (event.getCode()) {
             case SPACE -> {
+                // Luôn chặn Space lan xuống nút đang giữ tiêu điểm; chỉ lật thẻ khi đáp án chưa mở
+                event.consume();
                 if (!answerRevealed) {
-                    event.consume();
                     handleRevealAnswer();
                 }
             }
@@ -674,16 +690,22 @@ public class StudyWorkspaceController implements RefreshableView {
 
         long sessionId = currentSnapshot.session().id();
         long expectedCardId = currentSnapshot.currentCard().card().id();
+        long expectedPresentationSeq = currentSnapshot.presentationSeq();
 
         // Khóa nút đánh giá và phím tắt ngay khi bắt đầu gửi để chặn gửi trùng lặp
         submittingReview = true;
+        exitPendingAfterSubmit = false;
         stopTtsPlayback();
         setRatingButtonsDisabled(true);
 
         backgroundTaskExecutor.runAsync(
-                () -> studySessionService.submitCurrentCardReview(sessionId, expectedCardId, rating),
+                () -> studySessionService.submitCurrentCardReview(
+                        sessionId, expectedCardId, expectedPresentationSeq, rating),
                 outcome -> {
                     submittingReview = false;
+                    boolean shouldExitNow = exitPendingAfterSubmit;
+                    exitPendingAfterSubmit = false;
+
                     StudySessionSnapshot nextSnapshot = outcome.sessionSnapshot();
                     currentSnapshot = nextSnapshot;
                     displayedSeconds = nextSnapshot.activeDurationSeconds();
@@ -695,12 +717,15 @@ public class StudyWorkspaceController implements RefreshableView {
                         stopSessionTimer();
                         renderCompletedSummary(nextSnapshot);
                         showCompletePane();
+                    } else if (shouldExitNow) {
+                        handleExitSession();
                     } else {
                         renderActiveSnapshot(nextSnapshot);
                     }
                 },
                 error -> {
                     submittingReview = false;
+                    exitPendingAfterSubmit = false;
                     setRatingButtonsDisabled(false);
                     showError(error);
                 }
@@ -1150,6 +1175,11 @@ public class StudyWorkspaceController implements RefreshableView {
     }
 
     private void stopTtsPlayback() {
+        // Tăng thế hệ phát âm để mọi callback muộn từ lượt phát trước bị loại bỏ hoàn toàn
+        ttsPlaybackGeneration++;
+        if (replayAudioButton != null) {
+            replayAudioButton.setDisable(false);
+        }
         if (ttsManager != null) {
             backgroundTaskExecutor.submitFireAndForget(ttsManager::stop);
         }

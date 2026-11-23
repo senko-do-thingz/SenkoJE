@@ -422,23 +422,27 @@
     -fx-font-weight: bold;
     -fx-text-fill: -senko-text-primary;
     -fx-text-alignment: CENTER;
+    -fx-font-smoothing-type: gray;
 }
 
 .study-front-secondary {
     -fx-font-size: 15px;
     -fx-text-fill: -senko-text-secondary;
+    -fx-font-smoothing-type: gray;
 }
 
 .study-back-reading {
     -fx-font-size: 20px;
     -fx-text-fill: -senko-accent;
     -fx-font-weight: 600;
+    -fx-font-smoothing-type: gray;
 }
 
 .study-back-meaning {
     -fx-font-size: 22px;
     -fx-font-weight: bold;
     -fx-text-fill: -senko-text-primary;
+    -fx-font-smoothing-type: gray;
 }
 
 .study-detail-block {
@@ -458,6 +462,7 @@
 .study-detail-body {
     -fx-font-size: 14px;
     -fx-text-fill: -senko-text-primary;
+    -fx-font-smoothing-type: gray;
 }
 
 .study-example-row {
@@ -472,6 +477,7 @@
     -fx-font-size: 14px;
     -fx-text-fill: -senko-text-primary;
     -fx-font-weight: 600;
+    -fx-font-smoothing-type: gray;
 }
 
 .study-controls-bar {
@@ -540,6 +546,7 @@
 .study-dictation-input {
     -fx-font-size: 16px;
     -fx-padding: 10 14 10 14;
+    -fx-font-smoothing-type: gray;
 }
 
 .dictation-feedback-correct {
@@ -552,6 +559,7 @@
 
 .dictation-feedback-correct .label {
     -fx-text-fill: #dcfce7;
+    -fx-font-smoothing-type: gray;
 }
 
 .dictation-feedback-incorrect {
@@ -564,4 +572,5 @@
 
 .dictation-feedback-incorrect .label {
     -fx-text-fill: #fee2e2;
+    -fx-font-smoothing-type: gray;
 }

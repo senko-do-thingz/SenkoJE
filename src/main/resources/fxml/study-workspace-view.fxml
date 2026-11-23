@@ -60,10 +60,14 @@
             <Region HBox.hgrow="ALWAYS"/>
 
             <Label fx:id="timerLabel" styleClass="study-timer-badge"/>
-            <Button fx:id="toggleDictationButton" styleClass="secondary-button" onAction="#handleToggleDictationMode"/>
-            <Button fx:id="replayAudioButton" styleClass="secondary-button" onAction="#handleReplayAudio"/>
-            <Button fx:id="pauseResumeButton" styleClass="secondary-button" onAction="#handleTogglePause"/>
-            <Button fx:id="exitSessionButton" styleClass="secondary-button" onAction="#handleExitSession"/>
+            <Button fx:id="toggleDictationButton" styleClass="secondary-button" focusTraversable="false"
+                    onAction="#handleToggleDictationMode"/>
+            <Button fx:id="replayAudioButton" styleClass="secondary-button" focusTraversable="false"
+                    onAction="#handleReplayAudio"/>
+            <Button fx:id="pauseResumeButton" styleClass="secondary-button" focusTraversable="false"
+                    onAction="#handleTogglePause"/>
+            <Button fx:id="exitSessionButton" styleClass="secondary-button" focusTraversable="false"
+                    onAction="#handleExitSession"/>
         </HBox>
 
         <!-- Thông báo trạng thái âm thanh hoặc thông báo tạm thời -->
@@ -116,18 +120,18 @@
         <VBox styleClass="study-controls-bar" spacing="10" alignment="CENTER">
             <HBox fx:id="revealButtonBox" alignment="CENTER">
                 <Button fx:id="revealAnswerButton" styleClass="primary-button, study-reveal-button"
-                        onAction="#handleRevealAnswer"/>
+                        focusTraversable="false" onAction="#handleRevealAnswer"/>
             </HBox>
 
             <HBox fx:id="ratingButtonsBox" spacing="12" alignment="CENTER" visible="false" managed="false">
                 <Button fx:id="againButton" styleClass="study-rate-button, study-rate-again"
-                        onAction="#handleRateAgain"/>
+                        focusTraversable="false" onAction="#handleRateAgain"/>
                 <Button fx:id="hardButton" styleClass="study-rate-button, study-rate-hard"
-                        onAction="#handleRateHard"/>
+                        focusTraversable="false" onAction="#handleRateHard"/>
                 <Button fx:id="goodButton" styleClass="study-rate-button, study-rate-good"
-                        onAction="#handleRateGood"/>
+                        focusTraversable="false" onAction="#handleRateGood"/>
                 <Button fx:id="easyButton" styleClass="study-rate-button, study-rate-easy"
-                        onAction="#handleRateEasy"/>
+                        focusTraversable="false" onAction="#handleRateEasy"/>
             </HBox>
 
             <Label fx:id="activeShortcutFooterLabel" styleClass="muted-label"/>

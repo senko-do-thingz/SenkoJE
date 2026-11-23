@@ -411,6 +411,10 @@
     -fx-padding: 28 32 28 32;
 }
 
+.study-card-panel .text {
+    -fx-font-smoothing-type: gray;
+}
+
 .study-template-cue {
     -fx-text-fill: -senko-accent;
     -fx-font-size: 12px;

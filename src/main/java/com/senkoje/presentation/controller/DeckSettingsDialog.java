@@ -16,8 +16,10 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.stage.Window;
 
@@ -49,6 +51,26 @@ public final class DeckSettingsDialog {
             LocalizationManager localizationManager,
             ThemeManager themeManager
     ) {
+        return createDialog(owner, deck, currentSettings, localizationManager, themeManager).showAndWait();
+    }
+
+    /**
+     * Tạo đối tượng Dialog cấu hình FSRS-6 cho bộ thẻ với bố cục cột nhãn rõ ràng và kiểu nút đồng nhất.
+     *
+     * @param owner cửa sổ cha
+     * @param deck bộ thẻ đang cấu hình
+     * @param currentSettings cấu hình hiện tại của bộ thẻ
+     * @param localizationManager trình quản lý đa ngôn ngữ
+     * @param themeManager trình quản lý chủ đề
+     * @return đối tượng Dialog sẵn sàng hiển thị hoặc kiểm thử bố cục
+     */
+    public static Dialog<DeckSettings> createDialog(
+            Window owner,
+            Deck deck,
+            DeckSettings currentSettings,
+            LocalizationManager localizationManager,
+            ThemeManager themeManager
+    ) {
         DeckSettings baseline = currentSettings == null ? DeckSettings.defaults(deck.id()) : currentSettings;
 
         Dialog<DeckSettings> dialog = new Dialog<>();
@@ -57,6 +79,8 @@ public final class DeckSettingsDialog {
         }
         dialog.setTitle(localizationManager.get("deckSettings.title", deck.title()));
         themeManager.applyTheme(dialog.getDialogPane());
+        dialog.getDialogPane().setMinWidth(560);
+        dialog.getDialogPane().setPrefWidth(580);
 
         ButtonType saveButtonType = new ButtonType(
                 localizationManager.get("common.save"), ButtonBar.ButtonData.OK_DONE);
@@ -83,7 +107,14 @@ public final class DeckSettingsDialog {
         grid.setHgap(12);
         grid.setVgap(10);
         grid.setPadding(new Insets(12));
-        grid.setPrefWidth(480);
+        // Cố định cột nhãn đủ chiều rộng ưu tiên để nhãn tiếng Việt dài không bị cắt dấu ba chấm
+        ColumnConstraints labelColumn = new ColumnConstraints();
+        labelColumn.setMinWidth(Region.USE_PREF_SIZE);
+        labelColumn.setHgrow(Priority.NEVER);
+        ColumnConstraints inputColumn = new ColumnConstraints();
+        inputColumn.setHgrow(Priority.ALWAYS);
+        inputColumn.setFillWidth(true);
+        grid.getColumnConstraints().addAll(labelColumn, inputColumn);
 
         grid.add(new Label(localizationManager.get("deckSettings.desiredRetention")), 0, 0);
         grid.add(retentionField, 1, 0);
@@ -109,8 +140,11 @@ public final class DeckSettingsDialog {
         VBox content = new VBox(8, grid, errorLabel);
         dialog.getDialogPane().setContent(content);
 
-        // Kiểm tra tính hợp lệ của toàn bộ thông số FSRS-6 trước khi đóng hộp thoại
+        // Kiểm tra tính hợp lệ của toàn bộ thông số FSRS-6 trước khi đóng hộp thoại và áp dụng kiểu nút chủ đề
         Button saveButton = (Button) dialog.getDialogPane().lookupButton(saveButtonType);
+        saveButton.getStyleClass().add("primary-button");
+        Button cancelButton = (Button) dialog.getDialogPane().lookupButton(cancelButtonType);
+        cancelButton.getStyleClass().add("secondary-button");
         saveButton.addEventFilter(ActionEvent.ACTION, event -> {
             try {
                 DeckSettings candidate = parseSettings(
@@ -153,7 +187,7 @@ public final class DeckSettingsDialog {
             );
         });
 
-        return dialog.showAndWait();
+        return dialog;
     }
 
     private static DeckSettings parseSettings(

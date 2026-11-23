@@ -27,9 +27,11 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Separator;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.stage.Window;
 import javafx.util.StringConverter;
@@ -86,6 +88,33 @@ public final class CardEditorDialog {
             LocalizationManager localizationManager,
             ThemeManager themeManager
     ) {
+        return createDialog(
+                owner, availableDecks, existingCard, existingMeanings, existingExamples,
+                localizationManager, themeManager
+        ).showAndWait();
+    }
+
+    /**
+     * Tạo đối tượng Dialog tạo mới hoặc chỉnh sửa thẻ học tập với bố cục cột rõ ràng và kiểu nút đồng nhất.
+     *
+     * @param owner cửa sổ cha
+     * @param availableDecks danh sách bộ thẻ hiện có
+     * @param existingCard thẻ đang chỉnh sửa (null nếu tạo mới)
+     * @param existingMeanings danh sách nghĩa bổ sung hiện có
+     * @param existingExamples danh sách câu ví dụ hiện có
+     * @param localizationManager trình quản lý đa ngôn ngữ
+     * @param themeManager trình quản lý chủ đề
+     * @return đối tượng Dialog sẵn sàng hiển thị hoặc kiểm thử bố cục
+     */
+    public static Dialog<CardFormData> createDialog(
+            Window owner,
+            List<Deck> availableDecks,
+            Card existingCard,
+            List<CardMeaning> existingMeanings,
+            List<CardExample> existingExamples,
+            LocalizationManager localizationManager,
+            ThemeManager themeManager
+    ) {
         Dialog<CardFormData> dialog = new Dialog<>();
         if (owner != null) {
             dialog.initOwner(owner);
@@ -94,6 +123,8 @@ public final class CardEditorDialog {
                 existingCard == null ? "cardEditor.createTitle" : "cardEditor.editTitle"));
         dialog.setResizable(true);
         themeManager.applyTheme(dialog.getDialogPane());
+        dialog.getDialogPane().setMinWidth(660);
+        dialog.getDialogPane().setPrefWidth(680);
 
         ButtonType saveButtonType = new ButtonType(
                 localizationManager.get("common.save"), ButtonBar.ButtonData.OK_DONE);
@@ -307,11 +338,14 @@ public final class CardEditorDialog {
 
         ScrollPane scrollPane = new ScrollPane(formBody);
         scrollPane.setFitToWidth(true);
-        scrollPane.setPrefViewportWidth(620);
+        scrollPane.setPrefViewportWidth(640);
         scrollPane.setPrefViewportHeight(540);
         dialog.getDialogPane().setContent(scrollPane);
 
         Button saveButton = (Button) dialog.getDialogPane().lookupButton(saveButtonType);
+        saveButton.getStyleClass().add("primary-button");
+        Button cancelButton = (Button) dialog.getDialogPane().lookupButton(cancelButtonType);
+        cancelButton.getStyleClass().add("secondary-button");
         saveButton.addEventFilter(ActionEvent.ACTION, event -> {
             if (deckBox.getValue() == null
                     || typeBox.getValue() == null
@@ -395,7 +429,7 @@ public final class CardEditorDialog {
             );
         });
 
-        return dialog.showAndWait();
+        return dialog;
     }
 
     private static void addMeaningRow(
@@ -469,6 +503,15 @@ public final class CardEditorDialog {
         GridPane grid = new GridPane();
         grid.setHgap(12);
         grid.setVgap(8);
+        // Cột nhãn luôn giữ đủ chiều rộng ưu tiên, căn thẳng hàng giữa các nhóm trường và không bị cắt chữ
+        ColumnConstraints labelColumn = new ColumnConstraints();
+        labelColumn.setMinWidth(Region.USE_PREF_SIZE);
+        labelColumn.setPrefWidth(210);
+        labelColumn.setHgrow(Priority.NEVER);
+        ColumnConstraints inputColumn = new ColumnConstraints();
+        inputColumn.setHgrow(Priority.ALWAYS);
+        inputColumn.setFillWidth(true);
+        grid.getColumnConstraints().addAll(labelColumn, inputColumn);
         return grid;
     }
 

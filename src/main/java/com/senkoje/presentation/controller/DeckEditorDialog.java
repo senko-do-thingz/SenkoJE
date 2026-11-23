@@ -18,8 +18,10 @@ import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.stage.Window;
 
@@ -62,6 +64,24 @@ public final class DeckEditorDialog {
             LocalizationManager localizationManager,
             ThemeManager themeManager
     ) {
+        return createDialog(owner, existingDeck, localizationManager, themeManager).showAndWait();
+    }
+
+    /**
+     * Tạo đối tượng Dialog chỉnh sửa bộ thẻ với bố cục cột rõ ràng và nút theo chủ đề hiện tại.
+     *
+     * @param owner cửa sổ cha
+     * @param existingDeck bộ thẻ hiện có nếu đang chỉnh sửa (null nếu tạo mới)
+     * @param localizationManager trình quản lý đa ngôn ngữ
+     * @param themeManager trình quản lý chủ đề
+     * @return đối tượng Dialog sẵn sàng hiển thị hoặc kiểm thử bố cục
+     */
+    public static Dialog<DeckFormData> createDialog(
+            Window owner,
+            Deck existingDeck,
+            LocalizationManager localizationManager,
+            ThemeManager themeManager
+    ) {
         Dialog<DeckFormData> dialog = new Dialog<>();
         if (owner != null) {
             dialog.initOwner(owner);
@@ -69,6 +89,8 @@ public final class DeckEditorDialog {
         dialog.setTitle(localizationManager.get(
                 existingDeck == null ? "decks.dialog.createTitle" : "decks.dialog.editTitle"));
         themeManager.applyTheme(dialog.getDialogPane());
+        dialog.getDialogPane().setMinWidth(520);
+        dialog.getDialogPane().setPrefWidth(540);
 
         ButtonType saveButtonType = new ButtonType(
                 localizationManager.get("common.save"), ButtonBar.ButtonData.OK_DONE);
@@ -108,7 +130,14 @@ public final class DeckEditorDialog {
         grid.setHgap(12);
         grid.setVgap(10);
         grid.setPadding(new Insets(12));
-        grid.setPrefWidth(460);
+        // Đảm bảo cột nhãn luôn giữ đủ chiều rộng ưu tiên, không bị nén thành dấu ba chấm
+        ColumnConstraints labelColumn = new ColumnConstraints();
+        labelColumn.setMinWidth(Region.USE_PREF_SIZE);
+        labelColumn.setHgrow(Priority.NEVER);
+        ColumnConstraints inputColumn = new ColumnConstraints();
+        inputColumn.setHgrow(Priority.ALWAYS);
+        inputColumn.setFillWidth(true);
+        grid.getColumnConstraints().addAll(labelColumn, inputColumn);
 
         grid.add(new Label(localizationManager.get("decks.field.title")), 0, 0);
         grid.add(titleField, 1, 0);
@@ -130,8 +159,11 @@ public final class DeckEditorDialog {
         VBox content = new VBox(8, grid, errorLabel);
         dialog.getDialogPane().setContent(content);
 
-        // Chặn đóng hộp thoại nếu dữ liệu nhập chưa hợp lệ
+        // Chặn đóng hộp thoại nếu dữ liệu nhập chưa hợp lệ và áp dụng kiểu nút đồng nhất theo chủ đề
         Button saveButton = (Button) dialog.getDialogPane().lookupButton(saveButtonType);
+        saveButton.getStyleClass().add("primary-button");
+        Button cancelButton = (Button) dialog.getDialogPane().lookupButton(cancelButtonType);
+        cancelButton.getStyleClass().add("secondary-button");
         saveButton.addEventFilter(ActionEvent.ACTION, event -> {
             String title = titleField.getText() == null ? "" : titleField.getText().trim();
             String rawLevel = levelBox.getEditor().getText() == null
@@ -166,6 +198,6 @@ public final class DeckEditorDialog {
             );
         });
 
-        return dialog.showAndWait();
+        return dialog;
     }
 }

@@ -300,7 +300,17 @@ public class MainShellController {
                     container.getBackgroundTaskExecutor(),
                     () -> navigateTo(NavigationSection.DASHBOARD)
             ));
-            case READING_SANDBOX -> loadPlaceholder("placeholder.reading.title", "placeholder.reading.subtitle");
+            case READING_SANDBOX -> loadFxml("/fxml/reading-sandbox-view.fxml", new ReadingSandboxController(
+                    container.getJapaneseTokenizerService(),
+                    container.getFuriganaSegmentBuilder(),
+                    container.getEnglishTextTokenizer(),
+                    container.getDeckService(),
+                    container.getCardService(),
+                    container.getTtsManager(),
+                    localizationManager,
+                    container.getThemeManager(),
+                    container.getBackgroundTaskExecutor()
+            ));
             case CARD_BROWSER -> loadFxml("/fxml/card-browser-view.fxml", new CardBrowserController(
                     container.getDeckService(),
                     container.getCardService(),

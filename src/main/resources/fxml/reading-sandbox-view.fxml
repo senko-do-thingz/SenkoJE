@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressIndicator?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Priority?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<!-- Màn hình Không gian thực hành đọc hỗ trợ phân tích tiếng Nhật Kuromoji kèm Furigana và tách câu tiếng Anh -->
+<VBox xmlns="http://javafx.com/javafx/25"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.senkoje.presentation.controller.ReadingSandboxController"
+      fx:id="rootPane"
+      styleClass="screen-container"
+      spacing="14">
+
+    <!-- Tiêu đề màn hình -->
+    <VBox spacing="4">
+        <Label fx:id="titleLabel" styleClass="screen-title"/>
+        <Label fx:id="subtitleLabel" styleClass="screen-subtitle" wrapText="true"/>
+    </VBox>
+
+    <!-- Thanh công cụ chọn ngôn ngữ, bật tắt Furigana, phân tích và đọc văn bản -->
+    <HBox spacing="12" alignment="CENTER_LEFT" styleClass="reading-toolbar">
+        <Label fx:id="languageLabel" styleClass="muted-label" minWidth="-Infinity"/>
+        <ComboBox fx:id="languageComboBox" prefWidth="175"/>
+        <CheckBox fx:id="showFuriganaCheckBox" selected="true"/>
+        <Button fx:id="analyzeButton" styleClass="primary-button" onAction="#handleAnalyze"/>
+        <Button fx:id="speakTextButton" styleClass="secondary-button" onAction="#handleSpeakText"/>
+        <Button fx:id="clearButton" styleClass="secondary-button" onAction="#handleClear"/>
+        <Region HBox.hgrow="ALWAYS"/>
+        <HBox fx:id="loadingBox" spacing="8" alignment="CENTER_RIGHT" visible="false" managed="false">
+            <ProgressIndicator prefWidth="18" prefHeight="18"/>
+            <Label fx:id="loadingLabel" styleClass="muted-label"/>
+        </HBox>
+    </HBox>
+
+    <!-- Dải thông báo trạng thái phân tích, TTS hoặc lưu thẻ -->
+    <Label fx:id="statusLabel" styleClass="muted-label" wrapText="true" visible="false" managed="false"/>
+
+    <!-- Khu vực làm việc hai cột: bên trái nhập và đọc văn bản, bên phải kiểm tra chi tiết từ vựng -->
+    <HBox spacing="16" VBox.vgrow="ALWAYS">
+
+        <!-- Cột trái: ô nhập văn bản và vùng kết quả đã định dạng -->
+        <VBox spacing="12" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
+
+            <!-- Khối nhập văn bản nguồn -->
+            <VBox spacing="8" styleClass="card-panel">
+                <Label fx:id="inputSectionLabel" styleClass="section-title"/>
+                <TextArea fx:id="inputTextArea"
+                          prefRowCount="4"
+                          wrapText="true"
+                          styleClass="reading-input-area"/>
+            </VBox>
+
+            <!-- Khối hiển thị văn bản đã phân tích (FuriganaView cho JA hoặc danh sách câu cho EN) -->
+            <VBox spacing="10" styleClass="card-panel" VBox.vgrow="ALWAYS">
+                <HBox spacing="10" alignment="CENTER_LEFT">
+                    <Label fx:id="outputSectionLabel" styleClass="section-title"/>
+                    <Region HBox.hgrow="ALWAYS"/>
+                    <Label fx:id="outputStatsLabel" styleClass="badge" visible="false" managed="false"/>
+                </HBox>
+
+                <ScrollPane fx:id="outputScrollPane" fitToWidth="true" VBox.vgrow="ALWAYS">
+                    <content>
+                        <StackPane fx:id="outputContentStack" alignment="TOP_LEFT">
+                            <padding>
+                                <Insets top="4" right="4" bottom="4" left="4"/>
+                            </padding>
+
+                            <!-- Trạng thái rỗng khi chưa phân tích văn bản -->
+                            <VBox fx:id="outputEmptyState" styleClass="empty-state" maxWidth="Infinity">
+                                <Label fx:id="outputEmptyTitleLabel" styleClass="section-title"/>
+                                <Label fx:id="outputEmptyDescriptionLabel"
+                                       styleClass="muted-label"
+                                       wrapText="true"
+                                       maxWidth="520"
+                                       textAlignment="CENTER"/>
+                            </VBox>
+
+                            <!-- Vùng chứa FuriganaView (tiếng Nhật) -->
+                            <VBox fx:id="japaneseOutputContainer"
+                                  spacing="8"
+                                  visible="false"
+                                  managed="false"/>
+
+                            <!-- Vùng chứa danh sách câu và token tiếng Anh -->
+                            <VBox fx:id="englishOutputContainer"
+                                  spacing="10"
+                                  visible="false"
+                                  managed="false"/>
+                        </StackPane>
+                    </content>
+                </ScrollPane>
+            </VBox>
+        </VBox>
+
+        <!-- Cột phải: bảng kiểm tra chi tiết token và thao tác thêm vào bộ thẻ -->
+        <VBox spacing="12"
+              styleClass="card-panel"
+              minWidth="320"
+              prefWidth="350"
+              maxWidth="390"
+              VBox.vgrow="ALWAYS">
+            <Label fx:id="inspectorTitleLabel" styleClass="section-title"/>
+            <Separator/>
+
+            <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS">
+                <content>
+                    <VBox spacing="12">
+                        <!-- Trạng thái rỗng khi chưa nhấp chọn từ -->
+                        <VBox fx:id="inspectorEmptyState" styleClass="empty-state">
+                            <Label fx:id="inspectorEmptyTitleLabel" styleClass="section-title"/>
+                            <Label fx:id="inspectorEmptyDescriptionLabel"
+                                   styleClass="muted-label"
+                                   wrapText="true"
+                                   textAlignment="CENTER"/>
+                        </VBox>
+
+                        <!-- Khối chi tiết token đã chọn -->
+                        <VBox fx:id="inspectorDetailBox" spacing="12" visible="false" managed="false">
+                            <HBox spacing="8" alignment="CENTER_LEFT">
+                                <Label fx:id="inspectorSurfaceLabel"
+                                       styleClass="reading-inspector-surface"
+                                       wrapText="true"/>
+                                <Region HBox.hgrow="ALWAYS"/>
+                                <Label fx:id="inspectorPosBadge" styleClass="badge-accent"/>
+                            </HBox>
+
+                            <GridPane fx:id="inspectorMetaGrid" hgap="10" vgap="8">
+                                <columnConstraints>
+                                    <ColumnConstraints minWidth="-Infinity" prefWidth="125" hgrow="NEVER"/>
+                                    <ColumnConstraints hgrow="ALWAYS" fillWidth="true"/>
+                                </columnConstraints>
+
+                                <Label fx:id="surfaceKeyLabel" styleClass="reading-inspector-key"
+                                       GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                                <Label fx:id="surfaceValueLabel" styleClass="reading-inspector-value" wrapText="true"
+                                       GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+
+                                <Label fx:id="baseFormKeyLabel" styleClass="reading-inspector-key"
+                                       GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+                                <Label fx:id="baseFormValueLabel" styleClass="reading-inspector-value" wrapText="true"
+                                       GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+
+                                <Label fx:id="hiraganaKeyLabel" styleClass="reading-inspector-key"
+                                       GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+                                <Label fx:id="hiraganaValueLabel" styleClass="reading-inspector-value" wrapText="true"
+                                       GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+
+                                <Label fx:id="katakanaKeyLabel" styleClass="reading-inspector-key"
+                                       GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+                                <Label fx:id="katakanaValueLabel" styleClass="reading-inspector-value" wrapText="true"
+                                       GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+
+                                <Label fx:id="posKeyLabel" styleClass="reading-inspector-key"
+                                       GridPane.columnIndex="0" GridPane.rowIndex="4"/>
+                                <Label fx:id="posValueLabel" styleClass="reading-inspector-value" wrapText="true"
+                                       GridPane.columnIndex="1" GridPane.rowIndex="4"/>
+                            </GridPane>
+
+                            <!-- Khối hiệu chỉnh cách đọc Furigana cho từ tiếng Nhật mơ hồ -->
+                            <VBox fx:id="furiganaEditBox" spacing="6" styleClass="study-detail-block">
+                                <Label fx:id="editReadingLabel" styleClass="study-detail-heading"/>
+                                <HBox spacing="6" alignment="CENTER_LEFT">
+                                    <TextField fx:id="customReadingField" HBox.hgrow="ALWAYS"/>
+                                    <Button fx:id="applyReadingButton"
+                                            styleClass="secondary-button"
+                                            minWidth="-Infinity"
+                                            onAction="#handleApplyCustomReading"/>
+                                    <Button fx:id="resetReadingButton"
+                                            styleClass="secondary-button"
+                                            minWidth="-Infinity"
+                                            onAction="#handleResetReading"/>
+                                </HBox>
+                                <HBox spacing="6" alignment="CENTER_LEFT">
+                                    <Label fx:id="furiganaPreviewKeyLabel" styleClass="muted-label"/>
+                                    <Label fx:id="furiganaPreviewValueLabel" styleClass="reading-inspector-value"
+                                           wrapText="true"/>
+                                </HBox>
+                            </VBox>
+
+                            <!-- Câu ngữ cảnh đi kèm sẽ được điền sẵn vào câu ví dụ khi lưu thẻ -->
+                            <VBox spacing="6" styleClass="study-detail-block">
+                                <Label fx:id="contextSentenceHeadingLabel" styleClass="study-detail-heading"/>
+                                <Label fx:id="contextSentenceValueLabel"
+                                       styleClass="study-detail-body"
+                                       wrapText="true"/>
+                            </VBox>
+
+                            <!-- Ghi chú minh bạch giới hạn NLP ngoại tuyến -->
+                            <Label fx:id="nlpBoundaryLabel" styleClass="muted-label" wrapText="true"/>
+
+                            <!-- Nút phát âm và thêm vào bộ thẻ -->
+                            <HBox spacing="8">
+                                <Button fx:id="speakTokenButton"
+                                        styleClass="secondary-button"
+                                        maxWidth="Infinity"
+                                        HBox.hgrow="ALWAYS"
+                                        onAction="#handleSpeakSelectedToken"/>
+                                <Button fx:id="addToDeckButton"
+                                        styleClass="primary-button"
+                                        maxWidth="Infinity"
+                                        HBox.hgrow="ALWAYS"
+                                        onAction="#handleAddToDeck"/>
+                            </HBox>
+                        </VBox>
+                    </VBox>
+                </content>
+            </ScrollPane>
+        </VBox>
+    </HBox>
+</VBox>

@@ -1,6 +1,7 @@
 package com.senkoje.app;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -35,6 +36,9 @@ class ApplicationContainerTest {
             assertNotNull(container.getLocalizationManager());
             assertNotNull(container.getThemeManager());
             assertNotNull(container.getBackgroundTaskExecutor());
+            assertNotNull(container.getJapaneseTokenizerService());
+            assertFalse(container.getJapaneseTokenizerService().isLoaded(),
+                    "Kuromoji dictionary must remain lazy-loaded at startup");
             assertTrue(container.getThemeManager().isDarkTheme());
             assertEquals("vi", container.getLocalizationManager().getCurrentLanguage());
         }

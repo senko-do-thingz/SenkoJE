@@ -19,6 +19,7 @@ import com.senkoje.domain.service.CardValidator;
 import com.senkoje.domain.service.DeckSettingsValidator;
 import com.senkoje.domain.service.DeckValidator;
 import com.senkoje.infrastructure.config.AppDataPathResolver;
+import com.senkoje.infrastructure.nlp.JapaneseTokenizerService;
 import com.senkoje.infrastructure.tts.BundledOfflineTtsProvider;
 import com.senkoje.infrastructure.tts.SystemTtsProvider;
 import com.senkoje.infrastructure.tts.TtsManager;
@@ -74,6 +75,7 @@ public class ApplicationContainer implements AutoCloseable {
     private final ThemeManager themeManager;
     private final BackgroundTaskExecutor backgroundTaskExecutor;
     private final TtsManager ttsManager;
+    private final JapaneseTokenizerService japaneseTokenizerService;
 
     /**
      * Khởi tạo bộ chứa ứng dụng mặc định dùng đường dẫn dữ liệu chuẩn theo hệ điều hành và múi giờ Việt Nam.
@@ -161,6 +163,8 @@ public class ApplicationContainer implements AutoCloseable {
                 new BundledOfflineTtsProvider(this.pathResolver.resolveAppDataDirectory().resolve("voices")),
                 new UnsupportedTtsProvider()
         );
+        // Khởi tạo dịch vụ Kuromoji ở chế độ tải lười, không nạp từ điển ngay lúc khởi động ứng dụng
+        this.japaneseTokenizerService = new JapaneseTokenizerService();
     }
 
     public Clock getClock() {
@@ -233,6 +237,10 @@ public class ApplicationContainer implements AutoCloseable {
 
     public TtsManager getTtsManager() {
         return ttsManager;
+    }
+
+    public JapaneseTokenizerService getJapaneseTokenizerService() {
+        return japaneseTokenizerService;
     }
 
     @Override

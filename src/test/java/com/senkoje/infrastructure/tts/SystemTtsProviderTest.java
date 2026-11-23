@@ -112,6 +112,15 @@ class SystemTtsProviderTest {
         int beforeStop = timeoutRunner.cancelCount;
         provider.stop();
         assertEquals(beforeStop + 1, timeoutRunner.cancelCount);
+
+        RecordingProcessRunner cancelledRunner = new RecordingProcessRunner(
+                (cmd, env) -> new ProcessExecutionResult(-1, "", "Process cancelled", false, false, true));
+        SystemTtsProvider cancelledProvider = new SystemTtsProvider("Windows 11", cancelledRunner);
+        TtsPlaybackResult cancelledResult = cancelledProvider.speak(
+                new TtsPlaybackRequest("test", TargetLanguage.EN, 1.0, ""));
+        assertFalse(cancelledResult.succeeded());
+        assertTrue(cancelledResult.cancelled());
+        assertEquals("tts.status.cancelled", cancelledResult.statusCode());
     }
 
     private record RecordedCall(List<String> command, Map<String, String> environment, Duration timeout) {

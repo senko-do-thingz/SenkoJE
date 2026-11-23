@@ -93,7 +93,9 @@ public class StudySessionService {
 
         Deque<ReviewState> queue = new ArrayDeque<>(dueQueue);
         ActiveSessionState state = new ActiveSessionState(created, queue, now, emptyQueue);
-        activeSessions.put(created.id(), state);
+        if (!emptyQueue) {
+            activeSessions.put(created.id(), state);
+        }
         return buildSnapshot(state, now);
     }
 
@@ -155,17 +157,20 @@ public class StudySessionService {
     }
 
     /**
-     * Ghi nhận đánh giá FSRS-6 cho thẻ hiện tại ở đầu hàng đợi, đồng thời lưu ngay
+     * Ghi nhận đánh giá FSRS-6 cho thẻ hiện tại ở đầu hàng đợi, kiểm tra cả mã thẻ lẫn mã tuần tự hiển thị
+     * để chặn gửi trùng lặp kể cả khi cùng một thẻ LEARNING được đưa lại vào hàng đợi, đồng thời lưu ngay
      * review_states, review_logs và cập nhật study_sessions trước khi chuyển sang thẻ tiếp theo.
      *
      * @param sessionId mã phiên học đang hoạt động
-     * @param expectedCardId mã thẻ mà giao diện đang hiển thị để chặn gửi trùng lặp hoặc dữ liệu cũ
+     * @param expectedCardId mã thẻ mà giao diện đang hiển thị
+     * @param expectedPresentationSeq mã tuần tự hiển thị của thẻ ở đầu hàng đợi
      * @param rating mức đánh giá FSRS-6 từ 1 đến 4
      * @return kết quả lập lịch và ảnh chụp trạng thái tiếp theo của phiên học
      */
     public SubmittedReviewOutcome submitCurrentCardReview(
             long sessionId,
             long expectedCardId,
+            long expectedPresentationSeq,
             ReviewRating rating
     ) {
         Objects.requireNonNull(rating, "rating must not be null");
@@ -177,61 +182,63 @@ public class StudySessionService {
             if (state.status == StudySessionStatus.PAUSED) {
                 throw new IllegalStateException("Cannot submit review while study session is paused: " + sessionId);
             }
-            if (state.submissionInFlight) {
-                throw new IllegalStateException("A review submission is already in progress for session: " + sessionId);
-            }
 
             ReviewState currentHead = state.queue.peekFirst();
             if (currentHead == null) {
                 throw new IllegalStateException("No cards remaining in study session: " + sessionId);
             }
-            if (!Objects.equals(currentHead.cardId(), expectedCardId)) {
+            if (!Objects.equals(currentHead.cardId(), expectedCardId)
+                    || state.presentationSeq != expectedPresentationSeq) {
                 throw new IllegalStateException(
                         "Duplicate or stale review submission: expected card "
-                                + currentHead.cardId() + " but received " + expectedCardId);
+                                + currentHead.cardId() + " (seq " + state.presentationSeq
+                                + ") but received " + expectedCardId + " (seq " + expectedPresentationSeq + ")");
             }
 
             Instant now = clock.instant();
-            state.submissionInFlight = true;
-            try {
-                int responseTimeMs = state.computeCurrentCardResponseTimeMs(now);
-                SchedulingResult result = reviewService.submitReview(
-                        expectedCardId,
-                        rating,
-                        sessionId,
-                        responseTimeMs,
-                        now
-                );
+            int responseTimeMs = state.computeCurrentCardResponseTimeMs(now);
+            SchedulingResult result = reviewService.submitReview(
+                    expectedCardId,
+                    rating,
+                    sessionId,
+                    responseTimeMs,
+                    now
+            );
 
-                // Cập nhật hàng đợi và thống kê sau khi ReviewService đã lưu giao dịch SQLite thành công
-                state.accumulateActiveTime(now);
-                state.queue.pollFirst();
-                if (shouldRequeueInSession(result.nextState(), now)) {
-                    state.queue.addLast(result.nextState());
-                }
-
-                state.completedReviews++;
-                state.ratingBreakdown.merge(rating, 1, Integer::sum);
-                state.resetCurrentCardTimer(now);
-
-                Instant completedAt = null;
-                if (state.queue.isEmpty()) {
-                    state.status = StudySessionStatus.COMPLETED;
-                    completedAt = now;
-                }
-                persistSessionProgress(state, completedAt);
-
-                StudySessionSnapshot snapshot = buildSnapshot(state, now);
-                return new SubmittedReviewOutcome(result, snapshot);
-            } finally {
-                state.submissionInFlight = false;
+            // Cập nhật hàng đợi và thống kê sau khi ReviewService đã lưu giao dịch SQLite thành công
+            state.accumulateActiveTime(now);
+            state.queue.pollFirst();
+            if (shouldRequeueInSession(result.nextState(), now)) {
+                state.queue.addLast(result.nextState());
             }
+
+            state.completedReviews++;
+            state.ratingBreakdown.merge(rating, 1, Integer::sum);
+            state.resetCurrentCardTimer(now);
+
+            Instant completedAt = null;
+            if (state.queue.isEmpty()) {
+                state.status = StudySessionStatus.COMPLETED;
+                state.presentationSeq = 0L;
+                completedAt = now;
+            } else {
+                // Tăng mã tuần tự cho lần hiển thị kế tiếp (kể cả khi cùng một thẻ được đưa lại vào hàng đợi)
+                state.presentationSeq++;
+            }
+            persistSessionProgress(state, completedAt);
+            if (state.status == StudySessionStatus.COMPLETED) {
+                activeSessions.remove(sessionId, state);
+            }
+
+            StudySessionSnapshot snapshot = buildSnapshot(state, now);
+            return new SubmittedReviewOutcome(result, snapshot);
         }
     }
 
     /**
      * Kết thúc sớm hoặc hoàn tất một phiên học (ví dụ khi người dùng nhấn Esc hoặc đóng ứng dụng).
-     * Mọi lượt ôn tập đã hoàn thành đều được giữ nguyên và thời lượng phiên học được lưu ngay vào SQLite.
+     * Mọi lượt ôn tập đã hoàn thành đều được giữ nguyên, thời lượng được lưu ngay vào SQLite
+     * và phiên học được giải phóng khỏi bộ nhớ theo dõi.
      *
      * @param sessionId mã phiên học cần kết thúc
      * @return ảnh chụp tổng kết cuối cùng của phiên học
@@ -245,8 +252,10 @@ public class StudySessionService {
                     state.accumulateActiveTime(now);
                 }
                 state.status = StudySessionStatus.COMPLETED;
+                state.presentationSeq = 0L;
                 persistSessionProgress(state, now);
             }
+            activeSessions.remove(sessionId, state);
             return buildSnapshot(state, now);
         }
     }
@@ -313,6 +322,7 @@ public class StudySessionService {
                 state.persistedSession,
                 state.status,
                 currentCard,
+                state.presentationSeq,
                 state.queue.size(),
                 state.completedReviews,
                 state.initialQueueSize,
@@ -358,7 +368,7 @@ public class StudySessionService {
 
         private long accumulatedCardMs;
         private Instant currentCardSegmentStartedAt;
-        private boolean submissionInFlight;
+        private long presentationSeq;
 
         private ActiveSessionState(
                 StudySession persistedSession,
@@ -370,6 +380,7 @@ public class StudySessionService {
             this.queue = queue;
             this.initialQueueSize = queue.size();
             this.status = emptyQueue ? StudySessionStatus.COMPLETED : StudySessionStatus.ACTIVE;
+            this.presentationSeq = emptyQueue ? 0L : 1L;
             this.activeSegmentStartedAt = startedAt;
             this.currentCardSegmentStartedAt = startedAt;
             for (ReviewRating rating : ReviewRating.values()) {

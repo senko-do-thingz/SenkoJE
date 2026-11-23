@@ -9,12 +9,15 @@ import com.senkoje.domain.service.DeckSettingsValidator;
 import com.senkoje.domain.service.DomainValidationException;
 import com.senkoje.infrastructure.tts.TtsAvailability;
 import com.senkoje.infrastructure.tts.TtsManager;
+import com.senkoje.infrastructure.tts.TtsVoice;
 import com.senkoje.presentation.i18n.LocalizationManager;
 import com.senkoje.presentation.navigation.RefreshableView;
 import com.senkoje.presentation.theme.ThemeManager;
 import com.senkoje.presentation.util.BackgroundTaskExecutor;
 import com.senkoje.presentation.util.DialogHelper;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 import javafx.fxml.FXML;
@@ -22,6 +25,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.stage.Window;
@@ -85,11 +89,11 @@ public class SettingsController implements RefreshableView {
     @FXML
     private Label jaVoiceFieldLabel;
     @FXML
-    private TextField jaVoiceField;
+    private ComboBox<VoiceOption> jaVoiceComboBox;
     @FXML
     private Label enVoiceFieldLabel;
     @FXML
-    private TextField enVoiceField;
+    private ComboBox<VoiceOption> enVoiceComboBox;
     @FXML
     private Label ttsAvailabilityStatusLabel;
     @FXML
@@ -241,12 +245,14 @@ public class SettingsController implements RefreshableView {
     @FXML
     private void handleSaveTts() {
         double roundedRate = Math.round(speechRateSlider.getValue() * 10.0) / 10.0;
+        String selectedJaVoice = jaVoiceComboBox.getValue() == null ? "" : jaVoiceComboBox.getValue().id();
+        String selectedEnVoice = enVoiceComboBox.getValue() == null ? "" : enVoiceComboBox.getValue().id();
         TtsPreferences prefs = new TtsPreferences(
                 ttsEnabledCheckBox.isSelected(),
                 ttsProviderComboBox.getValue(),
                 roundedRate,
-                jaVoiceField.getText(),
-                enVoiceField.getText()
+                selectedJaVoice,
+                selectedEnVoice
         );
         backgroundTaskExecutor.runAsyncVoid(
                 () -> appSettingsService.saveTtsPreferences(prefs),
@@ -378,8 +384,8 @@ public class SettingsController implements RefreshableView {
             ttsEnabledCheckBox.setSelected(loaded.tts().enabled());
             ttsProviderComboBox.setValue(loaded.tts().provider());
             speechRateSlider.setValue(loaded.tts().speechRate());
-            jaVoiceField.setText(loaded.tts().japaneseVoice());
-            enVoiceField.setText(loaded.tts().englishVoice());
+            applyVoiceChoices(jaVoiceComboBox, List.of(), loaded.tts().japaneseVoice());
+            applyVoiceChoices(enVoiceComboBox, List.of(), loaded.tts().englishVoice());
 
             typingEnCaseInsensitiveCheckBox.setSelected(loaded.typing().caseInsensitiveEnglish());
             typingEnIgnorePunctuationCheckBox.setSelected(loaded.typing().ignoreEnglishPunctuation());
@@ -394,6 +400,11 @@ public class SettingsController implements RefreshableView {
             fuzzingCheckBox.setSelected(loaded.srsEnableFuzzing());
             updateSpeechRateLabel();
             refreshTtsAvailabilityStatus();
+            loadVoicesForProviderAsync(
+                    loaded.tts().provider(),
+                    loaded.tts().japaneseVoice(),
+                    loaded.tts().englishVoice()
+            );
         } finally {
             loadingControls = false;
         }
@@ -499,6 +510,106 @@ public class SettingsController implements RefreshableView {
                 return null;
             }
         });
+        ttsProviderComboBox.valueProperty().addListener((obs, oldVal, newVal) -> {
+            if (!loadingControls && newVal != null) {
+                String currentJa = jaVoiceComboBox.getValue() == null ? "" : jaVoiceComboBox.getValue().id();
+                String currentEn = enVoiceComboBox.getValue() == null ? "" : enVoiceComboBox.getValue().id();
+                loadVoicesForProviderAsync(newVal, currentJa, currentEn);
+            }
+        });
+
+        configureVoiceComboBox(jaVoiceComboBox);
+        configureVoiceComboBox(enVoiceComboBox);
+    }
+
+    private void configureVoiceComboBox(ComboBox<VoiceOption> comboBox) {
+        comboBox.setConverter(new StringConverter<>() {
+            @Override
+            public String toString(VoiceOption option) {
+                return formatVoiceOption(option);
+            }
+
+            @Override
+            public VoiceOption fromString(String string) {
+                return null;
+            }
+        });
+        comboBox.setCellFactory(listView -> createVoiceOptionCell());
+        comboBox.setButtonCell(createVoiceOptionCell());
+    }
+
+    private ListCell<VoiceOption> createVoiceOptionCell() {
+        return new ListCell<>() {
+            @Override
+            protected void updateItem(VoiceOption item, boolean empty) {
+                super.updateItem(item, empty);
+                setText(empty || item == null ? null : formatVoiceOption(item));
+            }
+        };
+    }
+
+    private String formatVoiceOption(VoiceOption option) {
+        if (option == null || option.isSystemDefault()) {
+            return localizationManager.get("settings.tts.systemDefault");
+        }
+        return option.displayName();
+    }
+
+    private void loadVoicesForProviderAsync(String providerId, String savedJaVoice, String savedEnVoice) {
+        if (ttsManager == null) {
+            applyVoiceChoices(jaVoiceComboBox, List.of(), savedJaVoice);
+            applyVoiceChoices(enVoiceComboBox, List.of(), savedEnVoice);
+            return;
+        }
+        backgroundTaskExecutor.runAsync(
+                () -> new DetectedVoices(
+                        ttsManager.listVoicesForProvider(providerId, TargetLanguage.JA),
+                        ttsManager.listVoicesForProvider(providerId, TargetLanguage.EN)
+                ),
+                detected -> {
+                    applyVoiceChoices(jaVoiceComboBox, detected.jaVoices(), savedJaVoice);
+                    applyVoiceChoices(enVoiceComboBox, detected.enVoices(), savedEnVoice);
+                },
+                error -> {
+                    applyVoiceChoices(jaVoiceComboBox, List.of(), savedJaVoice);
+                    applyVoiceChoices(enVoiceComboBox, List.of(), savedEnVoice);
+                }
+        );
+    }
+
+    private void applyVoiceChoices(
+            ComboBox<VoiceOption> comboBox,
+            List<TtsVoice> detectedVoices,
+            String savedVoiceId
+    ) {
+        String normalizedSaved = savedVoiceId == null ? "" : savedVoiceId.trim();
+        List<VoiceOption> options = new ArrayList<>();
+        // Mục đầu tiên luôn là mặc định hệ thống (lưu thành chuỗi rỗng trong app_settings)
+        VoiceOption defaultOption = new VoiceOption("", "");
+        options.add(defaultOption);
+
+        VoiceOption selected = defaultOption;
+        for (TtsVoice voice : detectedVoices) {
+            VoiceOption option = new VoiceOption(voice.id(), voice.displayName());
+            options.add(option);
+            if (!normalizedSaved.isEmpty() && normalizedSaved.equals(voice.id())) {
+                selected = option;
+            }
+        }
+        // Giữ nguyên giọng đọc đã lưu trước đó ngay cả khi hiện chưa phát hiện trên máy
+        if (!normalizedSaved.isEmpty() && selected == defaultOption) {
+            VoiceOption preserved = new VoiceOption(normalizedSaved, normalizedSaved);
+            options.add(preserved);
+            selected = preserved;
+        }
+
+        loadingControls = true;
+        try {
+            comboBox.getItems().setAll(options);
+            comboBox.setValue(selected);
+        } finally {
+            loadingControls = false;
+        }
     }
 
     private void refreshComboBoxDisplays() {
@@ -515,6 +626,14 @@ public class SettingsController implements RefreshableView {
             String provider = ttsProviderComboBox.getValue();
             ttsProviderComboBox.setValue(null);
             ttsProviderComboBox.setValue(provider);
+
+            VoiceOption jaVoice = jaVoiceComboBox.getValue();
+            jaVoiceComboBox.setValue(null);
+            jaVoiceComboBox.setValue(jaVoice);
+
+            VoiceOption enVoice = enVoiceComboBox.getValue();
+            enVoiceComboBox.setValue(null);
+            enVoiceComboBox.setValue(enVoice);
         } finally {
             loadingControls = false;
         }
@@ -565,6 +684,21 @@ public class SettingsController implements RefreshableView {
 
     private Window getWindow() {
         return titleLabel != null && titleLabel.getScene() != null ? titleLabel.getScene().getWindow() : null;
+    }
+
+    private record DetectedVoices(List<TtsVoice> jaVoices, List<TtsVoice> enVoices) {
+    }
+
+    /**
+     * Tùy chọn giọng đọc hiển thị trong ComboBox cài đặt TTS.
+     *
+     * @param id mã giọng đọc lưu trong app_settings (rỗng nghĩa là mặc định hệ thống)
+     * @param displayName tên hiển thị trên giao diện
+     */
+    public record VoiceOption(String id, String displayName) {
+        public boolean isSystemDefault() {
+            return id == null || id.isEmpty();
+        }
     }
 
     private record LoadedSettings(

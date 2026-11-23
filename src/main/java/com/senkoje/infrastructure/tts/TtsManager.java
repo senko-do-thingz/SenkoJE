@@ -80,6 +80,24 @@ public class TtsManager {
     }
 
     /**
+     * Liệt kê giọng đọc khả dụng theo mã nhà cung cấp chỉ định (dùng khi người dùng đổi bộ chọn trong Cài đặt).
+     *
+     * @param providerId mã nhà cung cấp ("system", "bundled", "unsupported")
+     * @param language ngôn ngữ mục tiêu (JA hoặc EN)
+     * @return danh sách giọng đọc khả dụng
+     */
+    public List<TtsVoice> listVoicesForProvider(String providerId, TargetLanguage language) {
+        Objects.requireNonNull(language, "language must not be null");
+        String normalized = providerId == null ? "" : providerId.trim().toLowerCase(Locale.ROOT);
+        TtsService provider = switch (normalized) {
+            case SystemTtsProvider.PROVIDER_ID -> systemProvider;
+            case BundledOfflineTtsProvider.PROVIDER_ID -> bundledProvider;
+            default -> unsupportedProvider;
+        };
+        return provider.listVoices(language);
+    }
+
+    /**
      * Phát âm một đoạn văn bản theo ngôn ngữ đích sử dụng tốc độ đọc và giọng ưu tiên trong cấu hình.
      *
      * @param text nội dung văn bản cần đọc

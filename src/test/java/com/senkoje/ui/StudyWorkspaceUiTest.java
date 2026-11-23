@@ -196,8 +196,23 @@ class StudyWorkspaceUiTest {
                 assertNotNull(controller.getLastDictationResult());
                 assertTrue(controller.getLastDictationResult().correct());
                 assertTrue(controller.isAnswerRevealed());
+
+                // Nhấn Space thêm lần nữa sau khi đã lật đáp án KHÔNG được vô tình gửi đánh giá
+                scene.getRoot().fireEvent(new KeyEvent(
+                        KeyEvent.KEY_PRESSED, " ", " ", KeyCode.SPACE, false, false, false, false));
+                assertEquals(0, controller.getCurrentSnapshot().completedReviews());
+
+                // Nhấn phím 3 để đánh giá và nhấn Esc ngay lập tức khi đang gửi -> không được làm mất lượt đánh giá
+                scene.getRoot().fireEvent(new KeyEvent(
+                        KeyEvent.KEY_PRESSED, "3", "3", KeyCode.DIGIT3, false, false, false, false));
+                scene.getRoot().fireEvent(new KeyEvent(
+                        KeyEvent.KEY_PRESSED, "", "", KeyCode.ESCAPE, false, false, false, false));
                 return null;
             });
+
+            waitUntil(() -> runOnFxThread(() -> controller.getCurrentSnapshot() != null
+                    && controller.getCurrentSnapshot().isCompleted()));
+            assertEquals(1, controller.getCurrentSnapshot().completedReviews());
         }
     }
 

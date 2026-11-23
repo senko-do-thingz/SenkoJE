@@ -646,3 +646,78 @@
 .furigana-punctuation {
     -fx-padding: 3 1 3 1;
 }
+
+
+/* Không gian thực hành đọc (Reading Sandbox - Dark Mode) */
+.reading-toolbar {
+    -fx-background-color: -senko-bg-surface;
+    -fx-border-color: -senko-border;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+    -fx-padding: 10 14 10 14;
+}
+
+.reading-input-area {
+    -fx-font-size: 14px;
+    -fx-font-smoothing-type: gray;
+}
+
+.reading-en-sentence {
+    -fx-background-color: -senko-bg-elevated;
+    -fx-border-color: -senko-border;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-padding: 10 12 10 12;
+}
+
+.reading-en-sentence-header {
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -senko-text-secondary;
+}
+
+.reading-en-token {
+    -fx-padding: 2 5 2 5;
+    -fx-background-radius: 5;
+    -fx-border-radius: 5;
+    -fx-border-color: transparent;
+    -fx-border-width: 1;
+    -fx-font-size: 16px;
+    -fx-text-fill: -senko-text-primary;
+    -fx-cursor: hand;
+    -fx-font-smoothing-type: gray;
+}
+
+.reading-en-token:hover {
+    -fx-background-color: -senko-bg-hover;
+}
+
+.reading-en-token-selected {
+    -fx-background-color: -senko-bg-selected;
+    -fx-border-color: -senko-accent;
+}
+
+.reading-en-punctuation {
+    -fx-font-size: 16px;
+    -fx-text-fill: -senko-text-secondary;
+    -fx-padding: 2 0 2 0;
+}
+
+.reading-inspector-surface {
+    -fx-font-size: 26px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -senko-text-primary;
+    -fx-font-smoothing-type: gray;
+}
+
+.reading-inspector-key {
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -senko-text-secondary;
+}
+
+.reading-inspector-value {
+    -fx-font-size: 13px;
+    -fx-text-fill: -senko-text-primary;
+    -fx-font-smoothing-type: gray;
+}

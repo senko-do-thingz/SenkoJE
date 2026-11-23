@@ -15,6 +15,7 @@ import com.senkoje.presentation.theme.ThemeManager;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Supplier;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
@@ -68,6 +69,77 @@ public final class CardEditorDialog {
     }
 
     /**
+     * Dữ liệu điền sẵn khi tạo thẻ mới từ Không gian thực hành đọc (Reading Sandbox).
+     */
+    public record CardPrefillData(
+            TargetLanguage preferredLanguage,
+            CardType cardType,
+            String term,
+            String reading,
+            String meaning,
+            String partOfSpeech,
+            String furigana,
+            List<CardExample> examples
+    ) {
+    }
+
+    /**
+     * Mở hộp thoại tạo thẻ mới với dữ liệu điền sẵn (ví dụ từ Reading Sandbox) và tùy chọn tạo bộ thẻ ngay tại chỗ.
+     *
+     * @param owner cửa sổ cha
+     * @param availableDecks danh sách bộ thẻ hiện có
+     * @param prefill dữ liệu điền sẵn cho thẻ mới (có thể null)
+     * @param createDeckSupplier hàm mở hộp thoại tạo bộ thẻ mới tại chỗ (có thể null)
+     * @param localizationManager trình quản lý đa ngôn ngữ
+     * @param themeManager trình quản lý chủ đề
+     * @return dữ liệu biểu mẫu thẻ nếu người dùng bấm Lưu
+     */
+    public static Optional<CardFormData> showForNewCard(
+            Window owner,
+            List<Deck> availableDecks,
+            CardPrefillData prefill,
+            Supplier<Optional<Deck>> createDeckSupplier,
+            LocalizationManager localizationManager,
+            ThemeManager themeManager
+    ) {
+        return createDialogForNewCard(
+                owner, availableDecks, prefill, createDeckSupplier, localizationManager, themeManager
+        ).showAndWait();
+    }
+
+    /**
+     * Tạo đối tượng Dialog tạo thẻ mới với dữ liệu điền sẵn và tùy chọn tạo bộ thẻ mới ngay trong biểu mẫu.
+     *
+     * @param owner cửa sổ cha
+     * @param availableDecks danh sách bộ thẻ hiện có
+     * @param prefill dữ liệu điền sẵn (có thể null)
+     * @param createDeckSupplier hàm tạo bộ thẻ mới tại chỗ (có thể null)
+     * @param localizationManager trình quản lý đa ngôn ngữ
+     * @param themeManager trình quản lý chủ đề
+     * @return đối tượng Dialog sẵn sàng hiển thị hoặc kiểm thử
+     */
+    public static Dialog<CardFormData> createDialogForNewCard(
+            Window owner,
+            List<Deck> availableDecks,
+            CardPrefillData prefill,
+            Supplier<Optional<Deck>> createDeckSupplier,
+            LocalizationManager localizationManager,
+            ThemeManager themeManager
+    ) {
+        return createDialogInternal(
+                owner,
+                availableDecks,
+                null,
+                List.of(),
+                prefill == null || prefill.examples() == null ? List.of() : prefill.examples(),
+                prefill,
+                createDeckSupplier,
+                localizationManager,
+                themeManager
+        );
+    }
+
+    /**
      * Mở hộp thoại tạo mới hoặc chỉnh sửa thẻ học tập.
      *
      * @param owner cửa sổ cha
@@ -115,6 +187,30 @@ public final class CardEditorDialog {
             LocalizationManager localizationManager,
             ThemeManager themeManager
     ) {
+        return createDialogInternal(
+                owner,
+                availableDecks,
+                existingCard,
+                existingMeanings,
+                existingExamples,
+                null,
+                null,
+                localizationManager,
+                themeManager
+        );
+    }
+
+    private static Dialog<CardFormData> createDialogInternal(
+            Window owner,
+            List<Deck> availableDecks,
+            Card existingCard,
+            List<CardMeaning> existingMeanings,
+            List<CardExample> existingExamples,
+            CardPrefillData prefill,
+            Supplier<Optional<Deck>> createDeckSupplier,
+            LocalizationManager localizationManager,
+            ThemeManager themeManager
+    ) {
         Dialog<CardFormData> dialog = new Dialog<>();
         if (owner != null) {
             dialog.initOwner(owner);
@@ -153,20 +249,55 @@ public final class CardEditorDialog {
                     .ifPresent(deckBox::setValue);
             deckBox.setDisable(true);
         } else if (!availableDecks.isEmpty()) {
-            deckBox.setValue(availableDecks.getFirst());
+            Deck preferred = null;
+            if (prefill != null && prefill.preferredLanguage() != null) {
+                preferred = availableDecks.stream()
+                        .filter(deck -> deck.targetLanguage() == prefill.preferredLanguage())
+                        .findFirst()
+                        .orElse(null);
+            }
+            deckBox.setValue(preferred != null ? preferred : availableDecks.getFirst());
+        }
+
+        javafx.scene.Node deckControlNode = deckBox;
+        if (existingCard == null && createDeckSupplier != null) {
+            Button newDeckButton = new Button(localizationManager.get("decks.action.new"));
+            newDeckButton.getStyleClass().add("secondary-button");
+            newDeckButton.setMinWidth(Region.USE_PREF_SIZE);
+            newDeckButton.setOnAction(event -> createDeckSupplier.get().ifPresent(createdDeck -> {
+                deckBox.getItems().add(createdDeck);
+                deckBox.setValue(createdDeck);
+            }));
+            HBox.setHgrow(deckBox, Priority.ALWAYS);
+            HBox deckRow = new HBox(8, deckBox, newDeckButton);
+            deckControlNode = deckRow;
         }
 
         ComboBox<CardType> typeBox = new ComboBox<>();
         typeBox.getItems().setAll(CardType.values());
-        typeBox.setValue(existingCard == null ? CardType.VOCABULARY : existingCard.cardType());
+        CardType initialType = existingCard != null
+                ? existingCard.cardType()
+                : (prefill != null && prefill.cardType() != null ? prefill.cardType() : CardType.VOCABULARY);
+        typeBox.setValue(initialType);
         typeBox.setMaxWidth(Double.MAX_VALUE);
 
-        TextField termField = new TextField(existingCard == null ? "" : existingCard.term());
-        TextField readingField = new TextField(existingCard == null || existingCard.reading() == null
-                ? "" : existingCard.reading());
-        TextField meaningField = new TextField(existingCard == null ? "" : existingCard.meaning());
-        TextField posField = new TextField(existingCard == null || existingCard.partOfSpeech() == null
-                ? "" : existingCard.partOfSpeech());
+        String initialTerm = existingCard != null
+                ? existingCard.term()
+                : (prefill == null ? "" : nullToEmpty(prefill.term()));
+        String initialReading = existingCard != null
+                ? nullToEmpty(existingCard.reading())
+                : (prefill == null ? "" : nullToEmpty(prefill.reading()));
+        String initialMeaning = existingCard != null
+                ? existingCard.meaning()
+                : (prefill == null ? "" : nullToEmpty(prefill.meaning()));
+        String initialPos = existingCard != null
+                ? nullToEmpty(existingCard.partOfSpeech())
+                : (prefill == null ? "" : nullToEmpty(prefill.partOfSpeech()));
+
+        TextField termField = new TextField(initialTerm);
+        TextField readingField = new TextField(initialReading);
+        TextField meaningField = new TextField(initialMeaning);
+        TextField posField = new TextField(initialPos);
 
         ComboBox<String> levelBox = new ComboBox<>();
         levelBox.setEditable(true);
@@ -181,7 +312,7 @@ public final class CardEditorDialog {
 
         GridPane coreGrid = createFormGrid();
         coreGrid.add(new Label(localizationManager.get("cardEditor.field.deck")), 0, 0);
-        coreGrid.add(deckBox, 1, 0);
+        coreGrid.add(deckControlNode, 1, 0);
         coreGrid.add(new Label(localizationManager.get("cardEditor.field.type")), 0, 1);
         coreGrid.add(typeBox, 1, 1);
         coreGrid.add(new Label(localizationManager.get("cardEditor.field.term")), 0, 2);
@@ -196,12 +327,15 @@ public final class CardEditorDialog {
         coreGrid.add(levelBox, 1, 6);
         coreGrid.add(new Label(localizationManager.get("cardEditor.field.notes")), 0, 7);
         coreGrid.add(notesArea, 1, 7);
-        setGrow(deckBox, typeBox, termField, readingField, meaningField, posField, levelBox, notesArea);
+        setGrow(deckControlNode, typeBox, termField, readingField, meaningField, posField, levelBox, notesArea);
 
         CardExtraData extra = CardExtraDataCodec.fromJson(existingCard == null ? null : existingCard.extraData());
+        String initialFurigana = existingCard != null
+                ? nullToEmpty(extra.furigana())
+                : (prefill == null ? "" : nullToEmpty(prefill.furigana()));
 
         // Các trường mở rộng dành riêng cho tiếng Nhật
-        TextField furiganaField = new TextField(nullToEmpty(extra.furigana()));
+        TextField furiganaField = new TextField(initialFurigana);
         TextField kanjiField = new TextField(nullToEmpty(extra.kanjiComponents()));
         TextField onyomiField = new TextField(nullToEmpty(extra.onyomi()));
         TextField kunyomiField = new TextField(nullToEmpty(extra.kunyomi()));

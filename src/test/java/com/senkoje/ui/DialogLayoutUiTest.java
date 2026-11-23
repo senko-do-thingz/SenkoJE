@@ -33,6 +33,8 @@ import javafx.scene.control.DialogPane;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -79,12 +81,44 @@ class DialogLayoutUiTest {
 
             Dialog<?> cardDialog = CardEditorDialog.createDialog(
                     null, List.of(sampleDeck), null, List.of(), List.of(), localizationManager, themeManager);
-            verifyDialogPaneLayout(cardDialog.getDialogPane(), 680, 620);
+            verifyDialogPaneLayout(cardDialog.getDialogPane(), 680, 620, false);
+            return null;
+        });
+    }
+
+    @Test
+    void shouldRenderDarkReadableLabelsInsideScrollPaneInLightMode() throws Exception {
+        LocalizationManager localizationManager = new LocalizationManager("vi");
+        ThemeManager lightThemeManager = new ThemeManager("light");
+        Deck sampleDeck = new Deck(
+                1L,
+                "JLPT N5 Cơ bản",
+                TargetLanguage.JA,
+                DefinitionLanguage.VI,
+                ProficiencyLevel.JLPT_N5,
+                "Từ vựng thiết yếu",
+                Instant.parse("2026-06-01T00:00:00Z"),
+                Instant.parse("2026-06-01T00:00:00Z")
+        );
+
+        runOnFxThread(() -> {
+            Dialog<?> cardDialog = CardEditorDialog.createDialog(
+                    null, List.of(sampleDeck), null, List.of(), List.of(), localizationManager, lightThemeManager);
+            verifyDialogPaneLayout(cardDialog.getDialogPane(), 680, 620, true);
             return null;
         });
     }
 
     private static void verifyDialogPaneLayout(DialogPane dialogPane, double width, double height) {
+        verifyDialogPaneLayout(dialogPane, width, height, false);
+    }
+
+    private static void verifyDialogPaneLayout(
+            DialogPane dialogPane,
+            double width,
+            double height,
+            boolean assertDarkTextFill
+    ) {
         Scene scene = dialogPane.getScene();
         assertNotNull(scene, "DialogPane must be attached to a Scene");
         dialogPane.resize(width, height);
@@ -122,6 +156,19 @@ class DialogLayoutUiTest {
                             "Label truncated in column 0: '" + label.getText()
                                     + "' actualWidth=" + actualWidth + " < prefWidth=" + prefWidth
                     );
+                    if (assertDarkTextFill) {
+                        Paint fill = label.getTextFill();
+                        assertTrue(fill instanceof Color, "Expected Color textFill for label: " + label.getText());
+                        Color color = (Color) fill;
+                        double luminance = 0.2126 * color.getRed()
+                                + 0.7152 * color.getGreen()
+                                + 0.0722 * color.getBlue();
+                        assertTrue(
+                                luminance < 0.35,
+                                "Expected dark readable textFill in Light Mode for label '" + label.getText()
+                                        + "' but got color=" + color + " (luminance=" + luminance + ")"
+                        );
+                    }
                     checkedLabels++;
                 }
             }

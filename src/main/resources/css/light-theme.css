@@ -26,6 +26,11 @@
     -fx-background-color: -senko-bg-app;
 }
 
+/* Đảm bảo mọi nhãn mặc định luôn giữ màu chữ tối rõ nét ngay cả khi nằm trong ScrollPane */
+.label {
+    -fx-text-fill: -senko-text-primary;
+}
+
 .app-title {
     -fx-font-size: 28px;
     -fx-font-weight: bold;
@@ -324,7 +329,6 @@
 
 .scroll-pane {
     -fx-background-color: transparent;
-    -fx-background: transparent;
 }
 
 .scroll-pane > .viewport {

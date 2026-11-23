@@ -44,16 +44,16 @@
         <Button fx:id="deleteButton" styleClass="danger-button" onAction="#handleDeleteSelected" disable="true"/>
     </HBox>
 
-    <SplitPane dividerPositions="0.65" VBox.vgrow="ALWAYS">
+    <SplitPane dividerPositions="0.69" VBox.vgrow="ALWAYS">
         <TableView fx:id="cardsTable">
             <columns>
-                <TableColumn fx:id="termColumn" prefWidth="150"/>
-                <TableColumn fx:id="readingColumn" prefWidth="130"/>
-                <TableColumn fx:id="meaningColumn" prefWidth="200"/>
-                <TableColumn fx:id="typeColumn" prefWidth="100"/>
-                <TableColumn fx:id="levelColumn" prefWidth="70"/>
-                <TableColumn fx:id="deckColumn" prefWidth="130"/>
-                <TableColumn fx:id="statusColumn" prefWidth="100"/>
+                <TableColumn fx:id="termColumn" minWidth="90" prefWidth="110"/>
+                <TableColumn fx:id="readingColumn" minWidth="85" prefWidth="100"/>
+                <TableColumn fx:id="meaningColumn" minWidth="110" prefWidth="135"/>
+                <TableColumn fx:id="typeColumn" minWidth="78" prefWidth="86"/>
+                <TableColumn fx:id="levelColumn" minWidth="78" prefWidth="80"/>
+                <TableColumn fx:id="deckColumn" minWidth="95" prefWidth="110"/>
+                <TableColumn fx:id="statusColumn" minWidth="115" prefWidth="120"/>
             </columns>
         </TableView>
 

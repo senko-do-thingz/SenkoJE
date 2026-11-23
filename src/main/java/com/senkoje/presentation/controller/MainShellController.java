@@ -161,6 +161,13 @@ public class MainShellController {
      */
     public void navigateTo(NavigationSection section) {
         Objects.requireNonNull(section, "section must not be null");
+        NavigationSection previous = activeSection.get();
+        if (previous == NavigationSection.STUDY && section != NavigationSection.STUDY) {
+            LoadedView studyView = loadedViews.get(NavigationSection.STUDY);
+            if (studyView != null && studyView.controller() instanceof StudyWorkspaceController studyController) {
+                studyController.finishActiveSessionIfNeeded();
+            }
+        }
         LoadedView view = loadedViews.computeIfAbsent(section, this::loadSectionView);
         contentHost.getChildren().setAll(view.node());
         activeSection.set(section);
@@ -168,6 +175,19 @@ public class MainShellController {
 
         if (view.controller() instanceof RefreshableView refreshable) {
             refreshable.refresh();
+        }
+    }
+
+    /**
+     * Chuyển đến Không gian ôn tập và bắt đầu ngay phiên học cho bộ thẻ được chọn.
+     *
+     * @param deckId mã bộ thẻ cần ôn tập
+     */
+    public void openStudyForDeck(long deckId) {
+        navigateTo(NavigationSection.STUDY);
+        LoadedView studyView = loadedViews.get(NavigationSection.STUDY);
+        if (studyView != null && studyView.controller() instanceof StudyWorkspaceController studyController) {
+            studyController.startStudyForDeck(deckId);
         }
     }
 
@@ -267,9 +287,17 @@ public class MainShellController {
                     localizationManager,
                     container.getThemeManager(),
                     container.getBackgroundTaskExecutor(),
-                    container.getClock()
+                    container.getClock(),
+                    this::openStudyForDeck
             ));
-            case STUDY -> loadPlaceholder("placeholder.study.title", "placeholder.study.subtitle");
+            case STUDY -> loadFxml("/fxml/study-workspace-view.fxml", new StudyWorkspaceController(
+                    container.getStudySessionService(),
+                    container.getDeckService(),
+                    localizationManager,
+                    container.getThemeManager(),
+                    container.getBackgroundTaskExecutor(),
+                    () -> navigateTo(NavigationSection.DASHBOARD)
+            ));
             case READING_SANDBOX -> loadPlaceholder("placeholder.reading.title", "placeholder.reading.subtitle");
             case CARD_BROWSER -> loadFxml("/fxml/card-browser-view.fxml", new CardBrowserController(
                     container.getDeckService(),

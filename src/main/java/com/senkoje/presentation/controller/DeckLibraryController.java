@@ -17,6 +17,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.LongConsumer;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -48,6 +49,7 @@ public class DeckLibraryController implements RefreshableView {
     private final ThemeManager themeManager;
     private final BackgroundTaskExecutor backgroundTaskExecutor;
     private final Clock clock;
+    private final LongConsumer onStudyDeck;
 
     private List<DeckRowItem> latestRows = List.of();
     private boolean updatingFilterDisplays = false;
@@ -106,6 +108,40 @@ public class DeckLibraryController implements RefreshableView {
             BackgroundTaskExecutor backgroundTaskExecutor,
             Clock clock
     ) {
+        this(
+                deckService,
+                cardService,
+                reviewStateRepository,
+                localizationManager,
+                themeManager,
+                backgroundTaskExecutor,
+                clock,
+                null
+        );
+    }
+
+    /**
+     * Khởi tạo bộ điều khiển Thư viện bộ thẻ kèm hành động mở nhanh Chế độ ôn tập cho từng bộ thẻ.
+     *
+     * @param deckService dịch vụ quản lý bộ thẻ
+     * @param cardService dịch vụ thẻ dùng để đếm thẻ trong từng bộ
+     * @param reviewStateRepository kho lưu trữ trạng thái ôn tập để đếm thẻ đến hạn và thẻ mới
+     * @param localizationManager trình quản lý đa ngôn ngữ
+     * @param themeManager trình quản lý chủ đề
+     * @param backgroundTaskExecutor bộ thực thi tác vụ nền
+     * @param clock nguồn thời gian ứng dụng
+     * @param onStudyDeck hàm gọi lại khi người dùng nhấn nút Ôn tập trên một bộ thẻ (có thể null)
+     */
+    public DeckLibraryController(
+            DeckService deckService,
+            CardService cardService,
+            ReviewStateRepository reviewStateRepository,
+            LocalizationManager localizationManager,
+            ThemeManager themeManager,
+            BackgroundTaskExecutor backgroundTaskExecutor,
+            Clock clock,
+            LongConsumer onStudyDeck
+    ) {
         this.deckService = Objects.requireNonNull(deckService, "deckService must not be null");
         this.cardService = Objects.requireNonNull(cardService, "cardService must not be null");
         this.reviewStateRepository = Objects.requireNonNull(
@@ -116,6 +152,7 @@ public class DeckLibraryController implements RefreshableView {
         this.backgroundTaskExecutor = Objects.requireNonNull(
                 backgroundTaskExecutor, "backgroundTaskExecutor must not be null");
         this.clock = Objects.requireNonNull(clock, "clock must not be null");
+        this.onStudyDeck = onStudyDeck;
     }
 
     @FXML
@@ -342,6 +379,15 @@ public class DeckLibraryController implements RefreshableView {
         descriptionLabel.getStyleClass().add("muted-label");
         descriptionLabel.setWrapText(true);
 
+        Button studyButton = new Button(localizationManager.get("decks.action.study"));
+        studyButton.getStyleClass().add("primary-button");
+        studyButton.setDisable(onStudyDeck == null);
+        studyButton.setOnAction(event -> {
+            if (onStudyDeck != null) {
+                onStudyDeck.accept(deck.id());
+            }
+        });
+
         Button renameButton = new Button(localizationManager.get("common.rename"));
         renameButton.getStyleClass().add("secondary-button");
         renameButton.setOnAction(event -> handleRenameDeck(deck));
@@ -363,7 +409,7 @@ public class DeckLibraryController implements RefreshableView {
         deleteButton.setOnAction(event -> handleDeleteDeck(deck));
 
         HBox footerRow = new HBox(8, defLangLabel, new Region(),
-                renameButton, editButton, duplicateButton, settingsButton, deleteButton);
+                studyButton, renameButton, editButton, duplicateButton, settingsButton, deleteButton);
         HBox.setHgrow(footerRow.getChildren().get(1), Priority.ALWAYS);
         footerRow.setAlignment(Pos.CENTER_LEFT);
 

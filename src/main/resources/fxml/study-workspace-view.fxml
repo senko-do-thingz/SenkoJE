@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Priority?>
 <?import javafx.scene.layout.Region?>
@@ -31,6 +33,7 @@
                 <Button fx:id="startSessionButton" styleClass="primary-button" onAction="#handleStartSelectedDeck"/>
                 <Button fx:id="refreshDecksButton" styleClass="secondary-button" onAction="#handleRefreshLauncher"/>
             </HBox>
+            <CheckBox fx:id="launcherDictationCheckBox"/>
             <Label fx:id="queueSummaryLabel" styleClass="muted-label" wrapText="true"/>
             <Label fx:id="shortcutHintLabel" styleClass="muted-label" wrapText="true"/>
         </VBox>
@@ -57,6 +60,7 @@
             <Region HBox.hgrow="ALWAYS"/>
 
             <Label fx:id="timerLabel" styleClass="study-timer-badge"/>
+            <Button fx:id="toggleDictationButton" styleClass="secondary-button" onAction="#handleToggleDictationMode"/>
             <Button fx:id="replayAudioButton" styleClass="secondary-button" onAction="#handleReplayAudio"/>
             <Button fx:id="pauseResumeButton" styleClass="secondary-button" onAction="#handleTogglePause"/>
             <Button fx:id="exitSessionButton" styleClass="secondary-button" onAction="#handleExitSession"/>
@@ -82,6 +86,21 @@
                         <Label fx:id="frontPrimaryLabel" styleClass="study-front-term" wrapText="true"/>
                         <Label fx:id="frontSecondaryLabel" styleClass="study-front-secondary" wrapText="true"
                                visible="false" managed="false"/>
+                    </VBox>
+
+                    <!-- Khu vực gõ đáp án cho chế độ luyện nghe chép (Dictation / Typing Practice) -->
+                    <VBox fx:id="dictationSectionBox" spacing="10" alignment="CENTER" visible="false" managed="false">
+                        <HBox spacing="10" alignment="CENTER" maxWidth="620">
+                            <TextField fx:id="dictationInputField" HBox.hgrow="ALWAYS"
+                                       styleClass="study-dictation-input"
+                                       onAction="#handleSubmitDictation"/>
+                            <Button fx:id="checkDictationButton" styleClass="primary-button"
+                                    onAction="#handleSubmitDictation"/>
+                        </HBox>
+                        <VBox fx:id="dictationFeedbackBox" spacing="4" maxWidth="620" visible="false" managed="false">
+                            <Label fx:id="dictationFeedbackTitleLabel" styleClass="section-title"/>
+                            <Label fx:id="dictationFeedbackDetailLabel" wrapText="true"/>
+                        </VBox>
                     </VBox>
 
                     <!-- Mặt sau thẻ (chỉ hiện sau khi lật thẻ) -->

@@ -510,3 +510,34 @@
 .study-rate-easy:hover {
     -fx-background-color: #bfdbfe;
 }
+
+
+/* Chế độ luyện nghe chép / gõ đáp án (Dictation - Light Mode) */
+.study-dictation-input {
+    -fx-font-size: 16px;
+    -fx-padding: 10 14 10 14;
+}
+
+.dictation-feedback-correct {
+    -fx-background-color: #dcfce7;
+    -fx-border-color: #16a34a;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-padding: 10 14 10 14;
+}
+
+.dictation-feedback-correct .label {
+    -fx-text-fill: #14532d;
+}
+
+.dictation-feedback-incorrect {
+    -fx-background-color: #fee2e2;
+    -fx-border-color: #dc2626;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-padding: 10 14 10 14;
+}
+
+.dictation-feedback-incorrect .label {
+    -fx-text-fill: #7f1d1d;
+}

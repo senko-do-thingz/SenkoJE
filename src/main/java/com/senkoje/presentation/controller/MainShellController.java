@@ -293,6 +293,7 @@ public class MainShellController {
             case STUDY -> loadFxml("/fxml/study-workspace-view.fxml", new StudyWorkspaceController(
                     container.getStudySessionService(),
                     container.getDeckService(),
+                    container.getAppSettingsService(),
                     localizationManager,
                     container.getThemeManager(),
                     container.getBackgroundTaskExecutor(),

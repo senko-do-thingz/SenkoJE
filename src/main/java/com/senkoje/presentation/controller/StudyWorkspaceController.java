@@ -4,6 +4,8 @@ import com.senkoje.application.dto.CardExtraData;
 import com.senkoje.application.dto.StudyCardItem;
 import com.senkoje.application.dto.StudySessionSnapshot;
 import com.senkoje.application.dto.StudySessionStatus;
+import com.senkoje.application.dto.TypingPreferences;
+import com.senkoje.application.service.AppSettingsService;
 import com.senkoje.application.service.DeckService;
 import com.senkoje.application.service.StudySessionService;
 import com.senkoje.domain.fsrs.SchedulingResult;
@@ -14,6 +16,9 @@ import com.senkoje.domain.model.CardType;
 import com.senkoje.domain.model.Deck;
 import com.senkoje.domain.model.ReviewRating;
 import com.senkoje.domain.model.TargetLanguage;
+import com.senkoje.domain.service.TypingEvaluationOptions;
+import com.senkoje.domain.service.TypingEvaluationResult;
+import com.senkoje.domain.service.TypingEvaluator;
 import com.senkoje.presentation.i18n.LocalizationManager;
 import com.senkoje.presentation.navigation.RefreshableView;
 import com.senkoje.presentation.theme.ThemeManager;
@@ -33,9 +38,11 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
+import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputControl;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -54,15 +61,20 @@ public class StudyWorkspaceController implements RefreshableView {
 
     private final StudySessionService studySessionService;
     private final DeckService deckService;
+    private final AppSettingsService appSettingsService;
     private final LocalizationManager localizationManager;
     private final ThemeManager themeManager;
     private final BackgroundTaskExecutor backgroundTaskExecutor;
     private final Runnable onNavigateDashboard;
+    private final TypingEvaluator typingEvaluator = new TypingEvaluator();
 
     private List<DeckOption> availableDecks = List.of();
     private StudySessionSnapshot currentSnapshot;
     private boolean answerRevealed = false;
     private boolean submittingReview = false;
+    private boolean dictationMode = false;
+    private TypingEvaluationResult lastDictationResult;
+    private TypingEvaluationOptions cachedTypingOptions = TypingEvaluationOptions.defaults();
     private int displayedSeconds = 0;
     private Timeline sessionTimer;
     private Scene attachedScene;
@@ -88,6 +100,8 @@ public class StudyWorkspaceController implements RefreshableView {
     @FXML
     private Button refreshDecksButton;
     @FXML
+    private CheckBox launcherDictationCheckBox;
+    @FXML
     private Label queueSummaryLabel;
     @FXML
     private Label shortcutHintLabel;
@@ -110,6 +124,8 @@ public class StudyWorkspaceController implements RefreshableView {
     private Label progressSummaryLabel;
     @FXML
     private Label timerLabel;
+    @FXML
+    private Button toggleDictationButton;
     @FXML
     private Button replayAudioButton;
     @FXML
@@ -135,6 +151,18 @@ public class StudyWorkspaceController implements RefreshableView {
     private Label frontPrimaryLabel;
     @FXML
     private Label frontSecondaryLabel;
+    @FXML
+    private VBox dictationSectionBox;
+    @FXML
+    private TextField dictationInputField;
+    @FXML
+    private Button checkDictationButton;
+    @FXML
+    private VBox dictationFeedbackBox;
+    @FXML
+    private Label dictationFeedbackTitleLabel;
+    @FXML
+    private Label dictationFeedbackDetailLabel;
     @FXML
     private VBox backSectionBox;
     @FXML
@@ -196,9 +224,41 @@ public class StudyWorkspaceController implements RefreshableView {
             BackgroundTaskExecutor backgroundTaskExecutor,
             Runnable onNavigateDashboard
     ) {
+        this(
+                studySessionService,
+                deckService,
+                null,
+                localizationManager,
+                themeManager,
+                backgroundTaskExecutor,
+                onNavigateDashboard
+        );
+    }
+
+    /**
+     * Khởi tạo bộ điều khiển Không gian ôn tập kèm dịch vụ cài đặt để đọc quy tắc chấm bài Dictation.
+     *
+     * @param studySessionService dịch vụ quản lý phiên học tập
+     * @param deckService dịch vụ bộ thẻ để liệt kê danh sách bộ thẻ có thể học
+     * @param appSettingsService dịch vụ cài đặt ứng dụng (có thể null khi kiểm thử độc lập)
+     * @param localizationManager trình quản lý đa ngôn ngữ
+     * @param themeManager trình quản lý chủ đề
+     * @param backgroundTaskExecutor bộ thực thi tác vụ nền
+     * @param onNavigateDashboard hành động quay về màn hình Tổng quan
+     */
+    public StudyWorkspaceController(
+            StudySessionService studySessionService,
+            DeckService deckService,
+            AppSettingsService appSettingsService,
+            LocalizationManager localizationManager,
+            ThemeManager themeManager,
+            BackgroundTaskExecutor backgroundTaskExecutor,
+            Runnable onNavigateDashboard
+    ) {
         this.studySessionService = Objects.requireNonNull(
                 studySessionService, "studySessionService must not be null");
         this.deckService = Objects.requireNonNull(deckService, "deckService must not be null");
+        this.appSettingsService = appSettingsService;
         this.localizationManager = Objects.requireNonNull(
                 localizationManager, "localizationManager must not be null");
         this.themeManager = Objects.requireNonNull(themeManager, "themeManager must not be null");
@@ -291,9 +351,64 @@ public class StudyWorkspaceController implements RefreshableView {
 
     @FXML
     private void handleStartSelectedDeck() {
+        dictationMode = launcherDictationCheckBox != null && launcherDictationCheckBox.isSelected();
         DeckOption selected = deckSelectorBox.getValue();
         Long deckId = selected == null ? null : selected.deckId();
         startNewSessionAsync(deckId);
+    }
+
+    /**
+     * Bật hoặc tắt chế độ luyện nghe chép / gõ đáp án (Dictation) trong Không gian ôn tập.
+     *
+     * @param enabled true để bật chế độ Dictation, false để quay về thẻ ghi nhớ thường
+     */
+    public void setDictationMode(boolean enabled) {
+        this.dictationMode = enabled;
+        if (launcherDictationCheckBox != null) {
+            launcherDictationCheckBox.setSelected(enabled);
+        }
+        resetDictationInputState();
+        if (currentSnapshot != null && !currentSnapshot.isCompleted()) {
+            renderActiveSnapshot(currentSnapshot);
+        }
+    }
+
+    /**
+     * Kiểm tra chế độ Dictation có đang được kích hoạt hay không.
+     *
+     * @return true nếu đang ở chế độ Dictation
+     */
+    public boolean isDictationMode() {
+        return dictationMode;
+    }
+
+    @FXML
+    private void handleToggleDictationMode() {
+        setDictationMode(!dictationMode);
+    }
+
+    @FXML
+    public void handleSubmitDictation() {
+        if (!dictationMode
+                || currentSnapshot == null
+                || currentSnapshot.isCompleted()
+                || currentSnapshot.status() == StudySessionStatus.PAUSED
+                || currentSnapshot.currentCard() == null) {
+            return;
+        }
+        StudyCardItem item = currentSnapshot.currentCard();
+        List<String> acceptedAnswers = buildExplicitAcceptedAnswers(item);
+        lastDictationResult = typingEvaluator.evaluate(
+                item.deck().targetLanguage(),
+                dictationInputField.getText(),
+                acceptedAnswers,
+                cachedTypingOptions
+        );
+        renderDictationFeedback(lastDictationResult);
+        answerRevealed = true;
+        updateRevealStateUi();
+        // Chuyển tiêu điểm ra khỏi ô nhập để người dùng có thể bấm 1-4 đánh giá ngay sau khi xem kết quả
+        goodButton.requestFocus();
     }
 
     @FXML
@@ -502,6 +617,7 @@ public class StudyWorkspaceController implements RefreshableView {
                     currentSnapshot = nextSnapshot;
                     displayedSeconds = nextSnapshot.activeDurationSeconds();
                     answerRevealed = false;
+                    resetDictationInputState();
                     hideAudioStatus();
 
                     if (nextSnapshot.isCompleted()) {
@@ -523,7 +639,10 @@ public class StudyWorkspaceController implements RefreshableView {
     private void startNewSessionAsync(Long deckId) {
         startSessionButton.setDisable(true);
         backgroundTaskExecutor.runAsync(
-                () -> studySessionService.startSession(deckId),
+                () -> {
+                    refreshTypingOptionsOffFxThread();
+                    return studySessionService.startSession(deckId);
+                },
                 snapshot -> {
                     startSessionButton.setDisable(false);
                     applyStartedSession(snapshot);
@@ -540,6 +659,7 @@ public class StudyWorkspaceController implements RefreshableView {
         displayedSeconds = snapshot.activeDurationSeconds();
         answerRevealed = false;
         submittingReview = false;
+        resetDictationInputState();
         hideAudioStatus();
 
         if (snapshot.isCompleted()) {
@@ -626,9 +746,12 @@ public class StudyWorkspaceController implements RefreshableView {
         pausedBannerBox.setVisible(paused);
         pausedBannerBox.setManaged(paused);
         pauseResumeButton.setText(localizationManager.get(paused ? "study.action.resume" : "study.action.pause"));
+        toggleDictationButton.setText(localizationManager.get(
+                dictationMode ? "study.mode.switchToFlashcard" : "study.mode.switchToDictation"));
 
         renderCardFront(item);
         renderCardBack(item);
+        renderDictationSection(paused);
         updateRatingButtonLabels(item.ratingPreviews());
         updateRevealStateUi();
     }
@@ -636,6 +759,14 @@ public class StudyWorkspaceController implements RefreshableView {
     private void renderCardFront(StudyCardItem item) {
         Card card = item.card();
         CardExtraData extra = item.extraData();
+
+        if (dictationMode) {
+            frontTemplateCueLabel.setText(localizationManager.get("study.dictation.promptCue"));
+            frontPrimaryLabel.setText(card.meaning());
+            String langHint = localizationManager.get("targetLang." + item.deck().targetLanguage().name());
+            setOptionalLabel(frontSecondaryLabel, langHint);
+            return;
+        }
 
         switch (card.cardType()) {
             case VOCABULARY -> {
@@ -669,6 +800,13 @@ public class StudyWorkspaceController implements RefreshableView {
         Card card = item.card();
         Deck deck = item.deck();
         CardExtraData extra = item.extraData();
+
+        if (dictationMode) {
+            Label expectedTermLabel = new Label(card.term());
+            expectedTermLabel.getStyleClass().add("study-back-meaning");
+            expectedTermLabel.setWrapText(true);
+            answerContentBox.getChildren().add(expectedTermLabel);
+        }
 
         // Hiển thị cách đọc / Furigana / IPA tùy theo ngôn ngữ và loại thẻ
         if (card.cardType() == CardType.GRAMMAR) {
@@ -1003,6 +1141,7 @@ public class StudyWorkspaceController implements RefreshableView {
         localizationManager.bind(deckPickerLabel, "study.launcher.selectDeck");
         localizationManager.bind(startSessionButton, "study.launcher.start");
         localizationManager.bind(refreshDecksButton, "common.refresh");
+        localizationManager.bind(launcherDictationCheckBox, "study.mode.dictationToggle");
         localizationManager.bind(shortcutHintLabel, "study.shortcuts.summary");
         localizationManager.bind(launcherEmptyTitleLabel, "study.launcher.emptyTitle");
         localizationManager.bind(launcherEmptyDescriptionLabel, "study.launcher.emptyDescription");
@@ -1011,6 +1150,8 @@ public class StudyWorkspaceController implements RefreshableView {
         localizationManager.bind(exitSessionButton, "study.action.exit");
         localizationManager.bind(pausedBannerLabel, "study.paused.banner");
         localizationManager.bind(resumeFromBannerButton, "study.action.resume");
+        localizationManager.bindPrompt(dictationInputField, "study.dictation.inputPrompt");
+        localizationManager.bind(checkDictationButton, "study.dictation.check");
         localizationManager.bind(revealAnswerButton, "study.action.reveal");
         localizationManager.bind(activeShortcutFooterLabel, "study.shortcuts.footer");
 
@@ -1018,6 +1159,81 @@ public class StudyWorkspaceController implements RefreshableView {
         localizationManager.bind(summaryDurationCaptionLabel, "study.complete.duration");
         localizationManager.bind(studyAnotherDeckButton, "study.complete.studyAnother");
         localizationManager.bind(backToDashboardButton, "study.complete.backDashboard");
+    }
+
+    private void refreshTypingOptionsOffFxThread() {
+        if (appSettingsService != null) {
+            TypingPreferences prefs = appSettingsService.getTypingPreferences();
+            cachedTypingOptions = prefs.toEvaluationOptions();
+        }
+    }
+
+    private List<String> buildExplicitAcceptedAnswers(StudyCardItem item) {
+        List<String> accepted = new ArrayList<>();
+        Card card = item.card();
+        if (card.cardType() == CardType.GRAMMAR
+                && item.extraData().grammarPattern() != null
+                && !item.extraData().grammarPattern().isBlank()) {
+            accepted.add(item.extraData().grammarPattern().trim());
+        }
+        if (card.term() != null && !card.term().isBlank() && !accepted.contains(card.term().trim())) {
+            accepted.add(card.term().trim());
+        }
+        return accepted;
+    }
+
+    private void renderDictationSection(boolean paused) {
+        dictationSectionBox.setVisible(dictationMode);
+        dictationSectionBox.setManaged(dictationMode);
+        dictationInputField.setDisable(paused || answerRevealed);
+        checkDictationButton.setDisable(paused || answerRevealed);
+        if (dictationMode && lastDictationResult != null) {
+            renderDictationFeedback(lastDictationResult);
+        } else {
+            dictationFeedbackBox.setVisible(false);
+            dictationFeedbackBox.setManaged(false);
+        }
+    }
+
+    private void renderDictationFeedback(TypingEvaluationResult result) {
+        dictationFeedbackBox.getStyleClass().removeAll("dictation-feedback-correct", "dictation-feedback-incorrect");
+        dictationFeedbackBox.getStyleClass().add(
+                result.correct() ? "dictation-feedback-correct" : "dictation-feedback-incorrect");
+        dictationFeedbackTitleLabel.setText(localizationManager.get(
+                result.correct() ? "study.dictation.correct" : "study.dictation.incorrect"));
+        String expectedJoined = String.join(" / ", result.acceptedAnswers());
+        String detail = result.correct()
+                ? localizationManager.get("study.dictation.detailCorrect", result.matchedExpected())
+                : localizationManager.get("study.dictation.detailIncorrect",
+                        result.normalizedInput().isEmpty() ? "-" : result.normalizedInput(),
+                        expectedJoined);
+        dictationFeedbackDetailLabel.setText(detail);
+        dictationFeedbackBox.setVisible(true);
+        dictationFeedbackBox.setManaged(true);
+    }
+
+    private void resetDictationInputState() {
+        lastDictationResult = null;
+        if (dictationInputField != null) {
+            dictationInputField.clear();
+            dictationInputField.setDisable(false);
+        }
+        if (checkDictationButton != null) {
+            checkDictationButton.setDisable(false);
+        }
+        if (dictationFeedbackBox != null) {
+            dictationFeedbackBox.setVisible(false);
+            dictationFeedbackBox.setManaged(false);
+        }
+    }
+
+    /**
+     * Truy xuất kết quả chấm bài Dictation gần nhất (phục vụ kiểm thử tích hợp UI).
+     *
+     * @return kết quả chấm bài gần nhất hoặc null
+     */
+    public TypingEvaluationResult getLastDictationResult() {
+        return lastDictationResult;
     }
 
     private Window getWindow() {

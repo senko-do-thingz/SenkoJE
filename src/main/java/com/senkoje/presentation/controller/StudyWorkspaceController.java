@@ -19,6 +19,8 @@ import com.senkoje.domain.model.TargetLanguage;
 import com.senkoje.domain.service.TypingEvaluationOptions;
 import com.senkoje.domain.service.TypingEvaluationResult;
 import com.senkoje.domain.service.TypingEvaluator;
+import com.senkoje.infrastructure.tts.TtsManager;
+import com.senkoje.infrastructure.tts.TtsPlaybackResult;
 import com.senkoje.presentation.i18n.LocalizationManager;
 import com.senkoje.presentation.navigation.RefreshableView;
 import com.senkoje.presentation.theme.ThemeManager;
@@ -62,6 +64,7 @@ public class StudyWorkspaceController implements RefreshableView {
     private final StudySessionService studySessionService;
     private final DeckService deckService;
     private final AppSettingsService appSettingsService;
+    private final TtsManager ttsManager;
     private final LocalizationManager localizationManager;
     private final ThemeManager themeManager;
     private final BackgroundTaskExecutor backgroundTaskExecutor;
@@ -255,10 +258,45 @@ public class StudyWorkspaceController implements RefreshableView {
             BackgroundTaskExecutor backgroundTaskExecutor,
             Runnable onNavigateDashboard
     ) {
+        this(
+                studySessionService,
+                deckService,
+                appSettingsService,
+                null,
+                localizationManager,
+                themeManager,
+                backgroundTaskExecutor,
+                onNavigateDashboard
+        );
+    }
+
+    /**
+     * Khởi tạo bộ điều khiển Không gian ôn tập đầy đủ kèm dịch vụ cài đặt và trình điều phối TTS ngoại tuyến.
+     *
+     * @param studySessionService dịch vụ quản lý phiên học tập
+     * @param deckService dịch vụ bộ thẻ để liệt kê danh sách bộ thẻ có thể học
+     * @param appSettingsService dịch vụ cài đặt ứng dụng (có thể null khi kiểm thử độc lập)
+     * @param ttsManager trình điều phối phát âm TTS ngoại tuyến (có thể null khi kiểm thử độc lập)
+     * @param localizationManager trình quản lý đa ngôn ngữ
+     * @param themeManager trình quản lý chủ đề
+     * @param backgroundTaskExecutor bộ thực thi tác vụ nền
+     * @param onNavigateDashboard hành động quay về màn hình Tổng quan
+     */
+    public StudyWorkspaceController(
+            StudySessionService studySessionService,
+            DeckService deckService,
+            AppSettingsService appSettingsService,
+            TtsManager ttsManager,
+            LocalizationManager localizationManager,
+            ThemeManager themeManager,
+            BackgroundTaskExecutor backgroundTaskExecutor,
+            Runnable onNavigateDashboard
+    ) {
         this.studySessionService = Objects.requireNonNull(
                 studySessionService, "studySessionService must not be null");
         this.deckService = Objects.requireNonNull(deckService, "deckService must not be null");
         this.appSettingsService = appSettingsService;
+        this.ttsManager = ttsManager;
         this.localizationManager = Objects.requireNonNull(
                 localizationManager, "localizationManager must not be null");
         this.themeManager = Objects.requireNonNull(themeManager, "themeManager must not be null");
@@ -337,6 +375,7 @@ public class StudyWorkspaceController implements RefreshableView {
         }
         long sessionId = currentSnapshot.session().id();
         stopSessionTimer();
+        stopTtsPlayback();
         currentSnapshot = null;
         answerRevealed = false;
         submittingReview = false;
@@ -444,12 +483,42 @@ public class StudyWorkspaceController implements RefreshableView {
     }
 
     @FXML
-    private void handleReplayAudio() {
+    public void handleReplayAudio() {
         if (currentSnapshot == null || currentSnapshot.currentCard() == null) {
             return;
         }
-        // Tác vụ 4.4 sẽ kết nối trực tiếp TtsService tại đây; hiện hiển thị thông báo rõ ràng thay vì im lặng
-        showAudioStatus(localizationManager.get("study.audio.pendingTts"), false);
+        if (ttsManager == null) {
+            showAudioStatus(localizationManager.get("tts.status.disabled"), true);
+            return;
+        }
+        StudyCardItem item = currentSnapshot.currentCard();
+        String textToSpeak = item.card().term();
+        TargetLanguage language = item.deck().targetLanguage();
+
+        replayAudioButton.setDisable(true);
+        showAudioStatus(localizationManager.get("study.audio.playing"), false);
+        backgroundTaskExecutor.runAsync(
+                () -> ttsManager.speak(textToSpeak, language),
+                this::handleTtsPlaybackResult,
+                error -> {
+                    replayAudioButton.setDisable(false);
+                    showAudioStatus(localizationManager.get("tts.status.failed"), true);
+                }
+        );
+    }
+
+    private void handleTtsPlaybackResult(TtsPlaybackResult result) {
+        replayAudioButton.setDisable(false);
+        if (result == null) {
+            showAudioStatus(localizationManager.get("tts.status.failed"), true);
+            return;
+        }
+        if (result.succeeded()) {
+            hideAudioStatus();
+        } else {
+            // Hiển thị rõ trạng thái bản địa hóa khi TTS ngoại tuyến không khả dụng thay vì im lặng
+            showAudioStatus(localizationManager.get(result.statusCode()), true);
+        }
     }
 
     @FXML
@@ -491,6 +560,7 @@ public class StudyWorkspaceController implements RefreshableView {
         }
         long sessionId = currentSnapshot.session().id();
         stopSessionTimer();
+        stopTtsPlayback();
         setSessionControlsDisabled(true);
         backgroundTaskExecutor.runAsync(
                 () -> studySessionService.finishSession(sessionId),
@@ -607,6 +677,7 @@ public class StudyWorkspaceController implements RefreshableView {
 
         // Khóa nút đánh giá và phím tắt ngay khi bắt đầu gửi để chặn gửi trùng lặp
         submittingReview = true;
+        stopTtsPlayback();
         setRatingButtonsDisabled(true);
 
         backgroundTaskExecutor.runAsync(
@@ -1071,6 +1142,12 @@ public class StudyWorkspaceController implements RefreshableView {
     private void stopSessionTimer() {
         if (sessionTimer != null) {
             sessionTimer.stop();
+        }
+    }
+
+    private void stopTtsPlayback() {
+        if (ttsManager != null) {
+            backgroundTaskExecutor.submitFireAndForget(ttsManager::stop);
         }
     }
 

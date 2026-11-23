@@ -64,7 +64,9 @@
                 <Label fx:id="enVoiceFieldLabel" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
                 <TextField fx:id="enVoiceField" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
             </GridPane>
-            <HBox alignment="CENTER_RIGHT">
+            <HBox alignment="CENTER_RIGHT" spacing="10">
+                <Label fx:id="ttsAvailabilityStatusLabel" styleClass="muted-label" wrapText="true"/>
+                <Button fx:id="testTtsButton" styleClass="secondary-button" onAction="#handleTestTts"/>
                 <Button fx:id="saveTtsButton" styleClass="primary-button" onAction="#handleSaveTts"/>
             </HBox>
         </VBox>

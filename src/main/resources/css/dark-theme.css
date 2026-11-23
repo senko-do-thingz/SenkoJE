@@ -357,3 +357,179 @@
 .dialog-pane {
     -fx-background-color: -senko-bg-surface;
 }
+
+
+/* Không gian ôn tập thẻ ghi nhớ (Study Workspace - Dark Mode) */
+.study-workspace-root {
+    -fx-background-color: -senko-bg-app;
+}
+
+.study-active-container {
+    -fx-background-color: -senko-bg-app;
+    -fx-padding: 20 28 20 28;
+}
+
+.study-topbar {
+    -fx-background-color: -senko-bg-surface;
+    -fx-border-color: -senko-border;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+    -fx-padding: 12 16 12 16;
+}
+
+.study-timer-badge {
+    -fx-background-color: -senko-bg-elevated;
+    -fx-text-fill: -senko-text-primary;
+    -fx-border-color: -senko-border;
+    -fx-border-radius: 6;
+    -fx-background-radius: 6;
+    -fx-padding: 5 10 5 10;
+    -fx-font-weight: bold;
+}
+
+.study-status-banner {
+    -fx-background-color: -senko-bg-elevated;
+    -fx-border-color: -senko-border;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-padding: 8 14 8 14;
+}
+
+.study-paused-banner {
+    -fx-background-color: #3a2e12;
+    -fx-border-color: #6b5219;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-padding: 10 16 10 16;
+}
+
+.study-card-panel {
+    -fx-background-color: -senko-bg-surface;
+    -fx-border-color: -senko-border;
+    -fx-border-radius: 14;
+    -fx-background-radius: 14;
+    -fx-padding: 28 32 28 32;
+}
+
+.study-template-cue {
+    -fx-text-fill: -senko-accent;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+}
+
+.study-front-term {
+    -fx-font-size: 36px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -senko-text-primary;
+    -fx-text-alignment: CENTER;
+}
+
+.study-front-secondary {
+    -fx-font-size: 15px;
+    -fx-text-fill: -senko-text-secondary;
+}
+
+.study-back-reading {
+    -fx-font-size: 20px;
+    -fx-text-fill: -senko-accent;
+    -fx-font-weight: 600;
+}
+
+.study-back-meaning {
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -senko-text-primary;
+}
+
+.study-detail-block {
+    -fx-background-color: -senko-bg-elevated;
+    -fx-border-color: -senko-border;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-padding: 10 14 10 14;
+}
+
+.study-detail-heading {
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -senko-text-secondary;
+}
+
+.study-detail-body {
+    -fx-font-size: 14px;
+    -fx-text-fill: -senko-text-primary;
+}
+
+.study-example-row {
+    -fx-background-color: -senko-bg-elevated;
+    -fx-border-color: -senko-border;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-padding: 8 12 8 12;
+}
+
+.study-example-sentence {
+    -fx-font-size: 14px;
+    -fx-text-fill: -senko-text-primary;
+    -fx-font-weight: 600;
+}
+
+.study-controls-bar {
+    -fx-padding: 6 0 4 0;
+}
+
+.study-reveal-button {
+    -fx-min-width: 240;
+    -fx-padding: 12 24 12 24;
+    -fx-font-size: 14px;
+}
+
+.study-rate-button {
+    -fx-min-width: 140;
+    -fx-padding: 10 16 10 16;
+    -fx-background-radius: 8;
+    -fx-border-radius: 8;
+    -fx-font-weight: bold;
+    -fx-text-alignment: CENTER;
+    -fx-cursor: hand;
+}
+
+.study-rate-again {
+    -fx-background-color: #7f1d1d;
+    -fx-text-fill: #fee2e2;
+    -fx-border-color: #b91c1c;
+}
+
+.study-rate-again:hover {
+    -fx-background-color: #991b1b;
+}
+
+.study-rate-hard {
+    -fx-background-color: #78350f;
+    -fx-text-fill: #fef3c7;
+    -fx-border-color: #b45309;
+}
+
+.study-rate-hard:hover {
+    -fx-background-color: #92400e;
+}
+
+.study-rate-good {
+    -fx-background-color: #14532d;
+    -fx-text-fill: #dcfce7;
+    -fx-border-color: #15803d;
+}
+
+.study-rate-good:hover {
+    -fx-background-color: #166534;
+}
+
+.study-rate-easy {
+    -fx-background-color: #1e3a8a;
+    -fx-text-fill: #dbeafe;
+    -fx-border-color: #2563eb;
+}
+
+.study-rate-easy:hover {
+    -fx-background-color: #1d4ed8;
+}

@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Priority?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<StackPane fx:id="rootPane"
+           xmlns="http://javafx.com/javafx/25"
+           xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="com.senkoje.presentation.controller.StudyWorkspaceController"
+           styleClass="study-workspace-root">
+
+    <!-- Màn hình chọn bộ thẻ trước khi bắt đầu phiên ôn tập -->
+    <VBox fx:id="launcherPane" styleClass="screen-container" spacing="20" alignment="TOP_CENTER">
+        <VBox spacing="6" maxWidth="760" alignment="CENTER_LEFT">
+            <Label fx:id="launcherTitleLabel" styleClass="screen-title"/>
+            <Label fx:id="launcherSubtitleLabel" styleClass="screen-subtitle" wrapText="true"/>
+        </VBox>
+
+        <VBox styleClass="card-panel" spacing="16" maxWidth="760">
+            <Label fx:id="deckPickerLabel" styleClass="section-title"/>
+            <HBox spacing="12" alignment="CENTER_LEFT">
+                <ComboBox fx:id="deckSelectorBox" prefWidth="360"/>
+                <Button fx:id="startSessionButton" styleClass="primary-button" onAction="#handleStartSelectedDeck"/>
+                <Button fx:id="refreshDecksButton" styleClass="secondary-button" onAction="#handleRefreshLauncher"/>
+            </HBox>
+            <Label fx:id="queueSummaryLabel" styleClass="muted-label" wrapText="true"/>
+            <Label fx:id="shortcutHintLabel" styleClass="muted-label" wrapText="true"/>
+        </VBox>
+
+        <VBox fx:id="launcherEmptyBox" styleClass="empty-state" maxWidth="760" visible="false" managed="false">
+            <Label fx:id="launcherEmptyTitleLabel" styleClass="section-title"/>
+            <Label fx:id="launcherEmptyDescriptionLabel" styleClass="muted-label" wrapText="true"/>
+        </VBox>
+    </VBox>
+
+    <!-- Không gian học tập tập trung hiển thị từng thẻ một -->
+    <VBox fx:id="activeSessionPane" styleClass="study-active-container" spacing="16" visible="false" managed="false">
+        <!-- Thanh trên cùng tối giản: tên bộ thẻ, tiến độ, đồng hồ, tạm dừng và thoát -->
+        <HBox styleClass="study-topbar" spacing="12" alignment="CENTER_LEFT">
+            <VBox spacing="2">
+                <HBox spacing="8" alignment="CENTER_LEFT">
+                    <Label fx:id="sessionDeckTitleLabel" styleClass="section-title"/>
+                    <Label fx:id="cardTypeBadgeLabel" styleClass="badge"/>
+                    <Label fx:id="cardLevelBadgeLabel" styleClass="badge"/>
+                </HBox>
+                <Label fx:id="progressSummaryLabel" styleClass="muted-label"/>
+            </VBox>
+
+            <Region HBox.hgrow="ALWAYS"/>
+
+            <Label fx:id="timerLabel" styleClass="study-timer-badge"/>
+            <Button fx:id="replayAudioButton" styleClass="secondary-button" onAction="#handleReplayAudio"/>
+            <Button fx:id="pauseResumeButton" styleClass="secondary-button" onAction="#handleTogglePause"/>
+            <Button fx:id="exitSessionButton" styleClass="secondary-button" onAction="#handleExitSession"/>
+        </HBox>
+
+        <!-- Thông báo trạng thái âm thanh hoặc thông báo tạm thời -->
+        <Label fx:id="audioStatusLabel" styleClass="study-status-banner" visible="false" managed="false" wrapText="true"/>
+
+        <!-- Biểu ngữ khi phiên học đang tạm dừng -->
+        <HBox fx:id="pausedBannerBox" styleClass="study-paused-banner" spacing="12" alignment="CENTER"
+              visible="false" managed="false">
+            <Label fx:id="pausedBannerLabel" styleClass="section-title"/>
+            <Button fx:id="resumeFromBannerButton" styleClass="primary-button" onAction="#handleTogglePause"/>
+        </HBox>
+
+        <!-- Vùng hiển thị thẻ ở trung tâm -->
+        <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS" styleClass="study-card-scroll">
+            <VBox alignment="TOP_CENTER" spacing="16">
+                <VBox fx:id="flashcardContainer" styleClass="study-card-panel" spacing="16" maxWidth="780">
+                    <!-- Mặt trước thẻ -->
+                    <VBox fx:id="frontSectionBox" spacing="10" alignment="CENTER">
+                        <Label fx:id="frontTemplateCueLabel" styleClass="study-template-cue"/>
+                        <Label fx:id="frontPrimaryLabel" styleClass="study-front-term" wrapText="true"/>
+                        <Label fx:id="frontSecondaryLabel" styleClass="study-front-secondary" wrapText="true"
+                               visible="false" managed="false"/>
+                    </VBox>
+
+                    <!-- Mặt sau thẻ (chỉ hiện sau khi lật thẻ) -->
+                    <VBox fx:id="backSectionBox" spacing="14" visible="false" managed="false">
+                        <Separator/>
+                        <VBox fx:id="answerContentBox" spacing="12"/>
+                    </VBox>
+                </VBox>
+            </VBox>
+        </ScrollPane>
+
+        <!-- Khu vực điều khiển dưới cùng: nút Lật thẻ hoặc 4 nút đánh giá FSRS-6 -->
+        <VBox styleClass="study-controls-bar" spacing="10" alignment="CENTER">
+            <HBox fx:id="revealButtonBox" alignment="CENTER">
+                <Button fx:id="revealAnswerButton" styleClass="primary-button, study-reveal-button"
+                        onAction="#handleRevealAnswer"/>
+            </HBox>
+
+            <HBox fx:id="ratingButtonsBox" spacing="12" alignment="CENTER" visible="false" managed="false">
+                <Button fx:id="againButton" styleClass="study-rate-button, study-rate-again"
+                        onAction="#handleRateAgain"/>
+                <Button fx:id="hardButton" styleClass="study-rate-button, study-rate-hard"
+                        onAction="#handleRateHard"/>
+                <Button fx:id="goodButton" styleClass="study-rate-button, study-rate-good"
+                        onAction="#handleRateGood"/>
+                <Button fx:id="easyButton" styleClass="study-rate-button, study-rate-easy"
+                        onAction="#handleRateEasy"/>
+            </HBox>
+
+            <Label fx:id="activeShortcutFooterLabel" styleClass="muted-label"/>
+        </VBox>
+    </VBox>
+
+    <!-- Màn hình tổng kết sau khi hoàn thành hoặc thoát phiên học -->
+    <VBox fx:id="completePane" styleClass="screen-container" spacing="20" alignment="CENTER"
+          visible="false" managed="false">
+        <VBox styleClass="card-panel" spacing="16" maxWidth="620" alignment="CENTER">
+            <Label fx:id="completeTitleLabel" styleClass="screen-title"/>
+            <Label fx:id="completeSubtitleLabel" styleClass="screen-subtitle" wrapText="true"/>
+
+            <HBox spacing="16" alignment="CENTER">
+                <VBox styleClass="metric-card" alignment="CENTER" spacing="4">
+                    <Label fx:id="summaryReviewedValueLabel" styleClass="metric-value"/>
+                    <Label fx:id="summaryReviewedCaptionLabel" styleClass="metric-label"/>
+                </VBox>
+                <VBox styleClass="metric-card" alignment="CENTER" spacing="4">
+                    <Label fx:id="summaryDurationValueLabel" styleClass="metric-value"/>
+                    <Label fx:id="summaryDurationCaptionLabel" styleClass="metric-label"/>
+                </VBox>
+            </HBox>
+
+            <HBox fx:id="summaryBreakdownBox" spacing="10" alignment="CENTER"/>
+
+            <HBox spacing="12" alignment="CENTER">
+                <Button fx:id="studyAnotherDeckButton" styleClass="primary-button"
+                        onAction="#handleReturnToLauncher"/>
+                <Button fx:id="backToDashboardButton" styleClass="secondary-button"
+                        onAction="#handleBackToDashboard"/>
+            </HBox>
+        </VBox>
+    </VBox>
+</StackPane>

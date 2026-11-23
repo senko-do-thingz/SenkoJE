@@ -28,6 +28,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import org.junit.jupiter.api.BeforeAll;
@@ -131,6 +132,72 @@ class StudyWorkspaceUiTest {
             waitUntil(() -> runOnFxThread(() -> controller.getCurrentSnapshot() != null
                     && controller.getCurrentSnapshot().isCompleted()));
             assertEquals(1, container.getStudySessionRepository().findByDeckId(deck.id()).size());
+        }
+    }
+
+    @Test
+    void shouldEvaluateDictationAndNotTriggerStudyShortcutsWhileTypingInInput(@TempDir Path tempDir) throws Exception {
+        Path dbPath = tempDir.resolve("study-dictation-ui.db");
+        try (ApplicationContainer container = ApplicationContainer.createForDatabase(
+                dbPath,
+                new AppDataPathResolver(),
+                Clock.system(ApplicationContainer.DEFAULT_TIMEZONE)
+        )) {
+            Deck deck = container.getDeckService().createDeck(
+                    "EN Dictation", TargetLanguage.EN, DefinitionLanguage.VI, ProficiencyLevel.CEFR_B1, null);
+            container.getCardService().createCard(
+                    deck.id(), CardType.PHRASE, "break the ice", null, "phá vỡ sự ngại ngùng",
+                    "idiom", ProficiencyLevel.CEFR_B1, null, null, List.of(), List.of()
+            );
+
+            StudyWorkspaceController controller = new StudyWorkspaceController(
+                    container.getStudySessionService(),
+                    container.getDeckService(),
+                    container.getAppSettingsService(),
+                    container.getLocalizationManager(),
+                    container.getThemeManager(),
+                    container.getBackgroundTaskExecutor(),
+                    () -> {
+                    }
+            );
+
+            Scene scene = runOnFxThread(() -> {
+                FXMLLoader loader = new FXMLLoader(
+                        StudyWorkspaceController.class.getResource("/fxml/study-workspace-view.fxml"));
+                loader.setControllerFactory(type -> controller);
+                Parent root = loader.load();
+                Scene createdScene = new Scene(root, 1000, 720);
+                container.getThemeManager().registerScene(createdScene);
+                controller.setDictationMode(true);
+                controller.startStudyForDeck(deck.id());
+                return createdScene;
+            });
+
+            waitUntil(() -> runOnFxThread(() -> controller.getCurrentSnapshot() != null
+                    && !controller.getCurrentSnapshot().isCompleted()));
+
+            runOnFxThread(() -> {
+                Parent root = scene.getRoot();
+                root.applyCss();
+                root.layout();
+
+                TextField inputField = (TextField) root.lookup("#dictationInputField");
+                assertNotNull(inputField);
+                inputField.requestFocus();
+                inputField.setText("Break the ice!");
+
+                // Phím Space khi đang gõ trong ô nhập không được lật thẻ sớm
+                inputField.fireEvent(new KeyEvent(
+                        KeyEvent.KEY_PRESSED, " ", " ", KeyCode.SPACE, false, false, false, false));
+                assertFalse(controller.isAnswerRevealed());
+
+                // Gửi bài gõ -> chấm đúng và hiển thị đáp án kèm 4 nút đánh giá
+                controller.handleSubmitDictation();
+                assertNotNull(controller.getLastDictationResult());
+                assertTrue(controller.getLastDictationResult().correct());
+                assertTrue(controller.isAnswerRevealed());
+                return null;
+            });
         }
     }
 

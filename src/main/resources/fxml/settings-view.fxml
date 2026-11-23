@@ -69,6 +69,20 @@
             </HBox>
         </VBox>
 
+        <!-- Luyện gõ chính tả / Nghe chép (Dictation) -->
+        <VBox styleClass="card-panel" spacing="12">
+            <VBox spacing="2">
+                <Label fx:id="typingSectionLabel" styleClass="section-title"/>
+                <Label fx:id="typingNoteLabel" styleClass="muted-label" wrapText="true"/>
+            </VBox>
+            <CheckBox fx:id="typingEnCaseInsensitiveCheckBox"/>
+            <CheckBox fx:id="typingEnIgnorePunctuationCheckBox"/>
+            <CheckBox fx:id="typingStrictMatchingCheckBox"/>
+            <HBox alignment="CENTER_RIGHT">
+                <Button fx:id="saveTypingButton" styleClass="primary-button" onAction="#handleSaveTyping"/>
+            </HBox>
+        </VBox>
+
         <!-- Thông số FSRS-6 mặc định toàn cục -->
         <VBox styleClass="card-panel" spacing="12">
             <VBox spacing="2">

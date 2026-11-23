@@ -1,6 +1,7 @@
 package com.senkoje.presentation.controller;
 
 import com.senkoje.application.dto.TtsPreferences;
+import com.senkoje.application.dto.TypingPreferences;
 import com.senkoje.application.service.AppSettingsService;
 import com.senkoje.domain.model.DeckSettings;
 import com.senkoje.domain.service.DeckSettingsValidator;
@@ -87,6 +88,19 @@ public class SettingsController implements RefreshableView {
     private TextField enVoiceField;
     @FXML
     private Button saveTtsButton;
+
+    @FXML
+    private Label typingSectionLabel;
+    @FXML
+    private Label typingNoteLabel;
+    @FXML
+    private CheckBox typingEnCaseInsensitiveCheckBox;
+    @FXML
+    private CheckBox typingEnIgnorePunctuationCheckBox;
+    @FXML
+    private CheckBox typingStrictMatchingCheckBox;
+    @FXML
+    private Button saveTypingButton;
 
     @FXML
     private Label srsSectionLabel;
@@ -212,6 +226,20 @@ public class SettingsController implements RefreshableView {
     }
 
     @FXML
+    private void handleSaveTyping() {
+        TypingPreferences prefs = new TypingPreferences(
+                typingEnCaseInsensitiveCheckBox.isSelected(),
+                typingEnIgnorePunctuationCheckBox.isSelected(),
+                typingStrictMatchingCheckBox.isSelected()
+        );
+        backgroundTaskExecutor.runAsyncVoid(
+                () -> appSettingsService.saveTypingPreferences(prefs),
+                () -> showStatus(localizationManager.get("settings.saved"), false),
+                error -> showStatus(extractErrorMessage(error), true)
+        );
+    }
+
+    @FXML
     private void handleSaveSrsDefaults() {
         try {
             DeckSettings candidate = new DeckSettings(
@@ -270,6 +298,7 @@ public class SettingsController implements RefreshableView {
                 appSettingsService.getInterfaceLanguage(),
                 appSettingsService.getTheme(),
                 appSettingsService.getTtsPreferences(),
+                appSettingsService.getTypingPreferences(),
                 appSettingsService.getRawSetting(KEY_SRS_RETENTION)
                         .orElse(Double.toString(DeckSettings.DEFAULT_DESIRED_RETENTION)),
                 appSettingsService.getRawSetting(KEY_SRS_MAX_INTERVAL)
@@ -299,6 +328,10 @@ public class SettingsController implements RefreshableView {
             jaVoiceField.setText(loaded.tts().japaneseVoice());
             enVoiceField.setText(loaded.tts().englishVoice());
 
+            typingEnCaseInsensitiveCheckBox.setSelected(loaded.typing().caseInsensitiveEnglish());
+            typingEnIgnorePunctuationCheckBox.setSelected(loaded.typing().ignoreEnglishPunctuation());
+            typingStrictMatchingCheckBox.setSelected(loaded.typing().strictCharacterMatching());
+
             retentionField.setText(loaded.srsRetention());
             maxIntervalField.setText(loaded.srsMaxInterval());
             newCardsField.setText(loaded.srsNewCards());
@@ -326,6 +359,13 @@ public class SettingsController implements RefreshableView {
         localizationManager.bind(jaVoiceFieldLabel, "settings.field.jaVoice");
         localizationManager.bind(enVoiceFieldLabel, "settings.field.enVoice");
         localizationManager.bind(saveTtsButton, "common.save");
+
+        localizationManager.bind(typingSectionLabel, "settings.section.typing");
+        localizationManager.bind(typingNoteLabel, "settings.typing.note");
+        localizationManager.bind(typingEnCaseInsensitiveCheckBox, "settings.typing.enCaseInsensitive");
+        localizationManager.bind(typingEnIgnorePunctuationCheckBox, "settings.typing.enIgnorePunctuation");
+        localizationManager.bind(typingStrictMatchingCheckBox, "settings.typing.strictMatching");
+        localizationManager.bind(saveTypingButton, "common.save");
 
         localizationManager.bind(srsSectionLabel, "settings.section.srs");
         localizationManager.bind(srsNoteLabel, "settings.srs.note");
@@ -452,6 +492,7 @@ public class SettingsController implements RefreshableView {
             String language,
             String theme,
             TtsPreferences tts,
+            TypingPreferences typing,
             String srsRetention,
             String srsMaxInterval,
             String srsNewCards,

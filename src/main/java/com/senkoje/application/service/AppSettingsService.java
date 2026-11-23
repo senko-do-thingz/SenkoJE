@@ -1,6 +1,7 @@
 package com.senkoje.application.service;
 
 import com.senkoje.application.dto.TtsPreferences;
+import com.senkoje.application.dto.TypingPreferences;
 import com.senkoje.application.dto.WindowPreferences;
 import com.senkoje.domain.model.AppSetting;
 import com.senkoje.domain.repository.AppSettingRepository;
@@ -28,6 +29,9 @@ public class AppSettingsService {
     public static final String KEY_WINDOW_WIDTH = "window.width";
     public static final String KEY_WINDOW_HEIGHT = "window.height";
     public static final String KEY_WINDOW_MAXIMIZED = "window.maximized";
+    public static final String KEY_TYPING_EN_CASE_INSENSITIVE = "typing.en.case_insensitive";
+    public static final String KEY_TYPING_EN_IGNORE_PUNCTUATION = "typing.en.ignore_punctuation";
+    public static final String KEY_TYPING_STRICT_MATCHING = "typing.strict_matching";
 
     public static final String THEME_DARK = "dark";
     public static final String THEME_LIGHT = "light";
@@ -45,6 +49,9 @@ public class AppSettingsService {
     public static final int MIN_WINDOW_WIDTH = 640;
     public static final int MIN_WINDOW_HEIGHT = 480;
     public static final boolean DEFAULT_WINDOW_MAXIMIZED = false;
+    public static final boolean DEFAULT_TYPING_EN_CASE_INSENSITIVE = true;
+    public static final boolean DEFAULT_TYPING_EN_IGNORE_PUNCTUATION = true;
+    public static final boolean DEFAULT_TYPING_STRICT_MATCHING = false;
 
     private static final Set<String> SUPPORTED_THEMES = Set.of(THEME_DARK, THEME_LIGHT);
     private static final Set<String> SUPPORTED_LANGUAGES = Set.of("vi", "en");
@@ -213,6 +220,50 @@ public class AppSettingsService {
                 new AppSetting(KEY_WINDOW_WIDTH, Integer.toString(preferences.width()), now),
                 new AppSetting(KEY_WINDOW_HEIGHT, Integer.toString(preferences.height()), now),
                 new AppSetting(KEY_WINDOW_MAXIMIZED, Boolean.toString(preferences.maximized()), now)
+        ));
+    }
+
+    /**
+     * Đọc tùy chọn chấm bài gõ đáp án (Dictation / Typing Practice) kèm giá trị mặc định an toàn.
+     *
+     * @return đối tượng TypingPreferences
+     */
+    public TypingPreferences getTypingPreferences() {
+        boolean caseInsensitive = parseBoolean(
+                KEY_TYPING_EN_CASE_INSENSITIVE, DEFAULT_TYPING_EN_CASE_INSENSITIVE);
+        boolean ignorePunctuation = parseBoolean(
+                KEY_TYPING_EN_IGNORE_PUNCTUATION, DEFAULT_TYPING_EN_IGNORE_PUNCTUATION);
+        boolean strictMatching = parseBoolean(
+                KEY_TYPING_STRICT_MATCHING, DEFAULT_TYPING_STRICT_MATCHING);
+        return new TypingPreferences(caseInsensitive, ignorePunctuation, strictMatching);
+    }
+
+    /**
+     * Lưu toàn bộ tùy chọn chấm bài gõ đáp án trong một giao dịch nguyên tử.
+     *
+     * @param preferences cấu hình chấm bài gõ đáp án cần lưu
+     */
+    public void saveTypingPreferences(TypingPreferences preferences) {
+        if (preferences == null) {
+            throw new DomainValidationException(List.of("TypingPreferences must not be null"));
+        }
+        Instant now = clock.instant();
+        appSettingRepository.saveAll(List.of(
+                new AppSetting(
+                        KEY_TYPING_EN_CASE_INSENSITIVE,
+                        Boolean.toString(preferences.caseInsensitiveEnglish()),
+                        now
+                ),
+                new AppSetting(
+                        KEY_TYPING_EN_IGNORE_PUNCTUATION,
+                        Boolean.toString(preferences.ignoreEnglishPunctuation()),
+                        now
+                ),
+                new AppSetting(
+                        KEY_TYPING_STRICT_MATCHING,
+                        Boolean.toString(preferences.strictCharacterMatching()),
+                        now
+                )
         ));
     }
 

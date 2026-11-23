@@ -984,9 +984,12 @@ public class StudyWorkspaceController implements RefreshableView {
     private void addReadingAndPrimaryMeaning(Card card, Deck deck, CardExtraData extra) {
         String readingText = card.reading();
         if (deck.targetLanguage() == TargetLanguage.EN && extra.ipa() != null && !extra.ipa().isBlank()) {
-            readingText = (readingText == null || readingText.isBlank())
-                    ? extra.ipa()
-                    : readingText + "  " + extra.ipa();
+            String trimmedIpa = extra.ipa().trim();
+            if (readingText == null || readingText.isBlank()) {
+                readingText = trimmedIpa;
+            } else if (!readingText.contains(trimmedIpa)) {
+                readingText = readingText + "  " + trimmedIpa;
+            }
         }
         if (readingText != null && !readingText.isBlank()) {
             Label readingLabel = new Label(readingText);
@@ -1029,6 +1032,7 @@ public class StudyWorkspaceController implements RefreshableView {
     private void setRatingButtonText(Button button, String keyHint, String labelKey, SchedulingResult preview) {
         Duration interval = preview == null ? null : preview.scheduledInterval();
         String formattedInterval = StudyIntervalFormatter.format(interval, localizationManager);
+        button.setWrapText(true);
         button.setText("[" + keyHint + "] " + localizationManager.get(labelKey) + "\n" + formattedInterval);
     }
 

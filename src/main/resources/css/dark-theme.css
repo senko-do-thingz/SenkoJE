@@ -485,8 +485,10 @@
 }
 
 .study-rate-button {
-    -fx-min-width: 140;
-    -fx-padding: 10 16 10 16;
+    -fx-min-width: 148;
+    -fx-min-height: 54;
+    -fx-pref-height: 56;
+    -fx-padding: 8 14 8 14;
     -fx-background-radius: 8;
     -fx-border-radius: 8;
     -fx-font-weight: bold;

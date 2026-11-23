@@ -147,8 +147,8 @@
     -fx-border-color: -senko-border;
     -fx-border-radius: 10;
     -fx-background-radius: 10;
-    -fx-padding: 14 16 14 16;
-    -fx-min-width: 150;
+    -fx-padding: 12 10 12 10;
+    -fx-min-width: 120;
 }
 
 .metric-value {
@@ -158,8 +158,28 @@
 }
 
 .metric-label {
+    -fx-font-size: 11.5px;
+    -fx-text-fill: -senko-text-secondary;
+}
+
+/* Huy hiệu chuỗi ngày học tích hợp trong khối biểu đồ nhiệt */
+.streak-badge {
+    -fx-background-color: #ecfdf5;
+    -fx-border-color: #86efac;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-padding: 6 12 6 12;
+}
+
+.streak-badge-label {
     -fx-font-size: 12px;
     -fx-text-fill: -senko-text-secondary;
+}
+
+.streak-badge-value {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -senko-success;
 }
 
 /* Nhãn phân loại (Badge) */

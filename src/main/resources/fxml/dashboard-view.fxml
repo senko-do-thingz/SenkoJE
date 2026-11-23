@@ -5,7 +5,7 @@
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
-<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
@@ -31,44 +31,56 @@
             <Button fx:id="emptyActionButton" styleClass="primary-button" onAction="#handleOpenDecks"/>
         </VBox>
 
-        <FlowPane hgap="12" vgap="12">
-            <VBox styleClass="metric-card" spacing="4">
+        <!-- Hàng 6 thẻ chỉ số KPI chia đều 6 cột bằng nhau -->
+        <GridPane fx:id="kpiGrid" hgap="10" vgap="12">
+            <columnConstraints>
+                <ColumnConstraints percentWidth="16.6667" hgrow="ALWAYS"/>
+                <ColumnConstraints percentWidth="16.6667" hgrow="ALWAYS"/>
+                <ColumnConstraints percentWidth="16.6667" hgrow="ALWAYS"/>
+                <ColumnConstraints percentWidth="16.6667" hgrow="ALWAYS"/>
+                <ColumnConstraints percentWidth="16.6667" hgrow="ALWAYS"/>
+                <ColumnConstraints percentWidth="16.6667" hgrow="ALWAYS"/>
+            </columnConstraints>
+            <VBox styleClass="metric-card" spacing="4" maxWidth="Infinity" GridPane.columnIndex="0" GridPane.rowIndex="0">
                 <Label fx:id="totalDecksLabel" styleClass="metric-label"/>
                 <Label fx:id="totalDecksValue" styleClass="metric-value" text="0"/>
             </VBox>
-            <VBox styleClass="metric-card" spacing="4">
+            <VBox styleClass="metric-card" spacing="4" maxWidth="Infinity" GridPane.columnIndex="1" GridPane.rowIndex="0">
                 <Label fx:id="totalCardsLabel" styleClass="metric-label"/>
                 <Label fx:id="totalCardsValue" styleClass="metric-value" text="0"/>
             </VBox>
-            <VBox styleClass="metric-card" spacing="4">
+            <VBox styleClass="metric-card" spacing="4" maxWidth="Infinity" GridPane.columnIndex="2" GridPane.rowIndex="0">
                 <Label fx:id="dueTodayLabel" styleClass="metric-label"/>
                 <Label fx:id="dueTodayValue" styleClass="metric-value" text="0"/>
             </VBox>
-            <VBox styleClass="metric-card" spacing="4">
+            <VBox styleClass="metric-card" spacing="4" maxWidth="Infinity" GridPane.columnIndex="3" GridPane.rowIndex="0">
                 <Label fx:id="newAvailableLabel" styleClass="metric-label"/>
                 <Label fx:id="newAvailableValue" styleClass="metric-value" text="0"/>
             </VBox>
-            <VBox styleClass="metric-card" spacing="4">
+            <VBox styleClass="metric-card" spacing="4" maxWidth="Infinity" GridPane.columnIndex="4" GridPane.rowIndex="0">
                 <Label fx:id="reviewsTodayLabel" styleClass="metric-label"/>
                 <Label fx:id="reviewsTodayValue" styleClass="metric-value" text="0"/>
             </VBox>
-            <VBox styleClass="metric-card" spacing="4">
+            <VBox styleClass="metric-card" spacing="4" maxWidth="Infinity" GridPane.columnIndex="5" GridPane.rowIndex="0">
                 <Label fx:id="studyTimeTodayLabel" styleClass="metric-label"/>
                 <Label fx:id="studyTimeTodayValue" styleClass="metric-value" text="0m 0s"/>
             </VBox>
-            <VBox styleClass="metric-card" spacing="4">
-                <Label fx:id="currentStreakLabel" styleClass="metric-label"/>
-                <Label fx:id="currentStreakValue" styleClass="metric-value" text="0"/>
-            </VBox>
-        </FlowPane>
+        </GridPane>
 
-        <VBox styleClass="card-panel" spacing="12">
-            <HBox alignment="CENTER_LEFT" spacing="10">
+        <!-- Biểu đồ nhiệt hoạt động học tập kèm huy hiệu chuỗi ngày học ở góc trên bên phải -->
+        <VBox fx:id="heatmapCard" styleClass="card-panel" spacing="12">
+            <HBox alignment="CENTER_LEFT" spacing="14">
                 <VBox spacing="2" HBox.hgrow="ALWAYS">
                     <Label fx:id="heatmapTitleLabel" styleClass="section-title"/>
                     <Label fx:id="heatmapSubtitleLabel" styleClass="muted-label"/>
                 </VBox>
-                <HBox fx:id="heatmapLegendBox" alignment="CENTER_RIGHT" spacing="6"/>
+                <HBox alignment="CENTER_RIGHT" spacing="14">
+                    <HBox fx:id="heatmapLegendBox" alignment="CENTER_RIGHT" spacing="6"/>
+                    <HBox fx:id="streakBadgeBox" styleClass="streak-badge" alignment="CENTER" spacing="8">
+                        <Label fx:id="currentStreakLabel" styleClass="streak-badge-label"/>
+                        <Label fx:id="currentStreakValue" styleClass="streak-badge-value" text="0"/>
+                    </HBox>
+                </HBox>
             </HBox>
             <GridPane fx:id="heatmapGrid" hgap="5" vgap="5"/>
         </VBox>

@@ -1032,8 +1032,8 @@ public class StudyWorkspaceController implements RefreshableView {
     private void setRatingButtonText(Button button, String keyHint, String labelKey, SchedulingResult preview) {
         Duration interval = preview == null ? null : preview.scheduledInterval();
         String formattedInterval = StudyIntervalFormatter.format(interval, localizationManager);
-        button.setWrapText(true);
-        button.setText("[" + keyHint + "] " + localizationManager.get(labelKey) + "\n" + formattedInterval);
+        button.setWrapText(false);
+        button.setText("[" + keyHint + "] " + localizationManager.get(labelKey) + " (" + formattedInterval + ")");
     }
 
     private void updateRevealStateUi() {

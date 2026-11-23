@@ -121,7 +121,7 @@ class StudyWorkspaceUiTest {
                 Button goodButton = (Button) root.lookup("#goodButton");
                 assertNotNull(goodButton);
                 assertTrue(goodButton.getText().contains("[3]"));
-                assertTrue(goodButton.getText().contains("\n"));
+                assertTrue(goodButton.getText().contains("("));
 
                 // Nhấn Esc để thoát phiên học sạch sẽ
                 scene.getRoot().fireEvent(new KeyEvent(

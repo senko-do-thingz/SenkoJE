@@ -4,8 +4,11 @@ import com.senkoje.application.dto.TtsPreferences;
 import com.senkoje.application.dto.TypingPreferences;
 import com.senkoje.application.service.AppSettingsService;
 import com.senkoje.domain.model.DeckSettings;
+import com.senkoje.domain.model.TargetLanguage;
 import com.senkoje.domain.service.DeckSettingsValidator;
 import com.senkoje.domain.service.DomainValidationException;
+import com.senkoje.infrastructure.tts.TtsAvailability;
+import com.senkoje.infrastructure.tts.TtsManager;
 import com.senkoje.presentation.i18n.LocalizationManager;
 import com.senkoje.presentation.navigation.RefreshableView;
 import com.senkoje.presentation.theme.ThemeManager;
@@ -41,6 +44,7 @@ public class SettingsController implements RefreshableView {
     private static final DeckSettingsValidator SRS_VALIDATOR = new DeckSettingsValidator();
 
     private final AppSettingsService appSettingsService;
+    private final TtsManager ttsManager;
     private final LocalizationManager localizationManager;
     private final ThemeManager themeManager;
     private final BackgroundTaskExecutor backgroundTaskExecutor;
@@ -86,6 +90,10 @@ public class SettingsController implements RefreshableView {
     private Label enVoiceFieldLabel;
     @FXML
     private TextField enVoiceField;
+    @FXML
+    private Label ttsAvailabilityStatusLabel;
+    @FXML
+    private Button testTtsButton;
     @FXML
     private Button saveTtsButton;
 
@@ -181,8 +189,30 @@ public class SettingsController implements RefreshableView {
             BackgroundTaskExecutor backgroundTaskExecutor,
             Path databasePath
     ) {
+        this(appSettingsService, null, localizationManager, themeManager, backgroundTaskExecutor, databasePath);
+    }
+
+    /**
+     * Khởi tạo bộ điều khiển màn hình Cài đặt kèm trình điều phối TTS ngoại tuyến.
+     *
+     * @param appSettingsService dịch vụ cài đặt ứng dụng
+     * @param ttsManager trình điều phối TTS ngoại tuyến (có thể null khi kiểm thử độc lập)
+     * @param localizationManager trình quản lý đa ngôn ngữ
+     * @param themeManager trình quản lý chủ đề
+     * @param backgroundTaskExecutor bộ thực thi tác vụ nền
+     * @param databasePath đường dẫn tệp cơ sở dữ liệu SQLite đang dùng
+     */
+    public SettingsController(
+            AppSettingsService appSettingsService,
+            TtsManager ttsManager,
+            LocalizationManager localizationManager,
+            ThemeManager themeManager,
+            BackgroundTaskExecutor backgroundTaskExecutor,
+            Path databasePath
+    ) {
         this.appSettingsService = Objects.requireNonNull(
                 appSettingsService, "appSettingsService must not be null");
+        this.ttsManager = ttsManager;
         this.localizationManager = Objects.requireNonNull(
                 localizationManager, "localizationManager must not be null");
         this.themeManager = Objects.requireNonNull(themeManager, "themeManager must not be null");
@@ -220,8 +250,31 @@ public class SettingsController implements RefreshableView {
         );
         backgroundTaskExecutor.runAsyncVoid(
                 () -> appSettingsService.saveTtsPreferences(prefs),
-                () -> showStatus(localizationManager.get("settings.saved"), false),
+                () -> {
+                    showStatus(localizationManager.get("settings.saved"), false);
+                    refreshTtsAvailabilityStatus();
+                },
                 error -> showStatus(extractErrorMessage(error), true)
+        );
+    }
+
+    @FXML
+    private void handleTestTts() {
+        if (ttsManager == null) {
+            showStatus(localizationManager.get("tts.status.disabled"), true);
+            return;
+        }
+        testTtsButton.setDisable(true);
+        backgroundTaskExecutor.runAsync(
+                () -> ttsManager.speak("SenkoJE offline speech test.", TargetLanguage.EN),
+                result -> {
+                    testTtsButton.setDisable(false);
+                    showStatus(localizationManager.get(result.statusCode()), !result.succeeded());
+                },
+                error -> {
+                    testTtsButton.setDisable(false);
+                    showStatus(extractErrorMessage(error), true);
+                }
         );
     }
 
@@ -340,6 +393,7 @@ public class SettingsController implements RefreshableView {
             relearningStepsField.setText(loaded.srsRelearningSteps());
             fuzzingCheckBox.setSelected(loaded.srsEnableFuzzing());
             updateSpeechRateLabel();
+            refreshTtsAvailabilityStatus();
         } finally {
             loadingControls = false;
         }
@@ -358,6 +412,7 @@ public class SettingsController implements RefreshableView {
         localizationManager.bind(ttsProviderFieldLabel, "settings.field.ttsProvider");
         localizationManager.bind(jaVoiceFieldLabel, "settings.field.jaVoice");
         localizationManager.bind(enVoiceFieldLabel, "settings.field.enVoice");
+        localizationManager.bind(testTtsButton, "settings.tts.test");
         localizationManager.bind(saveTtsButton, "common.save");
 
         localizationManager.bind(typingSectionLabel, "settings.section.typing");
@@ -468,6 +523,30 @@ public class SettingsController implements RefreshableView {
     private void updateSpeechRateLabel() {
         String formattedRate = String.format(Locale.ROOT, "%.1f", speechRateSlider.getValue());
         speechRateFieldLabel.setText(localizationManager.get("settings.field.speechRate", formattedRate));
+    }
+
+    private void refreshTtsAvailabilityStatus() {
+        if (ttsAvailabilityStatusLabel == null) {
+            return;
+        }
+        if (ttsManager == null) {
+            ttsAvailabilityStatusLabel.setText(localizationManager.get("tts.status.disabled"));
+            return;
+        }
+        backgroundTaskExecutor.runAsync(
+                ttsManager::checkActiveAvailability,
+                this::applyTtsAvailability,
+                error -> ttsAvailabilityStatusLabel.setText(localizationManager.get("tts.status.failed"))
+        );
+    }
+
+    private void applyTtsAvailability(TtsAvailability availability) {
+        if (ttsAvailabilityStatusLabel == null || availability == null) {
+            return;
+        }
+        ttsAvailabilityStatusLabel.setText(localizationManager.get(availability.reasonCode()));
+        ttsAvailabilityStatusLabel.getStyleClass().removeAll("status-success", "status-error", "muted-label");
+        ttsAvailabilityStatusLabel.getStyleClass().add(availability.available() ? "status-success" : "status-error");
     }
 
     private void showStatus(String message, boolean error) {

@@ -19,6 +19,10 @@ import com.senkoje.domain.service.CardValidator;
 import com.senkoje.domain.service.DeckSettingsValidator;
 import com.senkoje.domain.service.DeckValidator;
 import com.senkoje.infrastructure.config.AppDataPathResolver;
+import com.senkoje.infrastructure.tts.BundledOfflineTtsProvider;
+import com.senkoje.infrastructure.tts.SystemTtsProvider;
+import com.senkoje.infrastructure.tts.TtsManager;
+import com.senkoje.infrastructure.tts.UnsupportedTtsProvider;
 import com.senkoje.persistence.migration.DatabaseMigrator;
 import com.senkoje.persistence.repository.SqliteAppSettingRepository;
 import com.senkoje.persistence.repository.SqliteCardRepository;
@@ -69,6 +73,7 @@ public class ApplicationContainer implements AutoCloseable {
     private final LocalizationManager localizationManager;
     private final ThemeManager themeManager;
     private final BackgroundTaskExecutor backgroundTaskExecutor;
+    private final TtsManager ttsManager;
 
     /**
      * Khởi tạo bộ chứa ứng dụng mặc định dùng đường dẫn dữ liệu chuẩn theo hệ điều hành và múi giờ Việt Nam.
@@ -150,6 +155,12 @@ public class ApplicationContainer implements AutoCloseable {
         this.localizationManager = new LocalizationManager(appSettingsService);
         this.themeManager = new ThemeManager(appSettingsService);
         this.backgroundTaskExecutor = new BackgroundTaskExecutor();
+        this.ttsManager = new TtsManager(
+                appSettingsService,
+                new SystemTtsProvider(),
+                new BundledOfflineTtsProvider(this.pathResolver.resolveAppDataDirectory().resolve("voices")),
+                new UnsupportedTtsProvider()
+        );
     }
 
     public Clock getClock() {
@@ -220,8 +231,13 @@ public class ApplicationContainer implements AutoCloseable {
         return backgroundTaskExecutor;
     }
 
+    public TtsManager getTtsManager() {
+        return ttsManager;
+    }
+
     @Override
     public void close() {
+        ttsManager.stop();
         backgroundTaskExecutor.close();
     }
 }

@@ -294,6 +294,7 @@ public class MainShellController {
                     container.getStudySessionService(),
                     container.getDeckService(),
                     container.getAppSettingsService(),
+                    container.getTtsManager(),
                     localizationManager,
                     container.getThemeManager(),
                     container.getBackgroundTaskExecutor(),
@@ -310,6 +311,7 @@ public class MainShellController {
             case IMPORT_EXPORT -> loadPlaceholder("placeholder.importExport.title", "placeholder.importExport.subtitle");
             case SETTINGS -> loadFxml("/fxml/settings-view.fxml", new SettingsController(
                     container.getAppSettingsService(),
+                    container.getTtsManager(),
                     localizationManager,
                     container.getThemeManager(),
                     container.getBackgroundTaskExecutor(),

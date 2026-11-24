@@ -1,0 +1,2723 @@
+{
+  "schema_version": "1.0",
+  "exported_at": "2026-11-24T00:00:00Z",
+  "generator": "SenkoJE",
+  "deck": {
+    "title": "JLPT N5 Essential Vocabulary 100",
+    "target_language": "JA",
+    "definition_language": "vi",
+    "level": "N5",
+    "description": "100 từ vựng tiếng Nhật cốt lõi trình độ JLPT N5 kèm Furigana và nghĩa tiếng Việt",
+    "settings": {
+      "desired_retention": 0.9,
+      "maximum_interval": 36500,
+      "new_cards_per_day": 20,
+      "maximum_reviews_per_day": 200,
+      "learning_steps": "1m,10m",
+      "relearning_steps": "10m",
+      "enable_fuzzing": true
+    }
+  },
+  "cards": [
+    {
+      "term": "会う",
+      "reading": "あう",
+      "meaning": "gặp gỡ",
+      "card_type": "VOCABULARY",
+      "level": "N5",
+      "part_of_speech": "verb",
+      "notes": "JLPT N5 Core Vocabulary",
+      "extra_data": {
+        "furigana": "会[あ]う"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "gặp gỡ",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "友達に会う。",
+          "translation": "Gặp bạn bè.",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "青い",
+      "reading": "あおい",
+      "meaning": "xanh da trời",
+      "card_type": "VOCABULARY",
+      "level": "N5",
+      "part_of_speech": "adjective",
+      "notes": "JLPT N5 Core Vocabulary",
+      "extra_data": {
+        "furigana": "青[あお]い"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "xanh da trời",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "空が青い。",
+          "translation": "Bầu trời màu xanh.",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "赤い",
+      "reading": "あかい",
+      "meaning": "đỏ",
+      "card_type": "VOCABULARY",
+      "level": "N5",
+      "part_of_speech": "adjective",
+      "notes": "JLPT N5 Core Vocabulary",
+      "extra_data": {
+        "furigana": "赤[あか]い"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "đỏ",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "赤いりんごを食べる。",
+          "translation": "Ăn quả táo màu đỏ.",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "明るい",
+      "reading": "あかるい",
+      "meaning": "sáng sủa",
+      "card_type": "VOCABULARY",
+      "level": "N5",
+      "part_of_speech": "adjective",
+      "notes": "JLPT N5 Core Vocabulary",
+      "extra_data": {
+        "furigana": "明[あか]るい"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "sáng sủa",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "部屋が明るい。",
+          "translation": "Căn phòng sáng sủa.",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "秋",
+      "reading": "あき",
+      "meaning": "mùa thu",
+      "card_type": "VOCABULARY",
+      "level": "N5",
+      "part_of_speech": "noun",
+      "notes": "JLPT N5 Core Vocabulary",
+      "extra_data": {
+        "furigana": "秋[あき]"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "mùa thu",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "秋が好きです。",
+          "translation": "Tôi thích mùa thu.",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "開ける",
+      "reading": "あける",
+      "meaning": "mở",
+      "card_type": "VOCABULARY",
+      "level": "N5",
+      "part_of_speech": "verb",
+      "notes": "JLPT N5 Core Vocabulary",
+      "extra_data": {
+        "furigana": "開[あ]ける"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "mở",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "窓を開ける。",
+          "translation": "Mở cửa sổ.",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "朝",
+      "reading": "あさ",
+      "meaning": "buổi sáng",
+      "card_type": "VOCABULARY",
+      "level": "N5",
+      "part_of_speech": "noun",
+      "notes": "JLPT N5 Core Vocabulary",
+      "extra_data": {
+        "furigana": "朝[あさ]"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "buổi sáng",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "毎朝ジョギングをする。",
+          "translation": "Mỗi sáng chạy bộ.",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "朝ご飯",
+      "reading": "あさごはん",
+      "meaning": "bữa sáng",
+      "card_type": "VOCABULARY",
+      "level": "N5",
+      "part_of_speech": "noun",
+      "notes": "JLPT N5 Core Vocabulary",
+      "extra_data": {
+        "furigana": "朝[あさ]ご飯[はん]"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "bữa sáng",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "朝ご飯を食べる。",
+          "translation": "Ăn bữa sáng.",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "足",
+      "reading": "あし",
+      "meaning": "chân",
+      "card_type": "VOCABULARY",
+      "level": "N5",
+      "part_of_speech": "noun",
+      "notes": "JLPT N5 Core Vocabulary",
+      "extra_data": {
+        "furigana": "足[あし]"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "chân",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "足が痛い。",
+          "translation": "Đau chân.",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "明日",
+      "reading": "あした",
+      "meaning": "ngày mai",
+      "card_type": "VOCABULARY",
+      "level": "N5",
+      "part_of_speech": "noun",
+      "notes": "JLPT N5 Core Vocabulary",
+      "extra_data": {
+        "furigana": "明日[あした]"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "ngày mai",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "明日学校へ行く。",
+          "translation": "Ngày mai đi đến trường.",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "新しい",
+      "reading": "あたらしい",
+      "meaning": "mới",
+      "card_type": "VOCABULARY",
+      "level": "N5",
+      "part_of_speech": "adjective",
+      "notes": "JLPT N5 Core Vocabulary",
+      "extra_data": {
+        "furigana": "新[あたら]しい"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "mới",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "新しい本を買った。",
+          "translation": "Đã mua quyển sách mới.",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "頭",
+      "reading": "あたま",
+      "meaning": "đầu",
+      "card_type": "VOCABULARY",
+      "level": "N5",
+      "part_of_speech": "noun",
+      "notes": "JLPT N5 Core Vocabulary",
+      "extra_data": {
+        "furigana": "頭[あたま]"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "đầu",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "頭がいいですね。",
+          "translation": "Thông minh thật đấy.",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "暑い",
+      "reading": "あつい",
+      "meaning": "nóng (thời tiết)",
+      "card_type": "VOCABULARY",
+      "level": "N5",
+      "part_of_speech": "adjective",
+      "notes": "JLPT N5 Core Vocabulary",
+      "extra_data": {
+        "furigana": "暑[あつ]い"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "nóng (thời tiết)",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "今日はとても暑い。",
+          "translation": "Hôm nay rất nóng.",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "熱い",
+      "reading": "あつい",
+      "meaning": "nóng (nhiệt độ)",
+      "card_type": "VOCABULARY",
+      "level": "N5",
+      "part_of_speech": "adjective",
+      "notes": "JLPT N5 Core Vocabulary",
+      "extra_data": {
+        "furigana": "熱[あつ]い"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "nóng (nhiệt độ)",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "熱いお茶を飲む。",
+          "translation": "Uống trà nóng.",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "後",
+      "reading": "あと",
+      "meaning": "sau đó",
+      "card_type": "VOCABULARY",
+      "level": "N5",
+      "part_of_speech": "noun",
+      "notes": "JLPT N5 Core Vocabulary",
+      "extra_data": {
+        "furigana": "後[あと]"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "sau đó",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "ご飯の後に散歩する。",
+          "translation": "Đi dạo sau bữa cơm.",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "あなた",
+      "reading": "あなた",
+      "meaning": "bạn, anh, chị",
+      "card_type": "VOCABULARY",
+      "level": "N5",
+      "part_of_speech": "pronoun",
+      "notes": "JLPT N5 Core Vocabulary",
+      "extra_data": {
+        "furigana": "あなた"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "bạn, anh, chị",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "お名前は何ですか。",
+          "translation": "Tên của bạn là gì?",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "兄",
+      "reading": "あに",
+      "meaning": "anh trai",
+      "card_type": "VOCABULARY",
+      "level": "N5",
+      "part_of_speech": "noun",
+      "notes": "JLPT N5 Core Vocabulary",
+      "extra_data": {
+        "furigana": "兄[あに]"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "anh trai",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "兄は大学生です。",
+          "translation": "Anh trai tôi là sinh viên.",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "姉",
+      "reading": "あね",
+      "meaning": "chị gái",
+      "card_type": "VOCABULARY",
+      "level": "N5",
+      "part_of_speech": "noun",
+      "notes": "JLPT N5 Core Vocabulary",
+      "extra_data": {
+        "furigana": "姉[あね]"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "chị gái",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "姉は看護師です。",
+          "translation": "Chị gái tôi là y tá.",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "雨",
+      "reading": "あめ",
+      "meaning": "mưa",
+      "card_type": "VOCABULARY",
+      "level": "N5",
+      "part_of_speech": "noun",
+      "notes": "JLPT N5 Core Vocabulary",
+      "extra_data": {
+        "furigana": "雨[あめ]"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "mưa",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "雨が降っている。",
+          "translation": "Trời đang mưa.",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "洗う",
+      "reading": "あらう",
+      "meaning": "rửa, giặt",
+      "card_type": "VOCABULARY",
+      "level": "N5",
+      "part_of_speech": "verb",
+      "notes": "JLPT N5 Core Vocabulary",
+      "extra_data": {
+        "furigana": "洗[あら]う"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "rửa, giặt",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "手をよく洗う。",
+          "translation": "Rửa tay thật sạch.",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "歩く",
+      "reading": "あるく",
+      "meaning": "đi bộ",
+      "card_type": "VOCABULARY",
+      "level": "N5",
+      "part_of_speech": "verb",
+      "notes": "JLPT N5 Core Vocabulary",
+      "extra_data": {
+        "furigana": "歩[ある]く"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "đi bộ",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "駅まで歩く。",
+          "translation": "Đi bộ đến nhà ga.",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "言う",
+      "reading": "いう",
+      "meaning": "nói",
+      "card_type": "VOCABULARY",
+      "level": "N5",
+      "part_of_speech": "verb",
+      "notes": "JLPT N5 Core Vocabulary",
+      "extra_data": {
+        "furigana": "言[い]う"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "nói",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "ありがとうと言う。",
+          "translation": "Nói lời cảm ơn.",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "家",
+      "reading": "いえ",
+      "meaning": "nhà",
+      "card_type": "VOCABULARY",
+      "level": "N5",
+      "part_of_speech": "noun",
+      "notes": "JLPT N5 Core Vocabulary",
+      "extra_data": {
+        "furigana": "家[いえ]"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "nhà",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "家に帰る。",
+          "translation": "Trở về nhà.",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "行く",
+      "reading": "いく",
+      "meaning": "đi",
+      "card_type": "VOCABULARY",
+      "level": "N5",
+      "part_of_speech": "verb",
+      "notes": "JLPT N5 Core Vocabulary",
+      "extra_data": {
+        "furigana": "行[い]く"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "đi",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "日本へ行く。",
+          "translation": "Đi đến Nhật Bản.",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "医者",
+      "reading": "いしゃ",
+      "meaning": "bác sĩ",
+      "card_type": "VOCABULARY",
+      "level": "N5",
+      "part_of_speech": "noun",
+      "notes": "JLPT N5 Core Vocabulary",
+      "extra_data": {
+        "furigana": "医者[いしゃ]"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "bác sĩ",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "医者に診てもらう。",
+          "translation": "Được bác sĩ khám bệnh.",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "椅子",
+      "reading": "いす",
+      "meaning": "ghế",
+      "card_type": "VOCABULARY",
+      "level": "N5",
+      "part_of_speech": "noun",
+      "notes": "JLPT N5 Core Vocabulary",
+      "extra_data": {
+        "furigana": "椅子[いす]"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "ghế",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "椅子に座る。",
+          "translation": "Ngồi xuống ghế.",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "忙しい",
+      "reading": "いそがしい",
+      "meaning": "bận rộn",
+      "card_type": "VOCABULARY",
+      "level": "N5",
+      "part_of_speech": "adjective",
+      "notes": "JLPT N5 Core Vocabulary",
+      "extra_data": {
+        "furigana": "忙[いそが]しい"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "bận rộn",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "今週は忙しい。",
+          "translation": "Tuần này rất bận.",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "痛い",
+      "reading": "いたい",
+      "meaning": "đau",
+      "card_type": "VOCABULARY",
+      "level": "N5",
+      "part_of_speech": "adjective",
+      "notes": "JLPT N5 Core Vocabulary",
+      "extra_data": {
+        "furigana": "痛[いた]い"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "đau",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "お腹が痛い。",
+          "translation": "Bị đau bụng.",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "一日",
+      "reading": "いちにち",
+      "meaning": "một ngày",
+      "card_type": "VOCABULARY",
+      "level": "N5",
+      "part_of_speech": "noun",
+      "notes": "JLPT N5 Core Vocabulary",
+      "extra_data": {
+        "furigana": "一日[いちにち]"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "một ngày",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "一日中勉強した。",
+          "translation": "Học cả một ngày.",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "犬",
+      "reading": "いぬ",
+      "meaning": "con chó",
+      "card_type": "VOCABULARY",
+      "level": "N5",
+      "part_of_speech": "noun",
+      "notes": "JLPT N5 Core Vocabulary",
+      "extra_data": {
+        "furigana": "犬[いぬ]"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "con chó",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "白い犬を飼っている。",
+          "translation": "Nuôi một chú chó màu trắng.",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "今",
+      "reading": "いま",
+      "meaning": "bây giờ",
+      "card_type": "VOCABULARY",
+      "level": "N5",
+      "part_of_speech": "noun",
+      "notes": "JLPT N5 Core Vocabulary",
+      "extra_data": {
+        "furigana": "今[いま]"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "bây giờ",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "今何時ですか。",
+          "translation": "Bây giờ là mấy giờ?",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "妹",
+      "reading": "いもうと",
+      "meaning": "em gái",
+      "card_type": "VOCABULARY",
+      "level": "N5",
+      "part_of_speech": "noun",
+      "notes": "JLPT N5 Core Vocabulary",
+      "extra_data": {
+        "furigana": "妹[いもうと]"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "em gái",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "妹は高校生です。",
+          "translation": "Em gái tôi là học sinh cấp 3.",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "入口",
+      "reading": "いりぐち",
+      "meaning": "cửa vào",
+      "card_type": "VOCABULARY",
+      "level": "N5",
+      "part_of_speech": "noun",
+      "notes": "JLPT N5 Core Vocabulary",
+      "extra_data": {
+        "furigana": "入[い]り口[ぐち]"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "cửa vào",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "入口はこちらです。",
+          "translation": "Lối vào ở hướng này.",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "歌",
+      "reading": "うた",
+      "meaning": "bài hát",
+      "card_type": "VOCABULARY",
+      "level": "N5",
+      "part_of_speech": "noun",
+      "notes": "JLPT N5 Core Vocabulary",
+      "extra_data": {
+        "furigana": "歌[うた]"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "bài hát",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "日本の歌が好きです。",
+          "translation": "Tôi thích bài hát tiếng Nhật.",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "歌う",
+      "reading": "うたう",
+      "meaning": "hát",
+      "card_type": "VOCABULARY",
+      "level": "N5",
+      "part_of_speech": "verb",
+      "notes": "JLPT N5 Core Vocabulary",
+      "extra_data": {
+        "furigana": "歌[うた]う"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "hát",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "みんなで歌を歌う。",
+          "translation": "Mọi người cùng hát một bài hát.",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "生まれる",
+      "reading": "うまれる",
+      "meaning": "sinh ra",
+      "card_type": "VOCABULARY",
+      "level": "N5",
+      "part_of_speech": "verb",
+      "notes": "JLPT N5 Core Vocabulary",
+      "extra_data": {
+        "furigana": "生[う]まれる"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "sinh ra",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "東京で生まれた。",
+          "translation": "Tôi sinh ra ở Tokyo.",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "海",
+      "reading": "うみ",
+      "meaning": "biển",
+      "card_type": "VOCABULARY",
+      "level": "N5",
+      "part_of_speech": "noun",
+      "notes": "JLPT N5 Core Vocabulary",
+      "extra_data": {
+        "furigana": "海[うみ]"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "biển",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "夏休みに海へ行く。",
+          "translation": "Nghỉ hè đi biển.",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "売る",
+      "reading": "うる",
+      "meaning": "bán",
+      "card_type": "VOCABULARY",
+      "level": "N5",
+      "part_of_speech": "verb",
+      "notes": "JLPT N5 Core Vocabulary",
+      "extra_data": {
+        "furigana": "売[う]る"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "bán",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "野菜を売る。",
+          "translation": "Bán rau củ.",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "上着",
+      "reading": "うわぎ",
+      "meaning": "áo khoác",
+      "card_type": "VOCABULARY",
+      "level": "N5",
+      "part_of_speech": "noun",
+      "notes": "JLPT N5 Core Vocabulary",
+      "extra_data": {
+        "furigana": "上着[うわぎ]"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "áo khoác",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "上着を着てください。",
+          "translation": "Hãy mặc áo khoác vào.",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "絵",
+      "reading": "え",
+      "meaning": "bức tranh",
+      "card_type": "VOCABULARY",
+      "level": "N5",
+      "part_of_speech": "noun",
+      "notes": "JLPT N5 Core Vocabulary",
+      "extra_data": {
+        "furigana": "絵[え]"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "bức tranh",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "美しい絵を描く。",
+          "translation": "Vẽ một bức tranh đẹp.",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "映画",
+      "reading": "えいが",
+      "meaning": "phim ảnh",
+      "card_type": "VOCABULARY",
+      "level": "N5",
+      "part_of_speech": "noun",
+      "notes": "JLPT N5 Core Vocabulary",
+      "extra_data": {
+        "furigana": "映画[えいが]"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "phim ảnh",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "週末に映画を見る。",
+          "translation": "Cuối tuần xem phim.",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "駅",
+      "reading": "えき",
+      "meaning": "nhà ga",
+      "card_type": "VOCABULARY",
+      "level": "N5",
+      "part_of_speech": "noun",
+      "notes": "JLPT N5 Core Vocabulary",
+      "extra_data": {
+        "furigana": "駅[えき]"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "nhà ga",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "駅の前で待ち合わせる。",
+          "translation": "Hẹn gặp trước nhà ga.",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "鉛筆",
+      "reading": "えんぴつ",
+      "meaning": "bút chì",
+      "card_type": "VOCABULARY",
+      "level": "N5",
+      "part_of_speech": "noun",
+      "notes": "JLPT N5 Core Vocabulary",
+      "extra_data": {
+        "furigana": "鉛筆[えんぴつ]"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "bút chì",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "鉛筆で名前を書く。",
+          "translation": "Viết tên bằng bút chì.",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "美味しい",
+      "reading": "おいしい",
+      "meaning": "ngon miệng",
+      "card_type": "VOCABULARY",
+      "level": "N5",
+      "part_of_speech": "adjective",
+      "notes": "JLPT N5 Core Vocabulary",
+      "extra_data": {
+        "furigana": "美味[おい]しい"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "ngon miệng",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "このラーメンは美味しい。",
+          "translation": "Món mì ramen này rất ngon.",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "大きい",
+      "reading": "おおきい",
+      "meaning": "to lớn",
+      "card_type": "VOCABULARY",
+      "level": "N5",
+      "part_of_speech": "adjective",
+      "notes": "JLPT N5 Core Vocabulary",
+      "extra_data": {
+        "furigana": "大[おお]きい"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "to lớn",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "大きい家に住みたい。",
+          "translation": "Muốn sống trong một ngôi nhà lớn.",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "お茶",
+      "reading": "おちゃ",
+      "meaning": "trà",
+      "card_type": "VOCABULARY",
+      "level": "N5",
+      "part_of_speech": "noun",
+      "notes": "JLPT N5 Core Vocabulary",
+      "extra_data": {
+        "furigana": "お茶[ちゃ]"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "trà",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "温かいお茶を飲む。",
+          "translation": "Uống trà ấm.",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "弟",
+      "reading": "おとうと",
+      "meaning": "em trai",
+      "card_type": "VOCABULARY",
+      "level": "N5",
+      "part_of_speech": "noun",
+      "notes": "JLPT N5 Core Vocabulary",
+      "extra_data": {
+        "furigana": "弟[おとうと]"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "em trai",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "弟とサッカーをする。",
+          "translation": "Chơi bóng đá cùng em trai.",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "男",
+      "reading": "おとこ",
+      "meaning": "nam giới",
+      "card_type": "VOCABULARY",
+      "level": "N5",
+      "part_of_speech": "noun",
+      "notes": "JLPT N5 Core Vocabulary",
+      "extra_data": {
+        "furigana": "男[おとこ]"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "nam giới",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "若い男の人が走る。",
+          "translation": "Một người đàn ông trẻ tuổi đang chạy.",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "お腹",
+      "reading": "おなか",
+      "meaning": "bụng",
+      "card_type": "VOCABULARY",
+      "level": "N5",
+      "part_of_speech": "noun",
+      "notes": "JLPT N5 Core Vocabulary",
+      "extra_data": {
+        "furigana": "お腹[なか]"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "bụng",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "お腹がすきました。",
+          "translation": "Tôi đói bụng rồi.",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "同じ",
+      "reading": "おなじ",
+      "meaning": "giống nhau",
+      "card_type": "VOCABULARY",
+      "level": "N5",
+      "part_of_speech": "adjective",
+      "notes": "JLPT N5 Core Vocabulary",
+      "extra_data": {
+        "furigana": "同[おな]じ"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "giống nhau",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "私たちはお同じ年です。",
+          "translation": "Chúng tôi bằng tuổi nhau.",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "海老",
+      "reading": "えび",
+      "meaning": "tôm",
+      "card_type": "VOCABULARY",
+      "level": "N5",
+      "part_of_speech": "noun",
+      "notes": "JLPT N5 Core Vocabulary",
+      "extra_data": {
+        "furigana": "海老[えび]"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "tôm",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "海老の天ぷらを食べる。",
+          "translation": "Ăn món tempura tôm.",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "音楽",
+      "reading": "おんがく",
+      "meaning": "âm nhạc",
+      "card_type": "VOCABULARY",
+      "level": "N5",
+      "part_of_speech": "noun",
+      "notes": "JLPT N5 Core Vocabulary",
+      "extra_data": {
+        "furigana": "音楽[おんがく]"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "âm nhạc",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "クラシック音楽を聴く。",
+          "translation": "Nghe nhạc cổ điển.",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "買い物",
+      "reading": "かいもの",
+      "meaning": "mua sắm",
+      "card_type": "VOCABULARY",
+      "level": "N5",
+      "part_of_speech": "noun",
+      "notes": "JLPT N5 Core Vocabulary",
+      "extra_data": {
+        "furigana": "買[か]い物[もの]"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "mua sắm",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "スーパーへ買い物に行く。",
+          "translation": "Đi siêu thị mua sắm.",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "買う",
+      "reading": "かう",
+      "meaning": "mua",
+      "card_type": "VOCABULARY",
+      "level": "N5",
+      "part_of_speech": "verb",
+      "notes": "JLPT N5 Core Vocabulary",
+      "extra_data": {
+        "furigana": "買[か]う"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "mua",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "新しい靴を買う。",
+          "translation": "Mua một đôi giày mới.",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "帰る",
+      "reading": "かえる",
+      "meaning": "trở về",
+      "card_type": "VOCABULARY",
+      "level": "N5",
+      "part_of_speech": "verb",
+      "notes": "JLPT N5 Core Vocabulary",
+      "extra_data": {
+        "furigana": "帰[か]える"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "trở về",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "夜八時に家に帰る。",
+          "translation": "Tám giờ tối trở về nhà.",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "傘",
+      "reading": "かさ",
+      "meaning": "cây dù, ô",
+      "card_type": "VOCABULARY",
+      "level": "N5",
+      "part_of_speech": "noun",
+      "notes": "JLPT N5 Core Vocabulary",
+      "extra_data": {
+        "furigana": "傘[かさ]"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "cây dù, ô",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "雨が降るから傘を持つ。",
+          "translation": "Trời mưa nên mang theo ô.",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "貸す",
+      "reading": "かす",
+      "meaning": "cho mượn",
+      "card_type": "VOCABULARY",
+      "level": "N5",
+      "part_of_speech": "verb",
+      "notes": "JLPT N5 Core Vocabulary",
+      "extra_data": {
+        "furigana": "貸[か]す"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "cho mượn",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "友人にノートを貸す。",
+          "translation": "Cho bạn mượn vở ghi chép.",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "風",
+      "reading": "かぜ",
+      "meaning": "gió",
+      "card_type": "VOCABULARY",
+      "level": "N5",
+      "part_of_speech": "noun",
+      "notes": "JLPT N5 Core Vocabulary",
+      "extra_data": {
+        "furigana": "風[かぜ]"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "gió",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "冷たい風が吹く。",
+          "translation": "Gió lạnh thổi.",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "風邪",
+      "reading": "かぜ",
+      "meaning": "cảm lạnh",
+      "card_type": "VOCABULARY",
+      "level": "N5",
+      "part_of_speech": "noun",
+      "notes": "JLPT N5 Core Vocabulary",
+      "extra_data": {
+        "furigana": "風邪[かぜ]"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "cảm lạnh",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "風邪をひいてしまった。",
+          "translation": "Tôi đã bị cảm lạnh mất rồi.",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "家族",
+      "reading": "かぞく",
+      "meaning": "gia đình",
+      "card_type": "VOCABULARY",
+      "level": "N5",
+      "part_of_speech": "noun",
+      "notes": "JLPT N5 Core Vocabulary",
+      "extra_data": {
+        "furigana": "家族[かぞく]"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "gia đình",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "家族と一緒に住んでいる。",
+          "translation": "Đang sống cùng gia đình.",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "紙",
+      "reading": "かみ",
+      "meaning": "giấy",
+      "card_type": "VOCABULARY",
+      "level": "N5",
+      "part_of_speech": "noun",
+      "notes": "JLPT N5 Core Vocabulary",
+      "extra_data": {
+        "furigana": "紙[かみ]"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "giấy",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "白い紙にメモを取る。",
+          "translation": "Ghi chú vào tờ giấy trắng.",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "通う",
+      "reading": "かよう",
+      "meaning": "đi lại đều đặn",
+      "card_type": "VOCABULARY",
+      "level": "N5",
+      "part_of_speech": "verb",
+      "notes": "JLPT N5 Core Vocabulary",
+      "extra_data": {
+        "furigana": "通[かよ]う"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "đi lại đều đặn",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "大学に電車で通う。",
+          "translation": "Đi học đại học bằng tàu điện.",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "体",
+      "reading": "からだ",
+      "meaning": "cơ thể",
+      "card_type": "VOCABULARY",
+      "level": "N5",
+      "part_of_speech": "noun",
+      "notes": "JLPT N5 Core Vocabulary",
+      "extra_data": {
+        "furigana": "体[からだ]"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "cơ thể",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "健康な体を保つ。",
+          "translation": "Giữ gìn cơ thể khỏe mạnh.",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "借りる",
+      "reading": "かりる",
+      "meaning": "mượn",
+      "card_type": "VOCABULARY",
+      "level": "N5",
+      "part_of_speech": "verb",
+      "notes": "JLPT N5 Core Vocabulary",
+      "extra_data": {
+        "furigana": "借[か]りる"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "mượn",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "図書館で本を借りる。",
+          "translation": "Mượn sách ở thư viện.",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "軽い",
+      "reading": "かるい",
+      "meaning": "nhẹ",
+      "card_type": "VOCABULARY",
+      "level": "N5",
+      "part_of_speech": "adjective",
+      "notes": "JLPT N5 Core Vocabulary",
+      "extra_data": {
+        "furigana": "軽[かる]い"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "nhẹ",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "このカバンはとても軽い。",
+          "translation": "Chiếc cặp này rất nhẹ.",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "川",
+      "reading": "かわ",
+      "meaning": "con sông",
+      "card_type": "VOCABULARY",
+      "level": "N5",
+      "part_of_speech": "noun",
+      "notes": "JLPT N5 Core Vocabulary",
+      "extra_data": {
+        "furigana": "川[かわ]"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "con sông",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "川の近くを散歩する。",
+          "translation": "Đi dạo gần bờ sông.",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "漢字",
+      "reading": "かんじ",
+      "meaning": "chữ Hán",
+      "card_type": "VOCABULARY",
+      "level": "N5",
+      "part_of_speech": "noun",
+      "notes": "JLPT N5 Core Vocabulary",
+      "extra_data": {
+        "furigana": "漢字[かんじ]"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "chữ Hán",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "毎日漢字を練習する。",
+          "translation": "Luyện chữ Hán mỗi ngày.",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "木",
+      "reading": "き",
+      "meaning": "cây cối",
+      "card_type": "VOCABULARY",
+      "level": "N5",
+      "part_of_speech": "noun",
+      "notes": "JLPT N5 Core Vocabulary",
+      "extra_data": {
+        "furigana": "木[き]"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "cây cối",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "庭に大きな木がある。",
+          "translation": "Trong vườn có một cái cây lớn.",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "聞く",
+      "reading": "きく",
+      "meaning": "nghe, hỏi",
+      "card_type": "VOCABULARY",
+      "level": "N5",
+      "part_of_speech": "verb",
+      "notes": "JLPT N5 Core Vocabulary",
+      "extra_data": {
+        "furigana": "聞[き]く"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "nghe, hỏi",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "先生の話をよく聞く。",
+          "translation": "Lắng nghe kỹ lời thầy giáo.",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "北",
+      "reading": "きた",
+      "meaning": "hướng bắc",
+      "card_type": "VOCABULARY",
+      "level": "N5",
+      "part_of_speech": "noun",
+      "notes": "JLPT N5 Core Vocabulary",
+      "extra_data": {
+        "furigana": "北[きた]"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "hướng bắc",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "風が北から吹いてくる。",
+          "translation": "Gió thổi từ hướng bắc lại.",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "喫茶店",
+      "reading": "きっさてん",
+      "meaning": "quán cà phê",
+      "card_type": "VOCABULARY",
+      "level": "N5",
+      "part_of_speech": "noun",
+      "notes": "JLPT N5 Core Vocabulary",
+      "extra_data": {
+        "furigana": "喫茶店[きっさてん]"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "quán cà phê",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "喫茶店でコーヒーを飲む。",
+          "translation": "Uống cà phê ở quán nước.",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "切手",
+      "reading": "きって",
+      "meaning": "tem thư",
+      "card_type": "VOCABULARY",
+      "level": "N5",
+      "part_of_speech": "noun",
+      "notes": "JLPT N5 Core Vocabulary",
+      "extra_data": {
+        "furigana": "切手[きって]"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "tem thư",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "手紙に切手を貼る。",
+          "translation": "Dán tem vào lá thư.",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "切符",
+      "reading": "きっぷ",
+      "meaning": "vé xe, vé tàu",
+      "card_type": "VOCABULARY",
+      "level": "N5",
+      "part_of_speech": "noun",
+      "notes": "JLPT N5 Core Vocabulary",
+      "extra_data": {
+        "furigana": "切符[きっぷ]"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "vé xe, vé tàu",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "駅で切符を買う。",
+          "translation": "Mua vé tàu ở nhà ga.",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "昨日",
+      "reading": "きのう",
+      "meaning": "hôm qua",
+      "card_type": "VOCABULARY",
+      "level": "N5",
+      "part_of_speech": "noun",
+      "notes": "JLPT N5 Core Vocabulary",
+      "extra_data": {
+        "furigana": "昨日[きのう]"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "hôm qua",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "昨日は一日中雨だった。",
+          "translation": "Hôm qua trời mưa cả ngày.",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "九",
+      "reading": "きゅう",
+      "meaning": "số chín",
+      "card_type": "VOCABULARY",
+      "level": "N5",
+      "part_of_speech": "noun",
+      "notes": "JLPT N5 Core Vocabulary",
+      "extra_data": {
+        "furigana": "九[きゅう]"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "số chín",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "猫が九匹います。",
+          "translation": "Có chín con mèo.",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "牛肉",
+      "reading": "ぎゅうにく",
+      "meaning": "thịt bò",
+      "card_type": "VOCABULARY",
+      "level": "N5",
+      "part_of_speech": "noun",
+      "notes": "JLPT N5 Core Vocabulary",
+      "extra_data": {
+        "furigana": "牛肉[ぎゅうにく]"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "thịt bò",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "晩ご飯に牛肉を料理する。",
+          "translation": "Nấu thịt bò cho bữa tối.",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "牛乳",
+      "reading": "ぎゅうにゅう",
+      "meaning": "sữa bò",
+      "card_type": "VOCABULARY",
+      "level": "N5",
+      "part_of_speech": "noun",
+      "notes": "JLPT N5 Core Vocabulary",
+      "extra_data": {
+        "furigana": "牛乳[ぎゅうにゅう]"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "sữa bò",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "毎朝牛乳を飲む。",
+          "translation": "Mỗi sáng đều uống sữa bò.",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "今日",
+      "reading": "きょう",
+      "meaning": "hôm nay",
+      "card_type": "VOCABULARY",
+      "level": "N5",
+      "part_of_speech": "noun",
+      "notes": "JLPT N5 Core Vocabulary",
+      "extra_data": {
+        "furigana": "今日[きょう]"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "hôm nay",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "今日は天気がいい。",
+          "translation": "Hôm nay thời tiết đẹp.",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "教室",
+      "reading": "きょうしつ",
+      "meaning": "lớp học",
+      "card_type": "VOCABULARY",
+      "level": "N5",
+      "part_of_speech": "noun",
+      "notes": "JLPT N5 Core Vocabulary",
+      "extra_data": {
+        "furigana": "教室[きょうしつ]"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "lớp học",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "教室に入ってください。",
+          "translation": "Xin mời bước vào lớp học.",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "兄弟",
+      "reading": "きょうだい",
+      "meaning": "anh chị em",
+      "card_type": "VOCABULARY",
+      "level": "N5",
+      "part_of_speech": "noun",
+      "notes": "JLPT N5 Core Vocabulary",
+      "extra_data": {
+        "furigana": "兄弟[きょうだい]"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "anh chị em",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "私には兄弟が三人いる。",
+          "translation": "Tôi có ba anh chị em.",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "去年",
+      "reading": "きょねん",
+      "meaning": "năm ngoái",
+      "card_type": "VOCABULARY",
+      "level": "N5",
+      "part_of_speech": "noun",
+      "notes": "JLPT N5 Core Vocabulary",
+      "extra_data": {
+        "furigana": "去年[きょねん]"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "năm ngoái",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "去年の冬は寒かった。",
+          "translation": "Mùa đông năm ngoái rất lạnh.",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "嫌い",
+      "reading": "きらい",
+      "meaning": "ghét, không thích",
+      "card_type": "VOCABULARY",
+      "level": "N5",
+      "part_of_speech": "adjective",
+      "notes": "JLPT N5 Core Vocabulary",
+      "extra_data": {
+        "furigana": "嫌[きら]い"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "ghét, không thích",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "辛い料理が嫌いです。",
+          "translation": "Tôi không thích món ăn cay.",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "着る",
+      "reading": "きる",
+      "meaning": "mặc áo",
+      "card_type": "VOCABULARY",
+      "level": "N5",
+      "part_of_speech": "verb",
+      "notes": "JLPT N5 Core Vocabulary",
+      "extra_data": {
+        "furigana": "着[き]る"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "mặc áo",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "新しいシャツを着る。",
+          "translation": "Mặc một chiếc áo sơ mi mới.",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "切る",
+      "reading": "きる",
+      "meaning": "cắt",
+      "card_type": "VOCABULARY",
+      "level": "N5",
+      "part_of_speech": "verb",
+      "notes": "JLPT N5 Core Vocabulary",
+      "extra_data": {
+        "furigana": "切[き]る"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "cắt",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "ハサミで紙を切る。",
+          "translation": "Cắt giấy bằng kéo.",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "銀行",
+      "reading": "ぎんこう",
+      "meaning": "ngân hàng",
+      "card_type": "VOCABULARY",
+      "level": "N5",
+      "part_of_speech": "noun",
+      "notes": "JLPT N5 Core Vocabulary",
+      "extra_data": {
+        "furigana": "銀行[ぎんこう]"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "ngân hàng",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "銀行でお金を下ろす。",
+          "translation": "Rút tiền ở ngân hàng.",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "金曜日",
+      "reading": "きんようび",
+      "meaning": "thứ Sáu",
+      "card_type": "VOCABULARY",
+      "level": "N5",
+      "part_of_speech": "noun",
+      "notes": "JLPT N5 Core Vocabulary",
+      "extra_data": {
+        "furigana": "金曜日[きんようび]"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "thứ Sáu",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "金曜日の夜に休む。",
+          "translation": "Nghỉ ngơi vào tối thứ Sáu.",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "薬",
+      "reading": "くすり",
+      "meaning": "thuốc uống",
+      "card_type": "VOCABULARY",
+      "level": "N5",
+      "part_of_speech": "noun",
+      "notes": "JLPT N5 Core Vocabulary",
+      "extra_data": {
+        "furigana": "薬[くすり]"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "thuốc uống",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "食後に薬を飲む。",
+          "translation": "Uống thuốc sau bữa ăn.",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "果物",
+      "reading": "くだもの",
+      "meaning": "trái cây",
+      "card_type": "VOCABULARY",
+      "level": "N5",
+      "part_of_speech": "noun",
+      "notes": "JLPT N5 Core Vocabulary",
+      "extra_data": {
+        "furigana": "果物[くだもの]"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "trái cây",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "甘い果物を食べる。",
+          "translation": "Ăn hoa quả ngọt.",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "口",
+      "reading": "くち",
+      "meaning": "miệng",
+      "card_type": "VOCABULARY",
+      "level": "N5",
+      "part_of_speech": "noun",
+      "notes": "JLPT N5 Core Vocabulary",
+      "extra_data": {
+        "furigana": "口[くち]"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "miệng",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "大きく口を開ける。",
+          "translation": "Mở to miệng ra.",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "靴",
+      "reading": "くつ",
+      "meaning": "giày",
+      "card_type": "VOCABULARY",
+      "level": "N5",
+      "part_of_speech": "noun",
+      "notes": "JLPT N5 Core Vocabulary",
+      "extra_data": {
+        "furigana": "靴[くつ]"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "giày",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "新しい靴を履く。",
+          "translation": "Đi đôi giày mới.",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "靴下",
+      "reading": "くつした",
+      "meaning": "tất vớ",
+      "card_type": "VOCABULARY",
+      "level": "N5",
+      "part_of_speech": "noun",
+      "notes": "JLPT N5 Core Vocabulary",
+      "extra_data": {
+        "furigana": "靴下[くつした]"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "tất vớ",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "暖かい靴下を履く。",
+          "translation": "Đi một đôi tất ấm.",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "国",
+      "reading": "くに",
+      "meaning": "đất nước",
+      "card_type": "VOCABULARY",
+      "level": "N5",
+      "part_of_speech": "noun",
+      "notes": "JLPT N5 Core Vocabulary",
+      "extra_data": {
+        "furigana": "国[くに]"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "đất nước",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "私の国はベトナムです。",
+          "translation": "Đất nước của tôi là Việt Nam.",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "曇り",
+      "reading": "くもり",
+      "meaning": "trời nhiều mây",
+      "card_type": "VOCABULARY",
+      "level": "N5",
+      "part_of_speech": "noun",
+      "notes": "JLPT N5 Core Vocabulary",
+      "extra_data": {
+        "furigana": "曇[くも]り"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "trời nhiều mây",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "今日の午後は曇りです。",
+          "translation": "Chiều nay trời nhiều mây.",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "暗い",
+      "reading": "くらい",
+      "meaning": "tối tăm",
+      "card_type": "VOCABULARY",
+      "level": "N5",
+      "part_of_speech": "adjective",
+      "notes": "JLPT N5 Core Vocabulary",
+      "extra_data": {
+        "furigana": "暗[くら]い"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "tối tăm",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "夜道は暗くて危ない。",
+          "translation": "Đường đêm tối tăm và nguy hiểm.",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "車",
+      "reading": "くるま",
+      "meaning": "xe hơi",
+      "card_type": "VOCABULARY",
+      "level": "N5",
+      "part_of_speech": "noun",
+      "notes": "JLPT N5 Core Vocabulary",
+      "extra_data": {
+        "furigana": "車[くるま]"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "xe hơi",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "車を運転する。",
+          "translation": "Lái xe hơi.",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "黒い",
+      "reading": "くろい",
+      "meaning": "màu đen",
+      "card_type": "VOCABULARY",
+      "level": "N5",
+      "part_of_speech": "adjective",
+      "notes": "JLPT N5 Core Vocabulary",
+      "extra_data": {
+        "furigana": "黒[くろ]い"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "màu đen",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "黒い猫を見かけた。",
+          "translation": "Tôi đã nhìn thấy một con mèo đen.",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "警官",
+      "reading": "けいかん",
+      "meaning": "cảnh sát",
+      "card_type": "VOCABULARY",
+      "level": "N5",
+      "part_of_speech": "noun",
+      "notes": "JLPT N5 Core Vocabulary",
+      "extra_data": {
+        "furigana": "警官[けいかん]"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "cảnh sát",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "警官に道を尋ねる。",
+          "translation": "Hỏi đường viên cảnh sát.",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "交番",
+      "reading": "こうばん",
+      "meaning": "đồn cảnh sát",
+      "card_type": "VOCABULARY",
+      "level": "N5",
+      "part_of_speech": "noun",
+      "notes": "JLPT N5 Core Vocabulary",
+      "extra_data": {
+        "furigana": "交番[こうばん]"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "đồn cảnh sát",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "交番で道を尋ねる。",
+          "translation": "Hỏi đường ở đồn cảnh sát.",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "元気",
+      "reading": "げんき",
+      "meaning": "khỏe mạnh",
+      "card_type": "VOCABULARY",
+      "level": "N5",
+      "part_of_speech": "adjective",
+      "notes": "JLPT N5 Core Vocabulary",
+      "extra_data": {
+        "furigana": "元気[げんき]"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "khỏe mạnh",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "いつもお元気ですか。",
+          "translation": "Bạn luôn khỏe mạnh chứ?",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "公園",
+      "reading": "こうえん",
+      "meaning": "công viên",
+      "card_type": "VOCABULARY",
+      "level": "N5",
+      "part_of_speech": "noun",
+      "notes": "JLPT N5 Core Vocabulary",
+      "extra_data": {
+        "furigana": "公園[こうえん]"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "công viên",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "公園を静かに散歩する。",
+          "translation": "Đi dạo yên tĩnh trong công viên.",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    }
+  ]
+}

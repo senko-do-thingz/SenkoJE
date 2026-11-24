@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<ScrollPane xmlns="http://javafx.com/javafx/25"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.senkoje.presentation.controller.ImportExportController"
+            fitToWidth="true">
+
+    <VBox styleClass="screen-container" spacing="18">
+        <!-- Tiêu đề màn hình -->
+        <VBox spacing="4">
+            <Label fx:id="titleLabel" styleClass="screen-title"/>
+            <Label fx:id="subtitleLabel" styleClass="screen-subtitle"/>
+        </VBox>
+
+        <!-- Phần 1: Nhập bộ thẻ và từ vựng -->
+        <VBox styleClass="card-panel" spacing="12">
+            <VBox spacing="2">
+                <Label fx:id="importSectionTitleLabel" styleClass="section-title"/>
+                <Label fx:id="importSectionDescLabel" styleClass="muted-label" wrapText="true"/>
+            </VBox>
+
+            <GridPane hgap="14" vgap="10">
+                <columnConstraints>
+                    <ColumnConstraints minWidth="160" prefWidth="180" hgrow="NEVER"/>
+                    <ColumnConstraints hgrow="ALWAYS"/>
+                </columnConstraints>
+
+                <!-- Tệp nguồn -->
+                <Label fx:id="fileFieldLabel" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                <HBox spacing="8" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                    <TextField fx:id="filePathField" editable="false" promptText="Choose a .json, .csv, or .apkg file..." HBox.hgrow="ALWAYS"/>
+                    <Button fx:id="chooseFileButton" styleClass="secondary-button" onAction="#handleChooseFile"/>
+                </HBox>
+
+                <!-- Bộ thẻ mục tiêu -->
+                <Label fx:id="targetDeckFieldLabel" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+                <ComboBox fx:id="targetDeckComboBox" prefWidth="360" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+
+                <!-- Chiến lược xử lý từ trùng lặp -->
+                <Label fx:id="duplicateStrategyFieldLabel" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+                <ComboBox fx:id="duplicateStrategyComboBox" prefWidth="360" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+            </GridPane>
+
+            <HBox alignment="CENTER_LEFT" spacing="10">
+                <Button fx:id="previewButton" styleClass="secondary-button" onAction="#handlePreview"/>
+                <Button fx:id="confirmImportButton" styleClass="primary-button" disable="true" onAction="#handleConfirmImport"/>
+                <Label fx:id="importProgressLabel" styleClass="muted-label"/>
+            </HBox>
+
+            <!-- Tóm tắt số lượng xem trước -->
+            <Label fx:id="previewSummaryLabel" visible="false" managed="false"/>
+
+            <!-- Bảng xem trước dữ liệu chi tiết -->
+            <TableView fx:id="previewTable" prefHeight="260" minHeight="180">
+                <columns>
+                    <TableColumn fx:id="colIndex" minWidth="40" prefWidth="50" text="#"/>
+                    <TableColumn fx:id="colStatus" minWidth="80" prefWidth="90" text="Status"/>
+                    <TableColumn fx:id="colTerm" minWidth="120" prefWidth="140" text="Term"/>
+                    <TableColumn fx:id="colReading" minWidth="100" prefWidth="120" text="Reading"/>
+                    <TableColumn fx:id="colMeaning" minWidth="160" prefWidth="200" text="Meaning"/>
+                    <TableColumn fx:id="colType" minWidth="80" prefWidth="90" text="Type"/>
+                    <TableColumn fx:id="colLevel" minWidth="60" prefWidth="70" text="Level"/>
+                    <TableColumn fx:id="colMessage" minWidth="180" prefWidth="250" text="Details / Errors"/>
+                </columns>
+            </TableView>
+        </VBox>
+
+        <!-- Phần 2: Xuất bộ thẻ và từ vựng -->
+        <VBox styleClass="card-panel" spacing="12">
+            <VBox spacing="2">
+                <Label fx:id="exportSectionTitleLabel" styleClass="section-title"/>
+                <Label fx:id="exportSectionDescLabel" styleClass="muted-label" wrapText="true"/>
+            </VBox>
+
+            <GridPane hgap="14" vgap="10">
+                <columnConstraints>
+                    <ColumnConstraints minWidth="160" prefWidth="180" hgrow="NEVER"/>
+                    <ColumnConstraints hgrow="ALWAYS"/>
+                </columnConstraints>
+
+                <Label fx:id="exportDeckFieldLabel" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                <ComboBox fx:id="exportDeckComboBox" prefWidth="360" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+
+                <Label fx:id="exportFormatFieldLabel" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+                <ComboBox fx:id="exportFormatComboBox" prefWidth="360" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+            </GridPane>
+
+            <HBox alignment="CENTER_LEFT" spacing="10">
+                <Button fx:id="exportButton" styleClass="primary-button" onAction="#handleExport"/>
+                <Label fx:id="exportProgressLabel" styleClass="muted-label"/>
+            </HBox>
+        </VBox>
+
+        <!-- Phần 3: Sao lưu và phục hồi cơ sở dữ liệu SQLite -->
+        <VBox styleClass="card-panel" spacing="12">
+            <VBox spacing="2">
+                <Label fx:id="backupSectionTitleLabel" styleClass="section-title"/>
+                <Label fx:id="backupSectionDescLabel" styleClass="muted-label" wrapText="true"/>
+            </VBox>
+
+            <HBox alignment="CENTER_LEFT" spacing="12">
+                <Button fx:id="createBackupButton" styleClass="primary-button" onAction="#handleCreateBackup"/>
+                <Button fx:id="restoreBackupButton" styleClass="danger-button" onAction="#handleRestoreBackup"/>
+                <Label fx:id="backupProgressLabel" styleClass="muted-label"/>
+            </HBox>
+        </VBox>
+    </VBox>
+</ScrollPane>

@@ -18,6 +18,13 @@ import com.senkoje.domain.repository.StudySessionRepository;
 import com.senkoje.domain.service.CardValidator;
 import com.senkoje.domain.service.DeckSettingsValidator;
 import com.senkoje.domain.service.DeckValidator;
+import com.senkoje.infrastructure.backup.SqliteBackupService;
+import com.senkoje.infrastructure.exporter.DeckJsonExporter;
+import com.senkoje.infrastructure.exporter.VocabularyCsvExporter;
+import com.senkoje.infrastructure.importer.AnkiApkgImporter;
+import com.senkoje.infrastructure.importer.AtomicDeckImporter;
+import com.senkoje.infrastructure.importer.DeckJsonImporter;
+import com.senkoje.infrastructure.importer.VocabularyCsvImporter;
 import com.senkoje.infrastructure.config.AppDataPathResolver;
 import com.senkoje.infrastructure.nlp.EnglishTextTokenizer;
 import com.senkoje.infrastructure.nlp.FuriganaSegmentBuilder;
@@ -80,6 +87,14 @@ public class ApplicationContainer implements AutoCloseable {
     private final JapaneseTokenizerService japaneseTokenizerService;
     private final FuriganaSegmentBuilder furiganaSegmentBuilder;
     private final EnglishTextTokenizer englishTextTokenizer;
+
+    private final SqliteBackupService sqliteBackupService;
+    private final DeckJsonExporter deckJsonExporter;
+    private final VocabularyCsvExporter vocabularyCsvExporter;
+    private final DeckJsonImporter deckJsonImporter;
+    private final VocabularyCsvImporter vocabularyCsvImporter;
+    private final AtomicDeckImporter atomicDeckImporter;
+    private final AnkiApkgImporter ankiApkgImporter;
 
     /**
      * Khởi tạo bộ chứa ứng dụng mặc định dùng đường dẫn dữ liệu chuẩn theo hệ điều hành và múi giờ Việt Nam.
@@ -171,6 +186,14 @@ public class ApplicationContainer implements AutoCloseable {
         this.japaneseTokenizerService = new JapaneseTokenizerService();
         this.furiganaSegmentBuilder = new FuriganaSegmentBuilder();
         this.englishTextTokenizer = new EnglishTextTokenizer();
+
+        this.sqliteBackupService = new SqliteBackupService(this.connectionManager, this.clock);
+        this.deckJsonExporter = new DeckJsonExporter(this.clock);
+        this.vocabularyCsvExporter = new VocabularyCsvExporter();
+        this.deckJsonImporter = new DeckJsonImporter(this.clock);
+        this.vocabularyCsvImporter = new VocabularyCsvImporter();
+        this.atomicDeckImporter = new AtomicDeckImporter(this.connectionManager, this.clock);
+        this.ankiApkgImporter = new AnkiApkgImporter(this.clock);
     }
 
     public Clock getClock() {
@@ -255,6 +278,34 @@ public class ApplicationContainer implements AutoCloseable {
 
     public EnglishTextTokenizer getEnglishTextTokenizer() {
         return englishTextTokenizer;
+    }
+
+    public SqliteBackupService getSqliteBackupService() {
+        return sqliteBackupService;
+    }
+
+    public DeckJsonExporter getDeckJsonExporter() {
+        return deckJsonExporter;
+    }
+
+    public VocabularyCsvExporter getVocabularyCsvExporter() {
+        return vocabularyCsvExporter;
+    }
+
+    public DeckJsonImporter getDeckJsonImporter() {
+        return deckJsonImporter;
+    }
+
+    public VocabularyCsvImporter getVocabularyCsvImporter() {
+        return vocabularyCsvImporter;
+    }
+
+    public AtomicDeckImporter getAtomicDeckImporter() {
+        return atomicDeckImporter;
+    }
+
+    public AnkiApkgImporter getAnkiApkgImporter() {
+        return ankiApkgImporter;
     }
 
     @Override

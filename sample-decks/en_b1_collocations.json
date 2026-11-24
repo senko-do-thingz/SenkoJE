@@ -1,0 +1,2723 @@
+{
+  "schema_version": "1.0",
+  "exported_at": "2026-11-24T00:00:00Z",
+  "generator": "SenkoJE",
+  "deck": {
+    "title": "English B1 Essential Collocations 100",
+    "target_language": "EN",
+    "definition_language": "vi",
+    "level": "B1",
+    "description": "100 cụm từ kết hợp tiếng Anh thông dụng trình độ CEFR B1 kèm ví dụ và giải nghĩa",
+    "settings": {
+      "desired_retention": 0.9,
+      "maximum_interval": 36500,
+      "new_cards_per_day": 20,
+      "maximum_reviews_per_day": 200,
+      "learning_steps": "1m,10m",
+      "relearning_steps": "10m",
+      "enable_fuzzing": true
+    }
+  },
+  "cards": [
+    {
+      "term": "make a decision",
+      "reading": "",
+      "meaning": "ra quyết định",
+      "card_type": "PHRASE",
+      "level": "B1",
+      "part_of_speech": "phrase",
+      "notes": "Common B1 English Collocation",
+      "extra_data": {
+        "collocations": "make a decision"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "ra quyết định",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "She had to make a decision quickly about her career.",
+          "translation": "ra quyết định",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "take a break",
+      "reading": "",
+      "meaning": "nghỉ giải lao",
+      "card_type": "PHRASE",
+      "level": "B1",
+      "part_of_speech": "phrase",
+      "notes": "Common B1 English Collocation",
+      "extra_data": {
+        "collocations": "take a break"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "nghỉ giải lao",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "Let's take a break after finishing this chapter.",
+          "translation": "nghỉ giải lao",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "catch a cold",
+      "reading": "",
+      "meaning": "bị cảm lạnh",
+      "card_type": "PHRASE",
+      "level": "B1",
+      "part_of_speech": "phrase",
+      "notes": "Common B1 English Collocation",
+      "extra_data": {
+        "collocations": "catch a cold"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "bị cảm lạnh",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "Dress warmly or you might catch a cold tonight.",
+          "translation": "bị cảm lạnh",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "pay attention",
+      "reading": "",
+      "meaning": "chú ý lắng nghe",
+      "card_type": "PHRASE",
+      "level": "B1",
+      "part_of_speech": "phrase",
+      "notes": "Common B1 English Collocation",
+      "extra_data": {
+        "collocations": "pay attention"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "chú ý lắng nghe",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "Please pay attention to the safety instructions.",
+          "translation": "chú ý lắng nghe",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "keep in mind",
+      "reading": "",
+      "meaning": "ghi nhớ trong đầu",
+      "card_type": "PHRASE",
+      "level": "B1",
+      "part_of_speech": "phrase",
+      "notes": "Common B1 English Collocation",
+      "extra_data": {
+        "collocations": "keep in mind"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "ghi nhớ trong đầu",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "Keep in mind that the application deadline is Friday.",
+          "translation": "ghi nhớ trong đầu",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "have an impact",
+      "reading": "",
+      "meaning": "có tác động lớn",
+      "card_type": "PHRASE",
+      "level": "B1",
+      "part_of_speech": "phrase",
+      "notes": "Common B1 English Collocation",
+      "extra_data": {
+        "collocations": "have an impact"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "có tác động lớn",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "The new policy will have an impact on local businesses.",
+          "translation": "có tác động lớn",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "reach an agreement",
+      "reading": "",
+      "meaning": "đạt được thỏa thuận",
+      "card_type": "PHRASE",
+      "level": "B1",
+      "part_of_speech": "phrase",
+      "notes": "Common B1 English Collocation",
+      "extra_data": {
+        "collocations": "reach an agreement"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "đạt được thỏa thuận",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "Both parties hope to reach an agreement soon.",
+          "translation": "đạt được thỏa thuận",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "do your best",
+      "reading": "",
+      "meaning": "cố gắng hết sức",
+      "card_type": "PHRASE",
+      "level": "B1",
+      "part_of_speech": "phrase",
+      "notes": "Common B1 English Collocation",
+      "extra_data": {
+        "collocations": "do your best"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "cố gắng hết sức",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "Just do your best and do not worry about mistakes.",
+          "translation": "cố gắng hết sức",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "give advice",
+      "reading": "",
+      "meaning": "đưa ra lời khuyên",
+      "card_type": "PHRASE",
+      "level": "B1",
+      "part_of_speech": "phrase",
+      "notes": "Common B1 English Collocation",
+      "extra_data": {
+        "collocations": "give advice"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "đưa ra lời khuyên",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "My teacher gave me useful advice on time management.",
+          "translation": "đưa ra lời khuyên",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "make an effort",
+      "reading": "",
+      "meaning": "nỗ lực phấn đấu",
+      "card_type": "PHRASE",
+      "level": "B1",
+      "part_of_speech": "phrase",
+      "notes": "Common B1 English Collocation",
+      "extra_data": {
+        "collocations": "make an effort"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "nỗ lực phấn đấu",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "You should make an effort to practice every day.",
+          "translation": "nỗ lực phấn đấu",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "lose patience",
+      "reading": "",
+      "meaning": "mất kiên nhẫn",
+      "card_type": "PHRASE",
+      "level": "B1",
+      "part_of_speech": "phrase",
+      "notes": "Common B1 English Collocation",
+      "extra_data": {
+        "collocations": "lose patience"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "mất kiên nhẫn",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "The customer started to lose patience waiting in line.",
+          "translation": "mất kiên nhẫn",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "break a promise",
+      "reading": "",
+      "meaning": "thất hứa",
+      "card_type": "PHRASE",
+      "level": "B1",
+      "part_of_speech": "phrase",
+      "notes": "Common B1 English Collocation",
+      "extra_data": {
+        "collocations": "break a promise"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "thất hứa",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "It is important never to break a promise to a friend.",
+          "translation": "thất hứa",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "set a goal",
+      "reading": "",
+      "meaning": "đặt ra mục tiêu",
+      "card_type": "PHRASE",
+      "level": "B1",
+      "part_of_speech": "phrase",
+      "notes": "Common B1 English Collocation",
+      "extra_data": {
+        "collocations": "set a goal"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "đặt ra mục tiêu",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "She set a goal to pass the exam with high marks.",
+          "translation": "đặt ra mục tiêu",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "spend time",
+      "reading": "",
+      "meaning": "dành thời gian",
+      "card_type": "PHRASE",
+      "level": "B1",
+      "part_of_speech": "phrase",
+      "notes": "Common B1 English Collocation",
+      "extra_data": {
+        "collocations": "spend time"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "dành thời gian",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "They spend time reading together every evening.",
+          "translation": "dành thời gian",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "waste money",
+      "reading": "",
+      "meaning": "lãng phí tiền bạc",
+      "card_type": "PHRASE",
+      "level": "B1",
+      "part_of_speech": "phrase",
+      "notes": "Common B1 English Collocation",
+      "extra_data": {
+        "collocations": "waste money"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "lãng phí tiền bạc",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "Do not waste money on things you do not really need.",
+          "translation": "lãng phí tiền bạc",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "save energy",
+      "reading": "",
+      "meaning": "tiết kiệm năng lượng",
+      "card_type": "PHRASE",
+      "level": "B1",
+      "part_of_speech": "phrase",
+      "notes": "Common B1 English Collocation",
+      "extra_data": {
+        "collocations": "save energy"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "tiết kiệm năng lượng",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "Turning off unused lights helps save energy.",
+          "translation": "tiết kiệm năng lượng",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "take responsibility",
+      "reading": "",
+      "meaning": "chịu trách nhiệm",
+      "card_type": "PHRASE",
+      "level": "B1",
+      "part_of_speech": "phrase",
+      "notes": "Common B1 English Collocation",
+      "extra_data": {
+        "collocations": "take responsibility"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "chịu trách nhiệm",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "He is willing to take responsibility for the error.",
+          "translation": "chịu trách nhiệm",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "solve a problem",
+      "reading": "",
+      "meaning": "giải quyết vấn đề",
+      "card_type": "PHRASE",
+      "level": "B1",
+      "part_of_speech": "phrase",
+      "notes": "Common B1 English Collocation",
+      "extra_data": {
+        "collocations": "solve a problem"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "giải quyết vấn đề",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "Working together helps solve problems more easily.",
+          "translation": "giải quyết vấn đề",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "make a mistake",
+      "reading": "",
+      "meaning": "mắc phải sai lầm",
+      "card_type": "PHRASE",
+      "level": "B1",
+      "part_of_speech": "phrase",
+      "notes": "Common B1 English Collocation",
+      "extra_data": {
+        "collocations": "make a mistake"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "mắc phải sai lầm",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "Everyone can make a mistake when trying new things.",
+          "translation": "mắc phải sai lầm",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "gain experience",
+      "reading": "",
+      "meaning": "tích lũy kinh nghiệm",
+      "card_type": "PHRASE",
+      "level": "B1",
+      "part_of_speech": "phrase",
+      "notes": "Common B1 English Collocation",
+      "extra_data": {
+        "collocations": "gain experience"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "tích lũy kinh nghiệm",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "Internships allow students to gain real experience.",
+          "translation": "tích lũy kinh nghiệm",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "run out of",
+      "reading": "",
+      "meaning": "hết cạn kiệt",
+      "card_type": "PHRASE",
+      "level": "B1",
+      "part_of_speech": "phrase",
+      "notes": "Common B1 English Collocation",
+      "extra_data": {
+        "collocations": "run out of"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "hết cạn kiệt",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "We ran out of coffee this morning.",
+          "translation": "hết cạn kiệt",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "catch fire",
+      "reading": "",
+      "meaning": "bốc cháy",
+      "card_type": "PHRASE",
+      "level": "B1",
+      "part_of_speech": "phrase",
+      "notes": "Common B1 English Collocation",
+      "extra_data": {
+        "collocations": "catch fire"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "bốc cháy",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "Dry leaves catch fire very quickly in the summer.",
+          "translation": "bốc cháy",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "come to an end",
+      "reading": "",
+      "meaning": "đi đến hồi kết",
+      "card_type": "PHRASE",
+      "level": "B1",
+      "part_of_speech": "phrase",
+      "notes": "Common B1 English Collocation",
+      "extra_data": {
+        "collocations": "come to an end"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "đi đến hồi kết",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "The long festival finally came to an end at midnight.",
+          "translation": "đi đến hồi kết",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "fall asleep",
+      "reading": "",
+      "meaning": "chìm vào giấc ngủ",
+      "card_type": "PHRASE",
+      "level": "B1",
+      "part_of_speech": "phrase",
+      "notes": "Common B1 English Collocation",
+      "extra_data": {
+        "collocations": "fall asleep"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "chìm vào giấc ngủ",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "He was so tired that he fell asleep immediately.",
+          "translation": "chìm vào giấc ngủ",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "get married",
+      "reading": "",
+      "meaning": "kết hôn",
+      "card_type": "PHRASE",
+      "level": "B1",
+      "part_of_speech": "phrase",
+      "notes": "Common B1 English Collocation",
+      "extra_data": {
+        "collocations": "get married"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "kết hôn",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "They plan to get married next spring in the countryside.",
+          "translation": "kết hôn",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "give a presentation",
+      "reading": "",
+      "meaning": "thuyết trình",
+      "card_type": "PHRASE",
+      "level": "B1",
+      "part_of_speech": "phrase",
+      "notes": "Common B1 English Collocation",
+      "extra_data": {
+        "collocations": "give a presentation"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "thuyết trình",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "Each student must give a presentation on their project.",
+          "translation": "thuyết trình",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "keep a secret",
+      "reading": "",
+      "meaning": "giữ bí mật",
+      "card_type": "PHRASE",
+      "level": "B1",
+      "part_of_speech": "phrase",
+      "notes": "Common B1 English Collocation",
+      "extra_data": {
+        "collocations": "keep a secret"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "giữ bí mật",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "Can you keep a secret until next Monday?",
+          "translation": "giữ bí mật",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "make an appointment",
+      "reading": "",
+      "meaning": "hẹn gặp",
+      "card_type": "PHRASE",
+      "level": "B1",
+      "part_of_speech": "phrase",
+      "notes": "Common B1 English Collocation",
+      "extra_data": {
+        "collocations": "make an appointment"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "hẹn gặp",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "I need to make an appointment with the doctor.",
+          "translation": "hẹn gặp",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "make progress",
+      "reading": "",
+      "meaning": "đạt tiến bộ",
+      "card_type": "PHRASE",
+      "level": "B1",
+      "part_of_speech": "phrase",
+      "notes": "Common B1 English Collocation",
+      "extra_data": {
+        "collocations": "make progress"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "đạt tiến bộ",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "She is making steady progress in her English studies.",
+          "translation": "đạt tiến bộ",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "raise awareness",
+      "reading": "",
+      "meaning": "nâng cao nhận thức",
+      "card_type": "PHRASE",
+      "level": "B1",
+      "part_of_speech": "phrase",
+      "notes": "Common B1 English Collocation",
+      "extra_data": {
+        "collocations": "raise awareness"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "nâng cao nhận thức",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "The campaign aims to raise awareness of plastic waste.",
+          "translation": "nâng cao nhận thức",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "take advantage of",
+      "reading": "",
+      "meaning": "tận dụng cơ hội",
+      "card_type": "PHRASE",
+      "level": "B1",
+      "part_of_speech": "phrase",
+      "notes": "Common B1 English Collocation",
+      "extra_data": {
+        "collocations": "take advantage of"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "tận dụng cơ hội",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "You should take advantage of this study scholarship.",
+          "translation": "tận dụng cơ hội",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "tell the truth",
+      "reading": "",
+      "meaning": "nói sự thật",
+      "card_type": "PHRASE",
+      "level": "B1",
+      "part_of_speech": "phrase",
+      "notes": "Common B1 English Collocation",
+      "extra_data": {
+        "collocations": "tell the truth"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "nói sự thật",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "It is always best to tell the truth from the start.",
+          "translation": "nói sự thật",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "express feelings",
+      "reading": "",
+      "meaning": "bày tỏ cảm xúc",
+      "card_type": "PHRASE",
+      "level": "B1",
+      "part_of_speech": "phrase",
+      "notes": "Common B1 English Collocation",
+      "extra_data": {
+        "collocations": "express feelings"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "bày tỏ cảm xúc",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "Music helps people express feelings naturally.",
+          "translation": "bày tỏ cảm xúc",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "face challenges",
+      "reading": "",
+      "meaning": "đối mặt thử thách",
+      "card_type": "PHRASE",
+      "level": "B1",
+      "part_of_speech": "phrase",
+      "notes": "Common B1 English Collocation",
+      "extra_data": {
+        "collocations": "face challenges"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "đối mặt thử thách",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "Every beginner must face challenges when learning.",
+          "translation": "đối mặt thử thách",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "follow instructions",
+      "reading": "",
+      "meaning": "làm theo hướng dẫn",
+      "card_type": "PHRASE",
+      "level": "B1",
+      "part_of_speech": "phrase",
+      "notes": "Common B1 English Collocation",
+      "extra_data": {
+        "collocations": "follow instructions"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "làm theo hướng dẫn",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "Please follow instructions carefully during the test.",
+          "translation": "làm theo hướng dẫn",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "fulfill a dream",
+      "reading": "",
+      "meaning": "thực hiện ước mơ",
+      "card_type": "PHRASE",
+      "level": "B1",
+      "part_of_speech": "phrase",
+      "notes": "Common B1 English Collocation",
+      "extra_data": {
+        "collocations": "fulfill a dream"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "thực hiện ước mơ",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "She worked hard to fulfill her dream of travelling.",
+          "translation": "thực hiện ước mơ",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "get ready",
+      "reading": "",
+      "meaning": "chuẩn bị sẵn sàng",
+      "card_type": "PHRASE",
+      "level": "B1",
+      "part_of_speech": "phrase",
+      "notes": "Common B1 English Collocation",
+      "extra_data": {
+        "collocations": "get ready"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "chuẩn bị sẵn sàng",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "Hurry up and get ready for the bus arrival.",
+          "translation": "chuẩn bị sẵn sàng",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "give up",
+      "reading": "",
+      "meaning": "từ bỏ",
+      "card_type": "PHRASE",
+      "level": "B1",
+      "part_of_speech": "phrase",
+      "notes": "Common B1 English Collocation",
+      "extra_data": {
+        "collocations": "give up"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "từ bỏ",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "Never give up when facing difficult problems.",
+          "translation": "từ bỏ",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "have fun",
+      "reading": "",
+      "meaning": "vui vẻ trải nghiệm",
+      "card_type": "PHRASE",
+      "level": "B1",
+      "part_of_speech": "phrase",
+      "notes": "Common B1 English Collocation",
+      "extra_data": {
+        "collocations": "have fun"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "vui vẻ trải nghiệm",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "We had a lot of fun visiting the historical museum.",
+          "translation": "vui vẻ trải nghiệm",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "hold an event",
+      "reading": "",
+      "meaning": "tổ chức sự kiện",
+      "card_type": "PHRASE",
+      "level": "B1",
+      "part_of_speech": "phrase",
+      "notes": "Common B1 English Collocation",
+      "extra_data": {
+        "collocations": "hold an event"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "tổ chức sự kiện",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "The company will hold an event to welcome newcomers.",
+          "translation": "tổ chức sự kiện",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "keep fit",
+      "reading": "",
+      "meaning": "giữ gìn vóc dáng",
+      "card_type": "PHRASE",
+      "level": "B1",
+      "part_of_speech": "phrase",
+      "notes": "Common B1 English Collocation",
+      "extra_data": {
+        "collocations": "keep fit"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "giữ gìn vóc dáng",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "Jogging every morning helps you keep fit and healthy.",
+          "translation": "giữ gìn vóc dáng",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "lead a healthy life",
+      "reading": "",
+      "meaning": "sống lành mạnh",
+      "card_type": "PHRASE",
+      "level": "B1",
+      "part_of_speech": "phrase",
+      "notes": "Common B1 English Collocation",
+      "extra_data": {
+        "collocations": "lead a healthy life"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "sống lành mạnh",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "Eating vegetables helps you lead a healthy life.",
+          "translation": "sống lành mạnh",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "look forward to",
+      "reading": "",
+      "meaning": "trông đợi điều gì",
+      "card_type": "PHRASE",
+      "level": "B1",
+      "part_of_speech": "phrase",
+      "notes": "Common B1 English Collocation",
+      "extra_data": {
+        "collocations": "look forward to"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "trông đợi điều gì",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "I really look forward to meeting your family.",
+          "translation": "trông đợi điều gì",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "make a difference",
+      "reading": "",
+      "meaning": "tạo nên sự khác biệt",
+      "card_type": "PHRASE",
+      "level": "B1",
+      "part_of_speech": "phrase",
+      "notes": "Common B1 English Collocation",
+      "extra_data": {
+        "collocations": "make a difference"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "tạo nên sự khác biệt",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "Small daily actions can make a big difference.",
+          "translation": "tạo nên sự khác biệt",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "meet expectations",
+      "reading": "",
+      "meaning": "đáp ứng kỳ vọng",
+      "card_type": "PHRASE",
+      "level": "B1",
+      "part_of_speech": "phrase",
+      "notes": "Common B1 English Collocation",
+      "extra_data": {
+        "collocations": "meet expectations"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "đáp ứng kỳ vọng",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "The performance met all of our high expectations.",
+          "translation": "đáp ứng kỳ vọng",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "miss an opportunity",
+      "reading": "",
+      "meaning": "bỏ lỡ cơ hội",
+      "card_type": "PHRASE",
+      "level": "B1",
+      "part_of_speech": "phrase",
+      "notes": "Common B1 English Collocation",
+      "extra_data": {
+        "collocations": "miss an opportunity"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "bỏ lỡ cơ hội",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "Do not miss an opportunity to study abroad.",
+          "translation": "bỏ lỡ cơ hội",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "overcome fear",
+      "reading": "",
+      "meaning": "vượt qua nỗi sợ",
+      "card_type": "PHRASE",
+      "level": "B1",
+      "part_of_speech": "phrase",
+      "notes": "Common B1 English Collocation",
+      "extra_data": {
+        "collocations": "overcome fear"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "vượt qua nỗi sợ",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "Practice speaking aloud to overcome fear.",
+          "translation": "vượt qua nỗi sợ",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "pass an exam",
+      "reading": "",
+      "meaning": "vượt qua kỳ thi",
+      "card_type": "PHRASE",
+      "level": "B1",
+      "part_of_speech": "phrase",
+      "notes": "Common B1 English Collocation",
+      "extra_data": {
+        "collocations": "pass an exam"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "vượt qua kỳ thi",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "He studied diligently to pass the entrance exam.",
+          "translation": "vượt qua kỳ thi",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "play a role",
+      "reading": "",
+      "meaning": "đóng vai trò quan trọng",
+      "card_type": "PHRASE",
+      "level": "B1",
+      "part_of_speech": "phrase",
+      "notes": "Common B1 English Collocation",
+      "extra_data": {
+        "collocations": "play a role"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "đóng vai trò quan trọng",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "Technology plays a vital role in modern education.",
+          "translation": "đóng vai trò quan trọng",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "raise questions",
+      "reading": "",
+      "meaning": "đặt ra câu hỏi",
+      "card_type": "PHRASE",
+      "level": "B1",
+      "part_of_speech": "phrase",
+      "notes": "Common B1 English Collocation",
+      "extra_data": {
+        "collocations": "raise questions"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "đặt ra câu hỏi",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "The report raised questions about project safety.",
+          "translation": "đặt ra câu hỏi",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "reach a compromise",
+      "reading": "",
+      "meaning": "đạt thỏa hiệp",
+      "card_type": "PHRASE",
+      "level": "B1",
+      "part_of_speech": "phrase",
+      "notes": "Common B1 English Collocation",
+      "extra_data": {
+        "collocations": "reach a compromise"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "đạt thỏa hiệp",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "Both sides managed to reach a fair compromise.",
+          "translation": "đạt thỏa hiệp",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "show respect",
+      "reading": "",
+      "meaning": "thể hiện sự tôn trọng",
+      "card_type": "PHRASE",
+      "level": "B1",
+      "part_of_speech": "phrase",
+      "notes": "Common B1 English Collocation",
+      "extra_data": {
+        "collocations": "show respect"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "thể hiện sự tôn trọng",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "Always show respect to people from different cultures.",
+          "translation": "thể hiện sự tôn trọng",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "stand out",
+      "reading": "",
+      "meaning": "nổi bật xuất sắc",
+      "card_type": "PHRASE",
+      "level": "B1",
+      "part_of_speech": "phrase",
+      "notes": "Common B1 English Collocation",
+      "extra_data": {
+        "collocations": "stand out"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "nổi bật xuất sắc",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "Her creative project really stood out among the rest.",
+          "translation": "nổi bật xuất sắc",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "take notes",
+      "reading": "",
+      "meaning": "ghi chép lại",
+      "card_type": "PHRASE",
+      "level": "B1",
+      "part_of_speech": "phrase",
+      "notes": "Common B1 English Collocation",
+      "extra_data": {
+        "collocations": "take notes"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "ghi chép lại",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "Students should take notes during the lecture.",
+          "translation": "ghi chép lại",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "take part in",
+      "reading": "",
+      "meaning": "tham gia vào",
+      "card_type": "PHRASE",
+      "level": "B1",
+      "part_of_speech": "phrase",
+      "notes": "Common B1 English Collocation",
+      "extra_data": {
+        "collocations": "take part in"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "tham gia vào",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "Many volunteers took part in cleaning the park.",
+          "translation": "tham gia vào",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "draw conclusions",
+      "reading": "",
+      "meaning": "rút ra kết luận",
+      "card_type": "PHRASE",
+      "level": "B1",
+      "part_of_speech": "phrase",
+      "notes": "Common B1 English Collocation",
+      "extra_data": {
+        "collocations": "draw conclusions"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "rút ra kết luận",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "Do not draw conclusions before looking at the facts.",
+          "translation": "rút ra kết luận",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "broaden horizons",
+      "reading": "",
+      "meaning": "mở rộng tầm nhìn",
+      "card_type": "PHRASE",
+      "level": "B1",
+      "part_of_speech": "phrase",
+      "notes": "Common B1 English Collocation",
+      "extra_data": {
+        "collocations": "broaden horizons"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "mở rộng tầm nhìn",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "Travelling to new countries broadens your horizons.",
+          "translation": "mở rộng tầm nhìn",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "cope with stress",
+      "reading": "",
+      "meaning": "đối phó căng thẳng",
+      "card_type": "PHRASE",
+      "level": "B1",
+      "part_of_speech": "phrase",
+      "notes": "Common B1 English Collocation",
+      "extra_data": {
+        "collocations": "cope with stress"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "đối phó căng thẳng",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "Deep breathing exercises help cope with daily stress.",
+          "translation": "đối phó căng thẳng",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "change your mind",
+      "reading": "",
+      "meaning": "thay đổi ý định",
+      "card_type": "PHRASE",
+      "level": "B1",
+      "part_of_speech": "phrase",
+      "notes": "Common B1 English Collocation",
+      "extra_data": {
+        "collocations": "change your mind"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "thay đổi ý định",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "You can change your mind before the final confirmation.",
+          "translation": "thay đổi ý định",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "come across",
+      "reading": "",
+      "meaning": "tình cờ bắt gặp",
+      "card_type": "PHRASE",
+      "level": "B1",
+      "part_of_speech": "phrase",
+      "notes": "Common B1 English Collocation",
+      "extra_data": {
+        "collocations": "come across"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "tình cờ bắt gặp",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "I came across an old dictionary in the bookshop.",
+          "translation": "tình cờ bắt gặp",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "cross your mind",
+      "reading": "",
+      "meaning": "thoáng qua tâm trí",
+      "card_type": "PHRASE",
+      "level": "B1",
+      "part_of_speech": "phrase",
+      "notes": "Common B1 English Collocation",
+      "extra_data": {
+        "collocations": "cross your mind"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "thoáng qua tâm trí",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "The thought never crossed my mind before today.",
+          "translation": "thoáng qua tâm trí",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "deal with",
+      "reading": "",
+      "meaning": "xử lý giải quyết",
+      "card_type": "PHRASE",
+      "level": "B1",
+      "part_of_speech": "phrase",
+      "notes": "Common B1 English Collocation",
+      "extra_data": {
+        "collocations": "deal with"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "xử lý giải quyết",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "We need to deal with this customer request today.",
+          "translation": "xử lý giải quyết",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "depend on",
+      "reading": "",
+      "meaning": "phụ thuộc vào",
+      "card_type": "PHRASE",
+      "level": "B1",
+      "part_of_speech": "phrase",
+      "notes": "Common B1 English Collocation",
+      "extra_data": {
+        "collocations": "depend on"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "phụ thuộc vào",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "Success often depends on continuous personal effort.",
+          "translation": "phụ thuộc vào",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "drop out of",
+      "reading": "",
+      "meaning": "bỏ học giữa chừng",
+      "card_type": "PHRASE",
+      "level": "B1",
+      "part_of_speech": "phrase",
+      "notes": "Common B1 English Collocation",
+      "extra_data": {
+        "collocations": "drop out of"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "bỏ học giữa chừng",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "He decided not to drop out of university.",
+          "translation": "bỏ học giữa chừng",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "earn a living",
+      "reading": "",
+      "meaning": "kiếm sống",
+      "card_type": "PHRASE",
+      "level": "B1",
+      "part_of_speech": "phrase",
+      "notes": "Common B1 English Collocation",
+      "extra_data": {
+        "collocations": "earn a living"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "kiếm sống",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "He works two part-time jobs to earn a living.",
+          "translation": "kiếm sống",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "feel like",
+      "reading": "",
+      "meaning": "cảm thấy muốn làm gì",
+      "card_type": "PHRASE",
+      "level": "B1",
+      "part_of_speech": "phrase",
+      "notes": "Common B1 English Collocation",
+      "extra_data": {
+        "collocations": "feel like"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "cảm thấy muốn làm gì",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "I feel like eating Japanese sushi tonight.",
+          "translation": "cảm thấy muốn làm gì",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "figure out",
+      "reading": "",
+      "meaning": "tìm ra cách làm",
+      "card_type": "PHRASE",
+      "level": "B1",
+      "part_of_speech": "phrase",
+      "notes": "Common B1 English Collocation",
+      "extra_data": {
+        "collocations": "figure out"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "tìm ra cách làm",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "Can you figure out how to operate this printer?",
+          "translation": "tìm ra cách làm",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "find fault with",
+      "reading": "",
+      "meaning": "bới móc bắt bẻ",
+      "card_type": "PHRASE",
+      "level": "B1",
+      "part_of_speech": "phrase",
+      "notes": "Common B1 English Collocation",
+      "extra_data": {
+        "collocations": "find fault with"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "bới móc bắt bẻ",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "She always tries to find fault with other people.",
+          "translation": "bới móc bắt bẻ",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "focus on",
+      "reading": "",
+      "meaning": "tập trung vào",
+      "card_type": "PHRASE",
+      "level": "B1",
+      "part_of_speech": "phrase",
+      "notes": "Common B1 English Collocation",
+      "extra_data": {
+        "collocations": "focus on"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "tập trung vào",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "Please focus on completing your daily assignments.",
+          "translation": "tập trung vào",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "get in touch",
+      "reading": "",
+      "meaning": "liên lạc với ai",
+      "card_type": "PHRASE",
+      "level": "B1",
+      "part_of_speech": "phrase",
+      "notes": "Common B1 English Collocation",
+      "extra_data": {
+        "collocations": "get in touch"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "liên lạc với ai",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "I will get in touch with you once I arrive.",
+          "translation": "liên lạc với ai",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "get used to",
+      "reading": "",
+      "meaning": "quen dần với",
+      "card_type": "PHRASE",
+      "level": "B1",
+      "part_of_speech": "phrase",
+      "notes": "Common B1 English Collocation",
+      "extra_data": {
+        "collocations": "get used to"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "quen dần với",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "It takes time to get used to living in a new city.",
+          "translation": "quen dần với",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "give a hand",
+      "reading": "",
+      "meaning": "giúp đỡ một tay",
+      "card_type": "PHRASE",
+      "level": "B1",
+      "part_of_speech": "phrase",
+      "notes": "Common B1 English Collocation",
+      "extra_data": {
+        "collocations": "give a hand"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "giúp đỡ một tay",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "Could you give me a hand carrying these boxes?",
+          "translation": "giúp đỡ một tay",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "have in common",
+      "reading": "",
+      "meaning": "có điểm chung",
+      "card_type": "PHRASE",
+      "level": "B1",
+      "part_of_speech": "phrase",
+      "notes": "Common B1 English Collocation",
+      "extra_data": {
+        "collocations": "have in common"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "có điểm chung",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "The two friends have a lot of hobbies in common.",
+          "translation": "có điểm chung",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "keep in touch",
+      "reading": "",
+      "meaning": "giữ liên lạc",
+      "card_type": "PHRASE",
+      "level": "B1",
+      "part_of_speech": "phrase",
+      "notes": "Common B1 English Collocation",
+      "extra_data": {
+        "collocations": "keep in touch"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "giữ liên lạc",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "We still keep in touch via weekly emails.",
+          "translation": "giữ liên lạc",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "lead to",
+      "reading": "",
+      "meaning": "dẫn đến kết quả",
+      "card_type": "PHRASE",
+      "level": "B1",
+      "part_of_speech": "phrase",
+      "notes": "Common B1 English Collocation",
+      "extra_data": {
+        "collocations": "lead to"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "dẫn đến kết quả",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "Consistent practice will lead to great mastery.",
+          "translation": "dẫn đến kết quả",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "look after",
+      "reading": "",
+      "meaning": "chăm sóc trông nom",
+      "card_type": "PHRASE",
+      "level": "B1",
+      "part_of_speech": "phrase",
+      "notes": "Common B1 English Collocation",
+      "extra_data": {
+        "collocations": "look after"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "chăm sóc trông nom",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "She looks after her younger brother on weekends.",
+          "translation": "chăm sóc trông nom",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "make sense",
+      "reading": "",
+      "meaning": "hợp lý có ý nghĩa",
+      "card_type": "PHRASE",
+      "level": "B1",
+      "part_of_speech": "phrase",
+      "notes": "Common B1 English Collocation",
+      "extra_data": {
+        "collocations": "make sense"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "hợp lý có ý nghĩa",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "His detailed explanation made complete sense to us.",
+          "translation": "hợp lý có ý nghĩa",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "make sure",
+      "reading": "",
+      "meaning": "đảm bảo chắc chắn",
+      "card_type": "PHRASE",
+      "level": "B1",
+      "part_of_speech": "phrase",
+      "notes": "Common B1 English Collocation",
+      "extra_data": {
+        "collocations": "make sure"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "đảm bảo chắc chắn",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "Make sure you turn off the lights before leaving.",
+          "translation": "đảm bảo chắc chắn",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "make use of",
+      "reading": "",
+      "meaning": "tận dụng sử dụng",
+      "card_type": "PHRASE",
+      "level": "B1",
+      "part_of_speech": "phrase",
+      "notes": "Common B1 English Collocation",
+      "extra_data": {
+        "collocations": "make use of"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "tận dụng sử dụng",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "Make use of the library resources whenever possible.",
+          "translation": "tận dụng sử dụng",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "manage time",
+      "reading": "",
+      "meaning": "quản lý thời gian",
+      "card_type": "PHRASE",
+      "level": "B1",
+      "part_of_speech": "phrase",
+      "notes": "Common B1 English Collocation",
+      "extra_data": {
+        "collocations": "manage time"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "quản lý thời gian",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "Learning to manage time is essential for students.",
+          "translation": "quản lý thời gian",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "pay a compliment",
+      "reading": "",
+      "meaning": "khen ngợi ai đó",
+      "card_type": "PHRASE",
+      "level": "B1",
+      "part_of_speech": "phrase",
+      "notes": "Common B1 English Collocation",
+      "extra_data": {
+        "collocations": "pay a compliment"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "khen ngợi ai đó",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "He paid her a sincere compliment on her speech.",
+          "translation": "khen ngợi ai đó",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "put into practice",
+      "reading": "",
+      "meaning": "đưa vào thực tế",
+      "card_type": "PHRASE",
+      "level": "B1",
+      "part_of_speech": "phrase",
+      "notes": "Common B1 English Collocation",
+      "extra_data": {
+        "collocations": "put into practice"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "đưa vào thực tế",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "Try to put into practice the words you learned.",
+          "translation": "đưa vào thực tế",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "rely on",
+      "reading": "",
+      "meaning": "tin cậy dựa vào",
+      "card_type": "PHRASE",
+      "level": "B1",
+      "part_of_speech": "phrase",
+      "notes": "Common B1 English Collocation",
+      "extra_data": {
+        "collocations": "rely on"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "tin cậy dựa vào",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "You can always rely on him in difficult times.",
+          "translation": "tin cậy dựa vào",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "run a business",
+      "reading": "",
+      "meaning": "vận hành kinh doanh",
+      "card_type": "PHRASE",
+      "level": "B1",
+      "part_of_speech": "phrase",
+      "notes": "Common B1 English Collocation",
+      "extra_data": {
+        "collocations": "run a business"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "vận hành kinh doanh",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "Running a small business requires patience and skill.",
+          "translation": "vận hành kinh doanh",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "set an example",
+      "reading": "",
+      "meaning": "làm gương mẫu mực",
+      "card_type": "PHRASE",
+      "level": "B1",
+      "part_of_speech": "phrase",
+      "notes": "Common B1 English Collocation",
+      "extra_data": {
+        "collocations": "set an example"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "làm gương mẫu mực",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "Parents set an example for their young children.",
+          "translation": "làm gương mẫu mực",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "share opinions",
+      "reading": "",
+      "meaning": "chia sẻ quan điểm",
+      "card_type": "PHRASE",
+      "level": "B1",
+      "part_of_speech": "phrase",
+      "notes": "Common B1 English Collocation",
+      "extra_data": {
+        "collocations": "share opinions"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "chia sẻ quan điểm",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "The group met to share opinions on the topic.",
+          "translation": "chia sẻ quan điểm",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "solve a conflict",
+      "reading": "",
+      "meaning": "giải quyết xung đột",
+      "card_type": "PHRASE",
+      "level": "B1",
+      "part_of_speech": "phrase",
+      "notes": "Common B1 English Collocation",
+      "extra_data": {
+        "collocations": "solve a conflict"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "giải quyết xung đột",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "Open communication helps solve conflicts peacefully.",
+          "translation": "giải quyết xung đột",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "speak your mind",
+      "reading": "",
+      "meaning": "thẳng thắn nói lên suy nghĩ",
+      "card_type": "PHRASE",
+      "level": "B1",
+      "part_of_speech": "phrase",
+      "notes": "Common B1 English Collocation",
+      "extra_data": {
+        "collocations": "speak your mind"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "thẳng thắn nói lên suy nghĩ",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "Feel free to speak your mind during our discussion.",
+          "translation": "thẳng thắn nói lên suy nghĩ",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "stay in shape",
+      "reading": "",
+      "meaning": "giữ cơ thể săn chắc",
+      "card_type": "PHRASE",
+      "level": "B1",
+      "part_of_speech": "phrase",
+      "notes": "Common B1 English Collocation",
+      "extra_data": {
+        "collocations": "stay in shape"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "giữ cơ thể săn chắc",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "Swimming regularly helps her stay in shape.",
+          "translation": "giữ cơ thể săn chắc",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "take a risk",
+      "reading": "",
+      "meaning": "chấp nhận rủi ro",
+      "card_type": "PHRASE",
+      "level": "B1",
+      "part_of_speech": "phrase",
+      "notes": "Common B1 English Collocation",
+      "extra_data": {
+        "collocations": "take a risk"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "chấp nhận rủi ro",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "Starting a startup always means taking a risk.",
+          "translation": "chấp nhận rủi ro",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "take action",
+      "reading": "",
+      "meaning": "hành động quyết đoán",
+      "card_type": "PHRASE",
+      "level": "B1",
+      "part_of_speech": "phrase",
+      "notes": "Common B1 English Collocation",
+      "extra_data": {
+        "collocations": "take action"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "hành động quyết đoán",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "The government needs to take action against pollution.",
+          "translation": "hành động quyết đoán",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "take care of",
+      "reading": "",
+      "meaning": "chăm lo cho",
+      "card_type": "PHRASE",
+      "level": "B1",
+      "part_of_speech": "phrase",
+      "notes": "Common B1 English Collocation",
+      "extra_data": {
+        "collocations": "take care of"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "chăm lo cho",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "She takes care of three rescue cats at home.",
+          "translation": "chăm lo cho",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "take for granted",
+      "reading": "",
+      "meaning": "xem là điều hiển nhiên",
+      "card_type": "PHRASE",
+      "level": "B1",
+      "part_of_speech": "phrase",
+      "notes": "Common B1 English Collocation",
+      "extra_data": {
+        "collocations": "take for granted"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "xem là điều hiển nhiên",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "Do not take your good health for granted.",
+          "translation": "xem là điều hiển nhiên",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "take time",
+      "reading": "",
+      "meaning": "cần có thời gian",
+      "card_type": "PHRASE",
+      "level": "B1",
+      "part_of_speech": "phrase",
+      "notes": "Common B1 English Collocation",
+      "extra_data": {
+        "collocations": "take time"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "cần có thời gian",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "Learning a foreign language takes time and effort.",
+          "translation": "cần có thời gian",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "tell a lie",
+      "reading": "",
+      "meaning": "nói dối",
+      "card_type": "PHRASE",
+      "level": "B1",
+      "part_of_speech": "phrase",
+      "notes": "Common B1 English Collocation",
+      "extra_data": {
+        "collocations": "tell a lie"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "nói dối",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "Honest people refuse to tell a lie for personal gain.",
+          "translation": "nói dối",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "think twice",
+      "reading": "",
+      "meaning": "cân nhắc kỹ lưỡng",
+      "card_type": "PHRASE",
+      "level": "B1",
+      "part_of_speech": "phrase",
+      "notes": "Common B1 English Collocation",
+      "extra_data": {
+        "collocations": "think twice"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "cân nhắc kỹ lưỡng",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "You should think twice before making major purchases.",
+          "translation": "cân nhắc kỹ lưỡng",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "turn down",
+      "reading": "",
+      "meaning": "từ chối lời mời",
+      "card_type": "PHRASE",
+      "level": "B1",
+      "part_of_speech": "phrase",
+      "notes": "Common B1 English Collocation",
+      "extra_data": {
+        "collocations": "turn down"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "từ chối lời mời",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "He had to turn down the invitation due to work.",
+          "translation": "từ chối lời mời",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "wake up",
+      "reading": "",
+      "meaning": "thức giấc",
+      "card_type": "PHRASE",
+      "level": "B1",
+      "part_of_speech": "phrase",
+      "notes": "Common B1 English Collocation",
+      "extra_data": {
+        "collocations": "wake up"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "thức giấc",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "I usually wake up at six o clock in the morning.",
+          "translation": "thức giấc",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "work out",
+      "reading": "",
+      "meaning": "tập thể dục rèn luyện",
+      "card_type": "PHRASE",
+      "level": "B1",
+      "part_of_speech": "phrase",
+      "notes": "Common B1 English Collocation",
+      "extra_data": {
+        "collocations": "work out"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "tập thể dục rèn luyện",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "He works out at the local gym three times a week.",
+          "translation": "tập thể dục rèn luyện",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    },
+    {
+      "term": "write down",
+      "reading": "",
+      "meaning": "ghi chép nhanh",
+      "card_type": "PHRASE",
+      "level": "B1",
+      "part_of_speech": "phrase",
+      "notes": "Common B1 English Collocation",
+      "extra_data": {
+        "collocations": "write down"
+      },
+      "meanings": [
+        {
+          "language_code": "vi",
+          "meaning": "ghi chép nhanh",
+          "display_order": 1
+        }
+      ],
+      "examples": [
+        {
+          "sentence": "Write down new vocabulary in your personal notebook.",
+          "translation": "ghi chép nhanh",
+          "translation_language": "vi",
+          "display_order": 1
+        }
+      ]
+    }
+  ]
+}

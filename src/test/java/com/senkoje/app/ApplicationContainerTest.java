@@ -37,6 +37,12 @@ class ApplicationContainerTest {
             assertNotNull(container.getThemeManager());
             assertNotNull(container.getBackgroundTaskExecutor());
             assertNotNull(container.getJapaneseTokenizerService());
+            assertNotNull(container.getSqliteBackupService());
+            assertNotNull(container.getDeckJsonExporter());
+            assertNotNull(container.getVocabularyCsvExporter());
+            assertNotNull(container.getDeckJsonImporter());
+            assertNotNull(container.getVocabularyCsvImporter());
+            assertNotNull(container.getAtomicDeckImporter());
             assertFalse(container.getJapaneseTokenizerService().isLoaded(),
                     "Kuromoji dictionary must remain lazy-loaded at startup");
             assertTrue(container.getThemeManager().isDarkTheme());

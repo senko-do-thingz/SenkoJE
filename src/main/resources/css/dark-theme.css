@@ -721,3 +721,52 @@
     -fx-text-fill: -senko-text-primary;
     -fx-font-smoothing-type: gray;
 }
+
+/* Nhãn trạng thái xem trước cho màn hình Nhập và Xuất dữ liệu */
+.status-badge-valid {
+    -fx-background-color: rgba(63, 185, 80, 0.2);
+    -fx-text-fill: #3fb950;
+    -fx-border-color: #3fb950;
+    -fx-border-radius: 4;
+    -fx-background-radius: 4;
+    -fx-padding: 2 6 2 6;
+    -fx-font-weight: bold;
+    -fx-font-size: 11px;
+}
+
+.status-badge-duplicate {
+    -fx-background-color: rgba(210, 153, 34, 0.2);
+    -fx-text-fill: #d29922;
+    -fx-border-color: #d29922;
+    -fx-border-radius: 4;
+    -fx-background-radius: 4;
+    -fx-padding: 2 6 2 6;
+    -fx-font-weight: bold;
+    -fx-font-size: 11px;
+}
+
+.status-badge-invalid {
+    -fx-background-color: rgba(248, 81, 73, 0.2);
+    -fx-text-fill: #f85149;
+    -fx-border-color: #f85149;
+    -fx-border-radius: 4;
+    -fx-background-radius: 4;
+    -fx-padding: 2 6 2 6;
+    -fx-font-weight: bold;
+    -fx-font-size: 11px;
+}
+
+.danger-button {
+    -fx-background-color: #8b181b;
+    -fx-text-fill: #ffffff;
+    -fx-border-color: #f85149;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-padding: 7 14 7 14;
+    -fx-font-weight: 600;
+    -fx-cursor: hand;
+}
+
+.danger-button:hover {
+    -fx-background-color: #a82424;
+}

@@ -318,7 +318,21 @@ public class MainShellController {
                     container.getThemeManager(),
                     container.getBackgroundTaskExecutor()
             ));
-            case IMPORT_EXPORT -> loadPlaceholder("placeholder.importExport.title", "placeholder.importExport.subtitle");
+            case IMPORT_EXPORT -> loadFxml("/fxml/import-export-view.fxml", new ImportExportController(
+                    container.getDeckService(),
+                    container.getCardService(),
+                    container.getDeckRepository(),
+                    container.getCardRepository(),
+                    container.getDeckJsonExporter(),
+                    container.getVocabularyCsvExporter(),
+                    container.getDeckJsonImporter(),
+                    container.getVocabularyCsvImporter(),
+                    container.getAtomicDeckImporter(),
+                    container.getSqliteBackupService(),
+                    localizationManager,
+                    container.getThemeManager(),
+                    container.getBackgroundTaskExecutor()
+            ));
             case SETTINGS -> loadFxml("/fxml/settings-view.fxml", new SettingsController(
                     container.getAppSettingsService(),
                     container.getTtsManager(),

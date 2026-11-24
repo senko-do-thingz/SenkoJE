@@ -21,6 +21,7 @@ import com.senkoje.domain.service.DeckValidator;
 import com.senkoje.infrastructure.backup.SqliteBackupService;
 import com.senkoje.infrastructure.exporter.DeckJsonExporter;
 import com.senkoje.infrastructure.exporter.VocabularyCsvExporter;
+import com.senkoje.infrastructure.importer.AnkiApkgImporter;
 import com.senkoje.infrastructure.importer.AtomicDeckImporter;
 import com.senkoje.infrastructure.importer.DeckJsonImporter;
 import com.senkoje.infrastructure.importer.VocabularyCsvImporter;
@@ -93,6 +94,7 @@ public class ApplicationContainer implements AutoCloseable {
     private final DeckJsonImporter deckJsonImporter;
     private final VocabularyCsvImporter vocabularyCsvImporter;
     private final AtomicDeckImporter atomicDeckImporter;
+    private final AnkiApkgImporter ankiApkgImporter;
 
     /**
      * Khởi tạo bộ chứa ứng dụng mặc định dùng đường dẫn dữ liệu chuẩn theo hệ điều hành và múi giờ Việt Nam.
@@ -191,6 +193,7 @@ public class ApplicationContainer implements AutoCloseable {
         this.deckJsonImporter = new DeckJsonImporter(this.clock);
         this.vocabularyCsvImporter = new VocabularyCsvImporter();
         this.atomicDeckImporter = new AtomicDeckImporter(this.connectionManager, this.clock);
+        this.ankiApkgImporter = new AnkiApkgImporter(this.clock);
     }
 
     public Clock getClock() {
@@ -299,6 +302,10 @@ public class ApplicationContainer implements AutoCloseable {
 
     public AtomicDeckImporter getAtomicDeckImporter() {
         return atomicDeckImporter;
+    }
+
+    public AnkiApkgImporter getAnkiApkgImporter() {
+        return ankiApkgImporter;
     }
 
     @Override

@@ -80,6 +80,7 @@ class ImportExportUiTest {
                         container.getDeckJsonImporter(),
                         container.getVocabularyCsvImporter(),
                         container.getAtomicDeckImporter(),
+                        container.getAnkiApkgImporter(),
                         container.getSqliteBackupService(),
                         container.getLocalizationManager(),
                         container.getThemeManager(),

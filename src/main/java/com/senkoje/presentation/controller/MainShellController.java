@@ -328,6 +328,7 @@ public class MainShellController {
                     container.getDeckJsonImporter(),
                     container.getVocabularyCsvImporter(),
                     container.getAtomicDeckImporter(),
+                    container.getAnkiApkgImporter(),
                     container.getSqliteBackupService(),
                     localizationManager,
                     container.getThemeManager(),

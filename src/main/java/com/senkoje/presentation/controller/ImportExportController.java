@@ -15,6 +15,7 @@ import com.senkoje.infrastructure.backup.SqliteBackupService;
 import com.senkoje.infrastructure.exporter.DeckJsonExporter;
 import com.senkoje.infrastructure.exporter.ExportCardBundle;
 import com.senkoje.infrastructure.exporter.VocabularyCsvExporter;
+import com.senkoje.infrastructure.importer.AnkiApkgImporter;
 import com.senkoje.infrastructure.importer.AtomicDeckImporter;
 import com.senkoje.infrastructure.importer.DeckJsonImporter;
 import com.senkoje.infrastructure.importer.DuplicateStrategy;
@@ -69,6 +70,7 @@ public class ImportExportController implements RefreshableView {
     private final DeckJsonImporter deckJsonImporter;
     private final VocabularyCsvImporter vocabularyCsvImporter;
     private final AtomicDeckImporter atomicDeckImporter;
+    private final AnkiApkgImporter ankiApkgImporter;
     private final SqliteBackupService sqliteBackupService;
     private final LocalizationManager localizationManager;
     private final ThemeManager themeManager;
@@ -172,6 +174,7 @@ public class ImportExportController implements RefreshableView {
             DeckJsonImporter deckJsonImporter,
             VocabularyCsvImporter vocabularyCsvImporter,
             AtomicDeckImporter atomicDeckImporter,
+            AnkiApkgImporter ankiApkgImporter,
             SqliteBackupService sqliteBackupService,
             LocalizationManager localizationManager,
             ThemeManager themeManager,
@@ -186,6 +189,7 @@ public class ImportExportController implements RefreshableView {
         this.deckJsonImporter = Objects.requireNonNull(deckJsonImporter, "deckJsonImporter must not be null");
         this.vocabularyCsvImporter = Objects.requireNonNull(vocabularyCsvImporter, "vocabularyCsvImporter must not be null");
         this.atomicDeckImporter = Objects.requireNonNull(atomicDeckImporter, "atomicDeckImporter must not be null");
+        this.ankiApkgImporter = Objects.requireNonNull(ankiApkgImporter, "ankiApkgImporter must not be null");
         this.sqliteBackupService = Objects.requireNonNull(sqliteBackupService, "sqliteBackupService must not be null");
         this.localizationManager = Objects.requireNonNull(localizationManager, "localizationManager must not be null");
         this.themeManager = Objects.requireNonNull(themeManager, "themeManager must not be null");
@@ -410,8 +414,7 @@ public class ImportExportController implements RefreshableView {
                     } else if (fileName.endsWith(".csv")) {
                         return vocabularyCsvImporter.generatePreview(selectedSourcePath, existingTerms);
                     } else if (fileName.endsWith(".apkg")) {
-                        // Trả về báo cáo thông báo nếu .apkg chưa được tích hợp hoàn toàn hoặc xử lý qua Anki importer
-                        return createApkgPreviewNotice(selectedSourcePath);
+                        return ankiApkgImporter.generatePreview(selectedSourcePath, existingTerms);
                     } else {
                         throw new IllegalArgumentException(localizationManager.get("importExport.unsupportedFormat"));
                     }
